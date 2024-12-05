@@ -1,6 +1,6 @@
 *{
   font-family: 'Nunito', sans-serif;
-  background-color: #ece6e6;
+  background-color: #ffffff;
   width: 100%;
   margin: 0;
   height: auto;
@@ -8,7 +8,7 @@
 
 /* General Body */
 .mainBody {
-  background-color: #ece6e6;
+  background-color: #ffffff;
   height: 100vh;
   display: flex;
   overflow: hidden;
@@ -17,7 +17,7 @@
   width: 100%;
   height: auto;
   top: 0;
-  left: 0;
+  left: 0;justify-content: space-evenly;
   position: fixed;
   padding: 10px;
   z-index: 1000;
@@ -25,57 +25,113 @@
 
 /* Sidebar */
 .sidebar {
-  background-color: #ece6e6;
-  width: 300px; /* Adjusted to fit longer names */
+  background-color: #ffffff;
+  width: 20%;
   border-right: 1px solid #ccc;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.list-group{
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 110px;
+  border: none;
+  background-color: #ffffff;
 }
 
 .list-group-item {
-  background-color: #ece6e6;
-  border: none;
+  border: none  !important;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: #333;
+  background-color: transparent;
 }
 
 .list-group-item a {
   display: flex;
-  align-items: center;
-  color: #333;
+  width: fit-content;
+  font-weight: bold;
+  justify-content: space-between;
+  color: gray;
+  text-decoration: none;
+  background-color: transparent;
 }
 
-.list-group-item a:hover {
-  background-color: #f56565; /* red-500 */
+.list-group-item i {
+  color: #ff5733;
+  width: 20px;
+  background-color: transparent;
+}
+
+/* .list-group-item a:hover {
+  background-color: #ff5733;
   color: white;
-  border-radius: 10px; /* Rounded corners on hover */
-  /* padding: 5px 10px; */
+  border-radius: 7px;
+} */
+
+/* .list-group-item a:hover i {
+  color: white;
+} */
+
+.list-group :hover{
+  background-color: #ff5733;
+  color: white;
+  border-radius: 7px;
+}
+
+.list-group :hover a{
+  color: white;
+}
+
+.list-group :hover i{
+  color: white;
 }
 
 .sidebar-divider {
   border-top: 1px solid #ccc;
-  margin: 10px 0;
+  margin: 20px 0;
 }
 
 .topbar-left {
-  width: 300px; /* Matches sidebar width */
+  width: 20%;
+  padding: 20px;
+}
+.menubtn{
+  color: #ff5733;
 }
 
 .sidebar-title {
   font-size: 1.8rem;
-  color: #cf3636;
+  color: #ff5733;
   font-weight: bolder;
+  margin-right: 30px;
 }
 
-.searchBar {
-  width: calc(100% - 400px); /* Remaining space after sidebar */
-  margin-left: auto;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 5px 10px;
-  border-radius: 40px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.topbar-middle{
+  width: 70%;
+  padding: 30px;
 }
+
+.topbar-right{
+  width: 10%;
+  padding: 30px;
+}
+
+a {
+  color: #ff5733;
+}
+
+a .notificationIcon i{
+  color: #ff5733;
+}
+
 
 /* Footer */
 .copyRight {
-  background-color: #ece6e6;
+  background-color: #ffffff;
   font-size: 0.9rem;
   color: #333;
 }

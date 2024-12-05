@@ -5,18 +5,25 @@ const InfoMarketDashboard: React.FC = () => {
   return (
     <div className="mainBody d-flex">
         <div className="topbar d-flex align-items-center p-3">
-          <div className="d-flex align-items-center topbar-left">
-            <i className="fas fa-bars me-2"></i>
+          <div className="topbar-left d-flex align-items-center">
+            <i className="menubtn fas fa-bars me-2"></i>
             <h4 className="sidebar-title mb-0">InfoMarket</h4>
           </div>
-          <input
+          <div className="topbar-middle d-flex align-items-center">
+            <input
             className="searchBar form-control "
             type="search"
             placeholder="Search here!"
           />
+          </div>
+             <div className="topbar-right d-flex align-items-center">
+             <a className="notificationIcon">
+    <i className="fas fa-notification"></i>
+  </a>
+          </div>
         </div>
       {/* Sidebar */}
-      <nav className="sidebar vh-100 p-3">
+      <nav className="sidebar vh-150 p-3">
         <ul className="list-group list-group-flush">
           {/* Group 1: Home */}
           <li className="list-group-item">
@@ -70,6 +77,7 @@ const InfoMarketDashboard: React.FC = () => {
               <i className="fas fa-tags me-2"></i> Sell Your Item
             </a>
           </li>
+          <hr className="sidebar-divider" />
         </ul>
       </nav>
 
