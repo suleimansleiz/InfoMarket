@@ -1,5 +1,6 @@
 import React from "react";
 import "../App.css";
+import Home from "./Home";
 
 const InfoMarketDashboard: React.FC = () => {
   return (
@@ -17,9 +18,7 @@ const InfoMarketDashboard: React.FC = () => {
           />
           </div>
              <div className="topbar-right d-flex align-items-center">
-             <a className="notificationIcon">
-    <i className="fas fa-notification"></i>
-  </a>
+            {/* Notifications go here*/}
           </div>
         </div>
       {/* Sidebar */}
@@ -84,14 +83,13 @@ const InfoMarketDashboard: React.FC = () => {
       {/* Main Content */}
       <div className="content flex-grow-1">
         <div className="container mt-4">
-          {/* Main content goes here */}
-        </div>
-
-        <footer className="copyRight mt-auto p-3 text-center">
+          <Home />
+          <footer className="copyRight mt-auto p-3 text-center">
           <p>
-            Copyright © 2024. <b><a href="#">InfoMarket.</a></b> Developed and maintained by SleizWare Development. All rights reserved.
+            Copyright © 2024 <b><a href="#">InfoMarket.</a></b> Developed and maintained by <b><a href="#">SleizWare Development.</a></b> All rights reserved.
           </p>
         </footer>
+        </div>
       </div>
     </div>
   );
