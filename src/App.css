@@ -296,3 +296,96 @@ a .notificationIcon i{
   }
 }
 
+/* Center the card */
+.card {
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Button styles */
+.btn {
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: capitalize;
+  padding: 12px 20px;
+  transition: all 0.3s ease;
+}
+
+.btn-light {
+  background-color: #fff;
+  color: #333;
+}
+
+.btn-light:hover {
+  background-color: #f7f7f7;
+  color: #000;
+}
+
+.btn-primary {
+  background-color: #ff5733;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #e14c2a;
+  color: #fff;
+}
+
+/* Anchor styles */
+a {
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #e14c2a;
+}
+
+/* Text styles */
+.text-center {
+  text-align: center;
+}
+
+p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.card h3 {
+  font-weight: bold;
+  color: #333;
+}
+
+.btn {
+  border: 1px solid #ddd;
+   border-radius: 8px;
+   padding: "10px";
+   }
+
+.btn2 {
+  background-color: #ff5733;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.createAccount{
+  color: #ff5733;
+  font-weight: "bold";
+}
+
+p {
+  font-size: 0.8rem;
+  color: gray;
+}
+
+.tp{
+  color: #ff5733;
+}
+
+.card{
+  width: 400px;
+  border-radius: 12px;
+}
