@@ -1,6 +1,23 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import "../App.css";
+// import Home from "./Home";
+// import SellYourItem from "./SellYourItem";
+// import CreateAccount from "./CreateAccount";
+
+// const renderMainContent = () => {
+//   switch (mainContent) {
+//     case "home":
+//       return <Home />;
+//     case "sellYourItem":
+//       return <SellYourItem setMainContent={setMainContent} />;
+//     case "createAccount":
+//       return <CreateAccount setMainContent={setMainContent} />;
+//     default:
+//       return <Home />;
+//   }
+// };
+
 
 const InfoMarketDashboard: React.FC = () => {
   return (

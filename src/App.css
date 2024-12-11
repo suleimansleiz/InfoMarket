@@ -353,39 +353,171 @@ p {
   line-height: 1.5;
 }
 
-.card h3 {
-  font-weight: bold;
-  color: #333;
+/* Container for the card */
+.sell-your-item-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #ffffff;
 }
 
-.btn {
-  border: 1px solid #ddd;
-   border-radius: 8px;
-   padding: "10px";
-   }
+/* Card styling */
+.sell-your-item-card {
+  width: 350px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
 
-.btn2 {
+/* Button styling */
+.google-btn {
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.google-btn img.google-logo {
+  width: 20px;
+  height: 20px;
+}
+
+.gglbtn{
+  width: fit-content;
+}
+.email-btn {
   background-color: #ff5733;
+  color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   padding: 10px;
 }
 
-.createAccount{
-  color: #ff5733;
-  font-weight: "bold";
+.email-btn:hover{
+  color: #fff;
+  background-color: red;
+  border-color: #ff5733;
 }
 
-p {
+.google-btn:hover{
+  border-color: red;
+}
+/* Link styling */
+.policies{
+  margin-top: 7f0px;
+}
+a {
+  text-decoration: none;
+  color: #ff5733;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Footer text */
+.text-muted {
   font-size: 0.8rem;
   color: gray;
 }
 
-.tp{
-  color: #ff5733;
+/* Container for the card */
+.create-account-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #ffffff;
 }
 
-.card{
-  width: 400px;
-  border-radius: 12px;
+/* Card styling */
+.create-account-card {
+  width: 350px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+/* Input styling */
+.form-control {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+/* Submit button styling */
+.submit-btn {
+  background-color: #ff5733;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+}
+
+.submit-btn:hover{
+  background-color: red;
+  color: #fff;
+}
+
+.text-danger {
+  font-size: 0.8rem;
+  color: red;
+}
+
+.upload-item-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #ffffff;
+}
+
+.upload-item-card {
+  width: 900px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.separater {
+  border-top: 1px solid #ccc;
+  margin: 20px 0;
+}
+
+form .row {
+  display: flex;
+  gap: 15px;
+}
+
+form .col {
+  flex: 1;
+}
+
+form .form-control,
+form .form-select {
+  height: 45px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.submit-btn {
+  background-color: #ff5733;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #e14a29;
 }

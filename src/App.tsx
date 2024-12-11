@@ -12,15 +12,16 @@ import Phones from "./components/Phones";
 import Settings from "./components/Settings";
 import Help from "./components/Help";
 import SellYourItem from "./components/SellYourItem";
+import CreateAccount from "./components/CreateAccount";
+import LoginPage from "./components/LoginPage";
+import UploadItem from "./components/UploadItem";
 
 const App: React.FC = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<InfoMarketDashboard />}>
-          {/* Default route for the container */}
           <Route index element={<Home />} />
-          {/* Other routes for dynamic content */}
           <Route path="accessories" element={<Accessories />} />
           <Route path="bags" element={<Bags />} />
           <Route path="carteins" element={<Carteins />} />
@@ -29,6 +30,9 @@ const App: React.FC = () => {
           <Route path="settings" element={<Settings />} />
           <Route path="help" element={<Help />} />
           <Route path="sell-your-item" element={<SellYourItem />} />
+          <Route path="create-account" element={<CreateAccount />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="upload-item" element={<UploadItem />} />
         </Route>
       </Routes>
     </Router>
