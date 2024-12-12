@@ -1,23 +1,6 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import "../App.css";
-// import Home from "./Home";
-// import SellYourItem from "./SellYourItem";
-// import CreateAccount from "./CreateAccount";
-
-// const renderMainContent = () => {
-//   switch (mainContent) {
-//     case "home":
-//       return <Home />;
-//     case "sellYourItem":
-//       return <SellYourItem setMainContent={setMainContent} />;
-//     case "createAccount":
-//       return <CreateAccount setMainContent={setMainContent} />;
-//     default:
-//       return <Home />;
-//   }
-// };
-
 
 const InfoMarketDashboard: React.FC = () => {
   return (
@@ -29,15 +12,24 @@ const InfoMarketDashboard: React.FC = () => {
           <h4 className="sidebar-title mb-0">InfoMarket</h4>
         </div>
         <div className="topbar-middle d-flex align-items-center">
+        <div className="searchBox">
+          <img className="searchIcon" src="../assets/search.png" alt="icon" />
           <input
-            className="searchBar form-control"
+            className="searchBar"
             type="search"
             placeholder="Search here!"
           />
+          <button className="searchButton" type="button">Search</button>
+        </div>
+
         </div>
         <div className="topbar-right d-flex align-items-center">
-          {/* Notifications go here */}
+          <div className="notification-bell">
+            <i className="fas fa-bell"></i>
+            <span className="notification-count">3</span>
+          </div>
         </div>
+
       </div>
 
       {/* Sidebar */}
@@ -125,7 +117,7 @@ const InfoMarketDashboard: React.FC = () => {
         </div>
         <footer className="copyRight mt-auto p-3 text-center">
           <p>
-            Copyright © 2024 <b><a href="#">InfoMarket.</a></b> Developed and
+            Copyright © 2024 <b><a href="/home">InfoMarket.</a></b> Developed and
             maintained by <b><a href="#">SleizWare Development.</a></b> All
             rights reserved.
           </p>
