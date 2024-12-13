@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword } from "firebase/auth"; // Firebase auth function
+import { auth } from "../database/firebaseConfig"; // Firebase configuration
+import { FirebaseError } from "firebase/app"; // Import FirebaseError type
 
 const CreateAccount: React.FC = () => {
-      const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -12,9 +15,10 @@ const CreateAccount: React.FC = () => {
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [loading, setLoading] = useState(false); // Optional: Add a loading state
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const validateForm = () => {
@@ -44,13 +48,33 @@ const CreateAccount: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
- const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-        navigate("/sell-your-item");
-      alert("Account created successfully! Please log in.");
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!validateForm()) return;
+
+  setLoading(true); // Show loading indicator
+  const { email, password } = formData;
+
+  try {
+    // Create user with Firebase Authentication
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+    console.log("User created:", userCredential.user);
+    alert("Account created successfully! Please log in.");
+    navigate("/sell-your-item");
+  } catch (error) {
+    // Use FirebaseError type for error
+    if (error instanceof FirebaseError) {
+      console.error("Firebase Error:", error.message);
+      alert("Error creating account: " + error.message);
+    } else {
+      console.error("Unexpected Error:", error);
+      alert("An unexpected error occurred.");
     }
-  };
+  } finally {
+    setLoading(false); // Hide loading indicator
+  }
+};
 
   return (
     <div className="create-account-container">
@@ -116,8 +140,8 @@ const CreateAccount: React.FC = () => {
               <small className="text-danger">{errors.confirmPassword}</small>
             )}
           </div>
-          <button type="submit" className="btn submit-btn">
-            Create
+          <button type="submit" className="btn submit-btn" disabled={loading}>
+            {loading ? "Creating..." : "Create"}
           </button>
         </form>
       </div>

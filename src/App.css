@@ -557,13 +557,62 @@ a:hover {
 }
 
 .upload-item-container {
+  /* margin-top: 50px; */
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 70vh;
+  height: auto;
   background-color: #ffffff;
 }
 
+.my-posts-container{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  height: auto;
+  width: 900px;
+  margin: 30px;
+  background-color: #ffffff;
+  border: 0.5px solid #ccc;
+  border-radius: 10px;
+}
+
+.my-posts-container-top{
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+
+.my-posts-heading{
+  color: green;
+  margin-left: 20px;
+
+}
+.my-posts-btn{
+  width: fit-content;
+  padding: 5px 15px;
+  color: #fff;
+  font-size: 0.9rem;
+  background-color: #ff5733;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.post-separater{
+  width: 90%;
+}
+
+.my-posts-container-btm{
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+
+.noPost{
+  text-align: center;
+}
 .upload-item-card {
   width: 900px;
   padding: 20px;
@@ -572,6 +621,9 @@ a:hover {
   background-color: #fff;
 }
 
+.upload-item-heading{
+  color: green;
+}
 .separater {
   border-top: 1px solid #ccc;
   margin: 30px 0;

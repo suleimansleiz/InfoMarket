@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../database/firebaseConfig";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -14,21 +16,18 @@ const LoginPage: React.FC = () => {
   const [errors, setErrors] = useState<{
     emailOrPhone?: string;
     password?: string;
-  }>({}); // Properties are now optional
+  }>({});
+
+  const [loading, setLoading] = useState(false);
 
   const validateForm = (): boolean => {
     const newErrors: { emailOrPhone?: string; password?: string } = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^255\d{9}$/;
 
     if (!formData.emailOrPhone) {
       newErrors.emailOrPhone = "Email or phone number is required.";
-    } else if (
-      !emailRegex.test(formData.emailOrPhone) &&
-      !phoneRegex.test(formData.emailOrPhone)
-    ) {
-      newErrors.emailOrPhone =
-        "Enter a valid email or a phone number starting with 255 and 12 digits.";
+    } else if (!emailRegex.test(formData.emailOrPhone)) {
+      newErrors.emailOrPhone = "Enter a valid email address.";
     }
 
     if (!formData.password) {
@@ -46,11 +45,24 @@ const LoginPage: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (validateForm()) {
+    if (!validateForm()) return;
+
+    setLoading(true);
+    const { emailOrPhone, password } = formData;
+
+    try {
+      // Sign in with Firebase Authentication
+      const userCredential = await signInWithEmailAndPassword(auth, emailOrPhone, password);
+      console.log("User logged in:", userCredential.user);
       alert("Login successful!");
-      navigate("/upload-item"); // Navigate to UploadItem
+      navigate("/upload-item");
+    } catch (error) {
+      console.error("Error logging in:", error);
+      setErrors({ emailOrPhone: "Invalid email or password." });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -93,10 +105,16 @@ const LoginPage: React.FC = () => {
           <button
             type="submit"
             className="email-btn btn-primary w-100"
-            // style={{ backgroundColor: "#ff5733" }}
+            disabled={loading}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
+          <p>
+            Forgot Password?{" "}
+            <Link to="/create-account" className="text-decoration-none">
+              Click here
+            </Link>
+          </p>
         </form>
       </div>
     </div>
@@ -104,6 +122,7 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
+
 
 
 
