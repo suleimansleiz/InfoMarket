@@ -222,223 +222,6 @@ a .notificationIcon i{
   font-size: 0.8rem;
 }
 
-
-/* Adjust the main content position */
-/* .home-content {
-  padding: 20px;
-  margin-top: 100px;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-}
-
-
-.home-content::-webkit-scrollbar {
-  width: 0;
-}
-
-.home-content {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-} */
-
-/* Headings */
-/* .main-heading {
-  font-size: 2rem;
-  font-weight: bolder;
-  color: #ff5733;
-  margin-bottom: 20px;
-}
-
-.category-title {
-  font-size: 1.5rem;
-  color: gray;
-  font-weight: bold;
-  margin: 20px 0;
-} */
-
-/* Category Container */
-/* .category-container {
-  position: relative;
-}
-
-.cards-container {
-  display: flex;
-  gap: 15px;
-  overflow-x: hidden;
-  padding-bottom: 10px;
-  padding-top: 10px;
-  scroll-behavior: smooth;
-} */
-
-/* .card-item {
-  flex: 0 0 calc(30% - 15px);
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  height: 300px;
-}
-
-.card-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.card-img {
-  width: 100%;
-  height: calc(300px * 2 / 3);
-  object-fit: cover;
-}
-
-.card-content {
-  padding: 10px;
-  text-align: left;
-  height: calc(300px * 1 / 3);
-}
-
-.card-content strong {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 1rem;
-  color: gray;
-}
-
-.card-content .price{
-  font-size: 1rem;
-  font-weight: bold;
-  color: gray;
-}
-
-.card-content {
-  position: relative;
-  padding: 10px;
-  text-align: left;
-  height: calc(300px * 1 / 3);
-} */
-
-/* .card-actions {
-  position: absolute;
-  bottom: 10px;
-  left: 80%;
-}
-
-.arrow-icon {
-  font-size: 1.2rem;
-  color: #ff5733;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.arrow-icon:hover {
-  color: red;
-} */
-
-/* Scroll Buttons */
-/* .scroll-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 10;
-}
-
-.scroll-btn i {
-  font-size: 1rem;
-  color: #ff5733;
-}
-
-.scroll-btn:hover {
-  background-color: #f0f0f0;
-}
-
-.left-scroll {
-  left: -20px;
-}
-
-.right-scroll {
-  right: -20px;
-}
-
-@media (max-width: 768px) {
-  .card-item {
-    flex: 0 0 calc(50% - 15px); /* 2 cards per row */
-  /* }
-}
-
-@media (max-width: 480px) {
-  .card-item {
-    flex: 0 0 calc(100% - 15px); /* 1 card per row */
-  /* }
-}
-
-
-.card {
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-
-.btn {
-  font-size: 1rem;
-  font-weight: bold;
-  text-transform: capitalize;
-  padding: 12px 20px;
-  transition: all 0.3s ease;
-}
-
-.btn-light {
-  background-color: #fff;
-  color: #333;
-}
-
-.btn-light:hover {
-  background-color: #f7f7f7;
-  color: #000;
-}
-
-.btn-primary {
-  background-color: #ff5733;
-  color: #fff;
-}
-
-.btn-primary:hover {
-  background-color: #e14c2a;
-  color: #fff;
-} */
-
-/* Anchor styles */
-/* a {
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-
-a:hover {
-  color: #e14c2a;
-}
-
-.text-center {
-  text-align: center;
-}
-
-p {
-  margin: 0;
-  line-height: 1.5;
-}  */
-
-
-
 /* Container for the card */
 .sell-your-item-container {
   display: flex;
@@ -556,15 +339,124 @@ a:hover {
   color: red;
 }
 
-.upload-item-container {
-  /* margin-top: 50px; */
+/* My Posts Container */
+.my-posts-container {
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  max-width: 600px;
+  margin: 20px auto;
+  transition: max-height 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+/* Posts Dynamic Height */
+.my-posts-container.expanded {
+  max-height: none; /* Automatically adjusts to content */
+}
+
+/* Post Separator */
+.post-separater {
+  border-top: 1px solid #ccc;
+  margin: 10px 0;
+}
+
+/* Dialog Overlay */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Dialog Card */
+.dialog-card {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Dialog Icon */
+.dialog-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+/* Success Icon */
+.dialog-icon.success {
+  color: #28a745; /* Green */
+}
+
+/* Error Icon */
+.dialog-icon.error {
+  color: #dc3545; /* Red */
+}
+
+/* Dialog Text */
+.dialog-text {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* Dialog Buttons */
+.dialog-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 0 5px;
+}
+
+.dialog-button.ok {
+  background-color: #28a745;
+  color: white;
+}
+
+.dialog-button.cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+.dialog-button:hover {
+  opacity: 0.9;
+}
+
+/* Submit Button */
+/* .submit-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+} */
+
+
+/* .upload-item-container {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   height: auto;
   background-color: #ffffff;
-}
+} */
 
 .my-posts-container{
   display: flex;
@@ -590,7 +482,7 @@ a:hover {
   margin-left: 20px;
 
 }
-.my-posts-btn{
+.delete-btn{
   width: fit-content;
   padding: 5px 15px;
   color: #fff;
@@ -609,6 +501,76 @@ a:hover {
   flex-direction: row;
   padding: 10px;
 }
+
+/* Styling for card-post */
+.card-post {
+  width: 350px;
+  height: 400px;
+  margin: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-post .post-image {
+  width: 100%;
+  height: 66%; /* 2/3 of the card height */
+  object-fit: cover;
+}
+
+.card-post .post-item {
+  padding: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-post .post-item p {
+  margin: 5px 0;
+}
+
+.card-post .delete-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #ff6b6b;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s;
+}
+
+.card-post .delete-btn:hover {
+  background-color: #ff3b3b;
+}
+
+.my-posts-container-btm {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.my-posts-container {
+  padding: 20px;
+}
+
+.noPost {
+  text-align: center;
+  color: #888;
+  font-size: 16px;
+}
+
 
 .noPost{
   text-align: center;

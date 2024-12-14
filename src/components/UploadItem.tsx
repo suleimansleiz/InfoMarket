@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth } from "../database/firebaseConfig";
-import { getFirestore, collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import { getFirestore, collection, addDoc, query, where, getDocs, deleteDoc, doc } from "firebase/firestore";
 
 const db = getFirestore();
 
 type Post = {
   id: string;
-  itemImage?: string;
+  imageURL?: string;
   itemName: string;
   price: string;
   category: string;
@@ -29,8 +29,10 @@ const UploadItem: React.FC = () => {
   });
 
   const [posts, setPosts] = useState<Post[]>([]);
-  const [isLoadingPosts, setIsLoadingPosts] = useState(false);
-  const [dialog, setDialog] = useState<{ type: "success" | "error"; message: string } | null>(null);
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, files } = e.target as HTMLInputElement & { files: FileList };
@@ -46,14 +48,12 @@ const UploadItem: React.FC = () => {
     const currentUser = auth.currentUser;
 
     if (!currentUser) {
-      setDialog({ type: "error", message: "You must be logged in to post an item." });
+      alert("You must be logged in to post an item.");
       return;
     }
 
     try {
       const { itemImage, ...data } = formData;
-
-      // Replace with actual image upload logic (e.g., Firebase Storage)
       const imageURL = itemImage ? URL.createObjectURL(itemImage) : "";
 
       const itemData = {
@@ -64,8 +64,6 @@ const UploadItem: React.FC = () => {
       };
 
       await addDoc(collection(db, "items"), itemData);
-
-      // Reset form
       setFormData({
         itemImage: null,
         itemName: "",
@@ -76,11 +74,11 @@ const UploadItem: React.FC = () => {
         sellerPhoneNo: "",
       });
 
-      // Show success dialog
-      setDialog({ type: "success", message: "Item posted successfully!" });
+      fetchPosts();
+      alert("Item posted successfully!");
     } catch (error) {
       console.error("Error posting item:", error);
-      setDialog({ type: "error", message: "Failed to post the item. Please try again." });
+      alert("Failed to post the item. Please try again.");
     }
   };
 
@@ -88,11 +86,9 @@ const UploadItem: React.FC = () => {
     const currentUser = auth.currentUser;
 
     if (!currentUser) {
-      setDialog({ type: "error", message: "You must be logged in to view your posts." });
+      alert("You must be logged in to view your posts.");
       return;
     }
-
-    setIsLoadingPosts(true);
 
     try {
       const q = query(collection(db, "items"), where("userId", "==", currentUser.uid));
@@ -105,64 +101,26 @@ const UploadItem: React.FC = () => {
       setPosts(items);
     } catch (error) {
       console.error("Error fetching posts:", error);
-      setDialog({ type: "error", message: "Failed to fetch posts. Please try again." });
-    } finally {
-      setIsLoadingPosts(false);
+      alert("Failed to fetch posts. Please try again.");
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteDoc(doc(db, "items", id));
+      fetchPosts();
+      alert("Post deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      alert("Failed to delete post. Please try again.");
     }
   };
 
   return (
     <div className="upload-item-container">
-      {/* Dialog Overlay */}
-      {dialog && (
-        <div className="dialog-overlay">
-          <div className={`dialog-card ${dialog.type}`}>
-            <div className="dialog-icon">
-              {dialog.type === "success" ? "✔️" : "❌"}
-            </div>
-            <p>{dialog.message}</p>
-            <button onClick={() => setDialog(null)} className="dialog-button">
-              {dialog.type === "success" ? "OK" : "Cancel"}
-            </button>
-          </div>
-        </div>
-      )}
-
-      <div className="my-posts-container">
-        <div className="my-posts-container-top">
-          <h3 className="my-posts-heading">View your Posts</h3>
-          <button className="my-posts-btn" onClick={fetchPosts}>
-            Posts
-          </button>
-        </div>
-        <hr className="post-separater" />
-        <div className="my-posts-container-btm">
-          {isLoadingPosts ? (
-            <p className="loading">Loading posts...</p>
-          ) : posts.length > 0 ? (
-            posts.map((post) => (
-              <div key={post.id} className="post-item">
-                <img src={post.itemImage} alt={post.itemName} className="post-image" />
-                <div>
-                  <h5>{post.itemName}</h5>
-                  <p>Price: {post.price}</p>
-                  <p>Category: {post.category}</p>
-                  <p>{post.description}</p>
-                  <p>Seller: {post.sellerName}</p>
-                  <p>Phone: {post.sellerPhoneNo}</p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="noPost">Click to view your posts</p>
-          )}
-        </div>
-      </div>
-
       <div className="card upload-item-card">
         <h3 className="upload-item-heading text-center">Upload Item</h3>
         <form onSubmit={handleSubmit}>
-          {/* Image Picker */}
           <div className="mb-3">
             <input
               type="file"
@@ -172,8 +130,6 @@ const UploadItem: React.FC = () => {
               onChange={handleInputChange}
             />
           </div>
-
-          {/* Item Name and Price */}
           <div className="row mb-3">
             <div className="col">
               <input
@@ -196,8 +152,6 @@ const UploadItem: React.FC = () => {
               />
             </div>
           </div>
-
-          {/* Category Selector and Description */}
           <div className="row mb-3">
             <div className="col">
               <select
@@ -227,10 +181,7 @@ const UploadItem: React.FC = () => {
               />
             </div>
           </div>
-
           <hr className="separater" />
-
-          {/* Seller Name and Phone Number */}
           <div className="row mb-3">
             <div className="col">
               <input
@@ -253,8 +204,6 @@ const UploadItem: React.FC = () => {
               />
             </div>
           </div>
-
-          {/* Submit Button */}
           <div className="mb-3 text-center">
             <button type="submit" className="btn submit-btn">
               Post Your Item
@@ -262,10 +211,36 @@ const UploadItem: React.FC = () => {
           </div>
         </form>
       </div>
+
+      <div className="my-posts-container">
+        <div className="my-posts-container-top">
+          <h3 className="my-posts-heading">My Posts</h3>
+        </div>
+        <hr className="post-separater" />
+        <div className="my-posts-container-btm">
+          {posts.length > 0 ? (
+            posts.map((post) => (
+              <div className="card-post" key={post.id}>
+                <img src={post.imageURL} alt={post.itemName} className="post-image" />
+                <div className="post-item">
+                  <p><b>{post.itemName}</b></p>
+                  <p>Price: {post.price}</p>
+                  <p>Category: {post.category}</p>
+                  <p>{post.description}</p>
+                  <button onClick={() => handleDelete(post.id)} className="delete-btn">
+                    🗑️
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="noPost">No posts available.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
 
 export default UploadItem;
-
 
