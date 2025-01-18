@@ -49,6 +49,7 @@
   align-items: center;
   color: #333;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .list-group-item a {
@@ -71,6 +72,7 @@
   background-color: #ff5733;
   color: white;
   border-radius: 7px;
+  cursor: pointer;
 }
 
 .list-group :hover a{
@@ -90,6 +92,7 @@
   width: 20%;
   padding: 20px;
 }
+
 .menubtn{
   color: #ff5733;
 }
@@ -174,7 +177,7 @@
   position: absolute;
   width: fit-content;
   top: 3px;
-  right: 25px;
+  left: 15px;
   background-color: #ff5733;
   color: white;
   border-radius: 50%;
@@ -514,6 +517,7 @@ a:hover {
 /* Container for the card */
 .create-account-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 70vh;
@@ -556,12 +560,23 @@ a:hover {
   color: red;
 }
 
+
+/*upload-item container */
 .upload-item-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 70vh;
+  height: 80vh;
   background-color: #ffffff;
+}
+
+.upload-item-alert{
+  width: fit-content;
+}
+
+.upload-item-alert b{
+  background-color: transparent;
 }
 
 .upload-item-card {

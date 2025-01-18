@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -49,7 +49,6 @@ const LoginPage: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
-      alert("Login successful!");
       navigate("/upload-item"); // Navigate to UploadItem
     }
   };
@@ -93,10 +92,15 @@ const LoginPage: React.FC = () => {
           <button
             type="submit"
             className="email-btn btn-primary w-100"
-            // style={{ backgroundColor: "#ff5733" }}
           >
             Login
           </button>
+          <p>
+            Forgot Password?{" "}
+            <Link to="/password-reset" className="text-decoration-none">
+              Click Here
+            </Link>
+          </p>
         </form>
       </div>
     </div>

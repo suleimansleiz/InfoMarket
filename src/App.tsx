@@ -15,6 +15,7 @@ import SellYourItem from "./components/SellYourItem";
 import CreateAccount from "./components/CreateAccount";
 import LoginPage from "./components/LoginPage";
 import UploadItem from "./components/UploadItem";
+import PasswordReset from "./components/PasswordReset"
 
 const App: React.FC = () => {
   return (
@@ -33,6 +34,7 @@ const App: React.FC = () => {
           <Route path="create-account" element={<CreateAccount />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="upload-item" element={<UploadItem />} />
+          <Route path="password-reset" element={<PasswordReset />}/>
         </Route>
       </Routes>
     </Router>
