@@ -1,0 +1,858 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+
+*{
+  font-family: 'Quicksand', Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  width: 100%;
+  margin: 0;
+  height: auto;
+}
+
+/* General Body */
+.mainBody {
+  background-color: #ffffff;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+.topbar{
+  width: 80%;
+  height: 100px;
+  top: 0;
+  left: 20;
+  justify-content: space-evenly;
+  position: fixed;
+  padding: 10px;
+  z-index: 1000;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #ffffff;
+  top: 0;
+  width: 20%;
+  border-right: 1px solid #ccc;
+  
+}
+
+.list-group{
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 50px;
+  border: none;
+  background-color: #ffffff;
+}
+
+.list-group-item {
+  border: none  !important;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: #333;
+  background-color: transparent;
+}
+
+.list-group-item a {
+  display: flex;
+  width: fit-content;
+  font-weight: bold;
+  justify-content: space-between;
+  color: gray;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.list-group-item i {
+  color: #ff5733;
+  width: 20px;
+  background-color: transparent;
+}
+
+.list-group :hover{
+  background-color: #ff5733;
+  color: white;
+  border-radius: 7px;
+}
+
+.list-group :hover a{
+  color: white;
+}
+
+.list-group :hover i{
+  color: white;
+}
+
+.sidebar-divider {
+  border-top: 1px solid #ccc;
+  margin: 20px 0;
+}
+
+.topbar-left {
+  padding: 20px;
+}
+
+.menubtn{
+  color: #ff5733;
+}
+
+.sidebar-title {
+  font-size: 1.8rem;
+  color: #ff5733;
+  font-weight: bolder;
+  margin-right: 30px;
+}
+
+.topbar-middle{
+  width: 70%;
+  padding: 20px 0;
+}
+
+.searchBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 3px;
+  border: 2px solid #ccc;
+  border-radius: 30px;
+  background-color: #fff;
+}
+
+.searchIcon{
+  width: 20px;
+  height: 20px;
+  margin: 10px;
+}
+.searchBar {
+  flex: 1; /* Take up remaining space */
+  border: none;
+  outline: none; /* Prevent border outline on focus */
+  padding: 5px;
+  color: #000;
+  font-size: 14px;
+  background-color: transparent; /* Matches the searchBox background */
+}
+
+.searchBar::placeholder {
+  color: #999; /* Style for placeholder text */
+}
+
+.searchButton {
+  width: 80px;
+  height: 100%;
+  margin-right: 5px;
+  background-color: #fff;
+  color: #ccc;
+  font-weight: bold;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.searchButton:hover{
+  color: #ff5733;
+}
+
+.headers-2 {
+  color: green;
+}
+
+.topbar-right {
+  width: 10%;
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.notification-bell {
+  position: relative;
+  font-size: 30px;
+  color: gray;
+  cursor: pointer;
+}
+
+.notification-count {
+  position: absolute;
+  width: fit-content;
+  top: 3px;
+  right: 25px;
+  background-color: #ff5733;
+  color: white;
+  border-radius: 50%;
+  padding: 3px 7px;
+  font-size: 7px;
+  font-weight: bold;
+}
+
+
+a {
+  color: #ff5733;
+}
+
+a .notificationIcon i{
+  color: #ff5733;
+}
+
+.content{
+  margin-top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+
+.content::-webkit-scrollbar {
+  width: 0;
+}
+
+.content {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+/* Footer */
+.copyRight {
+  background-color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.copyRight a{
+  text-decoration: none;
+  color: #ff5733;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+/* Container for the card */
+.sell-your-item-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  background-color: #ffffff;
+}
+
+/* Card styling */
+.sell-your-item-card {
+  width: 350px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+/* Button styling */
+.google-btn {
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.google-btn img.google-logo {
+  width: 20px;
+  height: 20px;
+}
+
+.gglbtn{
+  width: fit-content;
+}
+.email-btn {
+  background-color: #ff5733;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.email-btn:hover{
+  color: #fff;
+  background-color: red;
+  border-color: #ff5733;
+}
+
+.google-btn:hover{
+  border-color: red;
+}
+/* Link styling */
+.policies{
+  margin-top: 7px;
+}
+a {
+  text-decoration: none;
+  color: #ff5733;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* Footer text */
+.text-muted {
+  font-size: 0.8rem;
+  color: gray;
+}
+
+/* Container for the card */
+.create-account-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  background-color: #ffffff;
+}
+
+/* Card styling */
+.create-account-card {
+  width: 350px;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+/* Input styling */
+.form-control {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+/* Submit button styling */
+.submit-btn {
+  background-color: #ff5733;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+}
+
+.submit-btn:hover{
+  background-color: red;
+  color: #fff;
+}
+
+.text-danger {
+  font-size: 0.8rem;
+  color: red;
+}
+
+/* My Posts Container */
+.my-posts-container {
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  max-width: 600px;
+  margin: 20px auto;
+  transition: max-height 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+/* Posts Dynamic Height */
+.my-posts-container.expanded {
+  max-height: none; /* Automatically adjusts to content */
+}
+
+/* Post Separator */
+.post-separater {
+  border-top: 1px solid #ccc;
+  margin: 10px 0;
+}
+
+.topbar-seller-name {
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  position: relative;
+  padding: 10px;
+  right: 0;
+  align-items: center;
+  
+}
+.seller-name {
+  font-weight: bold;
+  color: #28a745;
+
+}
+.rounded-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  
+  margin-left: 10px;
+  object-fit: cover;
+  border: 1px solid grey;
+  cursor: pointer;
+}
+
+/* Dialog Overlay */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Dialog Card */
+.dialog-card {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Dialog Icon */
+.dialog-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+/* Success Icon */
+.dialog-icon.success {
+  color: #28a745; /* Green */
+}
+
+/* Error Icon */
+.dialog-icon.error {
+  color: #dc3545; /* Red */
+}
+
+/* Dialog Text */
+.dialog-text {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* Dialog Buttons */
+.dialog-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 0 5px;
+}
+
+.dialog-button.ok {
+  background-color: #28a745;
+  color: white;
+}
+
+.dialog-button.cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+.dialog-button:hover {
+  opacity: 0.9;
+}
+
+/* Submit Button */
+/* .submit-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+} */
+
+
+/* .upload-item-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  height: auto;
+  background-color: #ffffff;
+} */
+
+.my-posts-container{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  height: auto;
+  width: 900px;
+  margin: 30px;
+  background-color: #ffffff;
+  border: 0.5px solid #ccc;
+  border-radius: 10px;
+}
+
+.my-posts-container-top{
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+
+.my-posts-heading{
+  color: green;
+  margin-left: 20px;
+
+}
+.delete-btn{
+  width: fit-content;
+  padding: 5px 15px;
+  color: #fff;
+  font-size: 0.9rem;
+  background-color: #ff5733;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.post-separater{
+  width: 90%;
+}
+
+.my-posts-container-btm{
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+
+/* Styling for card-post */
+.card-post {
+  width: 350px;
+  height: 400px;
+  margin: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-post .post-image {
+  width: 100%;
+  height: 66%; /* 2/3 of the card height */
+  object-fit: cover;
+}
+
+.card-post .post-item {
+  padding: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-post .post-item p {
+  margin: 5px 0;
+}
+
+.card-post .delete-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #ff6b6b;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s;
+}
+
+.card-post .delete-btn:hover {
+  background-color: #ff3b3b;
+}
+
+.my-posts-container-btm {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.my-posts-container {
+  padding: 20px;
+}
+
+.noPost {
+  text-align: center;
+  color: #888;
+  font-size: 16px;
+}
+
+
+.noPost{
+  text-align: center;
+}
+.upload-item-card {
+  width: 900px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.upload-item-heading{
+  color: green;
+}
+.separater {
+  border-top: 1px solid #ccc;
+  margin: 30px 0;
+}
+
+form .row {
+  display: flex;
+  gap: 15px;
+}
+
+form .col {
+  flex: 1;
+}
+
+form .form-control,
+form .form-select {
+  height: 45px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.submit-btn {
+  background-color: #ff5733;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: red;
+}
+
+
+/* All Pages css*/
+.pages-container {
+  text-align: left;
+  margin: 20px;
+}
+
+.pages-container h1{
+  font-weight: bolder;
+  color: green;
+}
+
+.button-group {
+  display: flex;
+  justify-content: left;
+  margin-top: 10px;
+}
+
+.filter-button {
+  width: fit-content;
+  height: 40px;
+  padding: 5px 15px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 15px;
+  background-color: gray;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.filter-button.active {
+  background-color: #ff5733;
+}
+
+.filter-button:hover:not(.active) {
+  background-color: green;
+}
+
+.items-container {
+  display: flex;
+  margin-top: 20px;
+  padding: 20px;
+  text-align: center;
+  justify-content: center;
+  /* border: 1px solid #ddd; */
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.no-items-message {
+  font-size: 18px;
+  color: #555;
+  align-items: center;
+}
+
+/* Home.tsx styles */
+.items-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  padding: 1rem;
+  max-height: calc(150vh - 270px);
+  overflow-y: auto;
+  scrollbar-width: none;
+  align-items: stretch;
+}
+
+.items-container::-webkit-scrollbar {
+  display: none;
+}
+
+
+.item-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  max-width: 230px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: auto;
+}
+
+.item-card:hover {
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  transition: 0.6s ease-out;
+}
+
+.item-image {
+  height: 60%;
+  min-height: 180px;
+  background-color: #ffffff;
+  background-size: cover;
+  background-position: center;
+}
+
+.item-details {
+  padding: 0.75rem;
+  height: 40%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-details h5 {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.item-details p {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.icon-btn {
+  width: 40%;
+}
+
+.expand-button {
+  background: none;
+  border: none;
+  width: fit-content;
+  cursor: pointer;
+  padding: 0;
+  color: #ff3b3b;
+}
+
+.favorite-button {
+  background: none;
+  border: none;
+  width: fit-content;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 20px;
+  color: red;
+}
+
+.item-expanded {
+  padding: 0.75rem 1rem 1rem;
+  border-top: 1px solid #eee;
+  background-color: #fafafa;
+  transition: 5ms;
+}
+
+.purchase-button {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.6rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.purchase-button:hover {
+  background-color: #0056b3;
+}
+
+/* pagination styles */
+.pagination-container {
+  width: 60%;
+  justify-content: center;
+  margin: 5rem;
+}
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  margin: 2rem 0;
+}
+
+.pagination-controls Pagination.Item {
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  width: 100px;
+}
+
+.pagination-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-number {
+  font-weight: bold;
+}
