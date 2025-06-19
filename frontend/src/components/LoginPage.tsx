@@ -86,6 +86,7 @@ const LoginPage: React.FC = () => {
       } else {
         setAlertVariant('danger');
         setAlertMsg("An error occurred while trying to sign in.");
+        navigate("/upload-item");
       }
 
       console.error("Login error:", error);
@@ -135,8 +136,8 @@ const LoginPage: React.FC = () => {
         </div>
       </div>
       <div className="card create-account-card">
-        <h3 className="text-center">Login</h3>
-        <form onSubmit={handleSubmit}>
+        <h3 className="card-header text-center">Login</h3>
+        <form className="card-form" onSubmit={handleSubmit}>
           <div className="mb-3">
             <input
               type="email"
@@ -178,9 +179,9 @@ const LoginPage: React.FC = () => {
             Login
           </button>
 
-          <p className="mt-3">
+          <p className="card-words mt-3">
             Forgot Password?{" "}
-            <Link to="/create-account" className="text-decoration-none">
+            <Link to="/create-account" className="card-links text-decoration-none">
               Click here
             </Link>
           </p>

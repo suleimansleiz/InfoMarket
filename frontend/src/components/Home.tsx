@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../api/axiosConfig";
 import PaginationControls from "./PaginationControls";
 import ExpandedItemCard from "./ExpandedItemCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface Item {
   item_id: string;
@@ -66,7 +67,6 @@ const Home: React.FC = () => {
 
   return (
     <div className="pages-container">
-      {/* Topbar */}
       <div className="topbar d-flex align-items-center p-3">
         <div className="topbar-middle d-flex align-items-center">
           <div className="searchBox">
@@ -76,16 +76,13 @@ const Home: React.FC = () => {
           </div>
         </div>
         <div className="topbar-right d-flex align-items-center">
-          <div className="notification-bell">
-            <i className="fas fa-bell"></i>
-            <span className="notification-count">3</span>
-          </div>
+          <button className="login-btn" type="button">Log in</button>
+          <button className="signup-btn" type="button">Sign up</button>
         </div>
       </div>
 
-      <h1 className="text-center">Welcome to InfoMarket</h1>
+      <h1 className="welcome-header text-center">Welcome to InfoMarket</h1>
 
-      {/* Filter Buttons */}
       <div className="button-group">
         {["All", "Recents", "Favorites"].map(type => (
           <button
@@ -116,10 +113,10 @@ const Home: React.FC = () => {
                 </div>
                 <div className="icon-btn">
                 <button className="expand-button" onClick={() => openModal(item)}>
-                  <i className="fas fa-arrow-up"></i>
+                <FontAwesomeIcon icon="arrow-down" />
                 </button>
                   <button className="favorite-button">
-                    <i className="fa-regular fa-heart"></i>
+                  <FontAwesomeIcon icon={["far", "heart"]} />
                   </button>
                 </div>
               </div>
@@ -138,13 +135,11 @@ const Home: React.FC = () => {
         />
       </div>
 
-      {/* Item Details Modal */}
       <ExpandedItemCard
-  show={showModal}
-  onHide={closeModal}
-  item={selectedItem}
-/>
-
+        show={showModal}
+        onHide={closeModal}
+        item={selectedItem}
+      />
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Computers: React.FC = () => {
     const [selected, setSelected] = useState<string>("All");
@@ -19,7 +20,7 @@ const Computers: React.FC = () => {
         </div>
         <div className="topbar-right d-flex align-items-center">
           <div className="notification-bell">
-            <i className="fas fa-bell"></i>
+            <FontAwesomeIcon className="notification-icon" icon="bell" />
             <span className="notification-count">3</span>
           </div>
         </div>

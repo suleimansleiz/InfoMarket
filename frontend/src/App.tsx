@@ -1,5 +1,6 @@
 // App.tsx
 import React from "react";
+import "./icons/fontawesome";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import InfoMarketDashboard from "./components/InfoMarketDashboard";

@@ -191,19 +191,19 @@ const UploadItem: React.FC = () => {
       </div>
       </div>
       <div className="card upload-item-card">
-        <h3 className="upload-item-heading text-center">Upload Item</h3>
+        <h3 className="card-header upload-item-heading text-center">Upload Item</h3>
         {formAlertMsg && (
-    <Alert
-      variant={formAlertVariant}
-      onClose={() => setFormAlertMsg(null)}
-      className="mt-3"
-    >
-      {formAlertMsg}
-    </Alert>
-  )}
+            <Alert
+              variant={formAlertVariant}
+              onClose={() => setFormAlertMsg(null)}
+              className="mt-3"
+            >
+              {formAlertMsg}
+            </Alert>
+        )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
+        <form className="card-form" onSubmit={handleSubmit}>
+          <div className="form-rows mb-3">
             <input
               type="file"
               name="item_photo"
@@ -212,7 +212,7 @@ const UploadItem: React.FC = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="row mb-3">
+          <div className="form-rows row mb-3">
             <div className="col">
               <input
                 type="text"

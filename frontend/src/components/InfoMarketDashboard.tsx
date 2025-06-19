@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
 import "../App.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const InfoMarketDashboard: React.FC = () => {
   return (
@@ -15,7 +16,7 @@ const InfoMarketDashboard: React.FC = () => {
         <ul className="list-group list-group-flush">
           <li className="list-group-item">
             <Link to="/" className="text-decoration-none d-flex align-items-center">
-              <i className="fas fa-home me-2"></i> Home
+              <FontAwesomeIcon className="icons" icon="home" /> Home
             </Link>
           </li>
           <hr className="sidebar-divider" />
@@ -24,7 +25,7 @@ const InfoMarketDashboard: React.FC = () => {
               to="/accessories"
               className="text-decoration-none d-flex align-items-center"
             >
-              <i className="fas fa-gem me-2"></i> Accessories
+              <FontAwesomeIcon className="icons" icon="gem" /> Accessories
             </Link>
           </li>
           <li className="list-group-item">
@@ -32,7 +33,7 @@ const InfoMarketDashboard: React.FC = () => {
               to="/bags"
               className="text-decoration-none d-flex align-items-center"
             >
-              <i className="fas fa-shopping-bag me-2"></i> Bags
+              <FontAwesomeIcon className="icons" icon="shopping-bag" /> Bags
             </Link>
           </li>
           <li className="list-group-item">
@@ -40,7 +41,7 @@ const InfoMarketDashboard: React.FC = () => {
               to="/carteins"
               className="text-decoration-none d-flex align-items-center"
             >
-              <i className="fas fa-box me-2"></i> Curteins
+              <FontAwesomeIcon className="icons" icon="box" /> Curteins
             </Link>
           </li>
           <li className="list-group-item">
@@ -48,7 +49,7 @@ const InfoMarketDashboard: React.FC = () => {
               to="/computers"
               className="text-decoration-none d-flex align-items-center"
             >
-              <i className="fas fa-laptop me-2"></i> Computers
+              <FontAwesomeIcon className="icons" icon="laptop" /> Computers
             </Link>
           </li>
           <li className="list-group-item">
@@ -56,7 +57,7 @@ const InfoMarketDashboard: React.FC = () => {
               to="/phones"
               className="text-decoration-none d-flex align-items-center"
             >
-              <i className="fas fa-mobile-alt me-2"></i> Phones
+              <FontAwesomeIcon className="icons" icon="mobile" /> Phones
             </Link>
           </li>
           <hr className="sidebar-divider" />
@@ -65,7 +66,15 @@ const InfoMarketDashboard: React.FC = () => {
               to="/settings"
               className="text-decoration-none d-flex align-items-center"
             >
-              <i className="fas fa-cog me-2"></i> Settings
+              <FontAwesomeIcon className="icons" icon="bell" /> Notifications
+            </Link>
+          </li>
+          <li className="list-group-item">
+            <Link
+              to="/settings"
+              className="nav-link text-decoration-none d-flex align-items-center"
+            >
+              <FontAwesomeIcon className="icons" icon="cog" /> Settings
             </Link>
           </li>
           <li className="list-group-item">
@@ -73,7 +82,7 @@ const InfoMarketDashboard: React.FC = () => {
               to="/help"
               className="text-decoration-none d-flex align-items-center"
             >
-              <i className="fas fa-question-circle me-2"></i> Help
+              <FontAwesomeIcon className="icons" icon="question" /> Help
             </Link>
           </li>
           <li className="list-group-item">
@@ -81,17 +90,16 @@ const InfoMarketDashboard: React.FC = () => {
               to="/sell-your-item"
               className="text-decoration-none d-flex align-items-center"
             >
-              <i className="fas fa-tags me-2"></i> Sell Your Item
+              <FontAwesomeIcon className="icons" icon="tags" /> Sell Your Item
             </Link>
           </li>
           <hr className="sidebar-divider" />
         </ul>
       </nav>
 
-      {/* Main Content Area */}
       <div className="content flex-grow-1">
         <div className="container mt-4">
-          <Outlet /> {/* Dynamic components will be rendered here */}
+          <Outlet />
         </div>
       </div>
     </div>

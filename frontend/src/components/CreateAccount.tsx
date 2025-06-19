@@ -136,8 +136,8 @@ const CreateAccount: React.FC = () => {
               </div>
             </div>
       <div className="card create-account-card">
-        <h3 className="text-center">Create Account</h3>
-        <form onSubmit={handleSubmit}>
+        <h3 className="card-header text-center">Create Account</h3>
+        <form className="card-form" onSubmit={handleSubmit}>
           <div className="mb-3">
             <input
               type="text"
