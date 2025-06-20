@@ -19,6 +19,7 @@ import {
   faQuestion,
   faTags,
   faHome,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
 
@@ -40,6 +41,7 @@ library.add(
   faCog,
   faQuestion,
   faTags,
-  faHome
+  faHome,
+  faTrash
 );
 

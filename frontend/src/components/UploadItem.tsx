@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Alert } from "react-bootstrap";
+import { Alert, Spinner } from "react-bootstrap";
 import api from "../api/axiosConfig";
 import ProfileDropdown from "./ProfileDropdown";
-import LoadingSpinner from "./LoadingSpinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
+
 
 type Post = {
   id: string;
@@ -40,6 +42,10 @@ const UploadItem: React.FC = () => {
   const [formAlertVariant, setFormAlertVariant] = useState<'success' | 'danger' | 'warning' | 'info'>();
   const [postAlertMsg, setPostAlertMsg] = useState<string | null>(null);
   const [postAlertVariant, setPostAlertVariant] = useState<'success' | 'danger' | 'warning' | 'info'>();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<Post | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
 
   useEffect(() => {
     const phone = localStorage.getItem("seller_phone");
@@ -69,6 +75,7 @@ const UploadItem: React.FC = () => {
       return () => clearTimeout(timer);
     }
   }, [postAlertMsg]);
+  
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -99,7 +106,7 @@ const UploadItem: React.FC = () => {
       setLoading(true);
   
       const formDataImage = new FormData();
-      formDataImage.append("item_photo", formData.item_photo!); // Image
+      formDataImage.append("item_photo", formData.item_photo!);
       formDataImage.append("item_name", formData.item_name);
       formDataImage.append("item_price", formData.item_price);
       formDataImage.append("item_category", formData.item_category);
@@ -112,7 +119,7 @@ const UploadItem: React.FC = () => {
         formDataImage
       );
   
-      // Reset form
+      
       setFormData({
       item_photo: null,
       item_name: "",
@@ -147,48 +154,35 @@ const UploadItem: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const openDeleteModal = (post: Post) => {
+    setItemToDelete(post);
+    setShowDeleteModal(true);
+  };
+
+  const handleDelete = async () => {
+    if (!itemToDelete) return;
+  
+    setDeleting(true);
+  
     try {
-      await api.delete(`/api/infomarket/v1/items/${id}`);
-      fetchPosts(formData.seller_phone);
-      setPostAlertVariant('success');
-      setPostAlertMsg("Post deleted successfully!");
+      await api.delete(`/api/infomarket/v1/items/${itemToDelete.id}`);
+      await fetchPosts(formData.seller_phone); // Refetch items after deletion
+      setShowDeleteModal(false);
+      setItemToDelete(null);
     } catch (error) {
-      console.error("Error deleting post:", error);
-      setPostAlertVariant('danger');
-      setPostAlertMsg("Failed to delete post. Please try again.");
+      console.error("Failed to delete item:", error);
+    } finally {
+      setDeleting(false);
     }
   };
 
-  if (loading) {
-      return (
-        <div
-          style={{
-            position: "fixed",
-            left: 0,
-            top: 0,
-            height: "100%",
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "transparent",
-            zIndex: 9999
-          }}
-        >
-          <LoadingSpinner />
-        </div>
-      );
-    }
-
   return (
     <div className="upload-item-container">
-      <div className="topbar d-flex align-items-center p-3">
-        <div className="topbar-alert"></div>
-      <div className="topbar-seller-name">
-      <h5 className="seller-name mb-0">{localStorage.getItem("seller_name")}</h5>
-      <ProfileDropdown imageUrl="../../assets/blank-profile-pic.png" />
-      </div>
+      <div className="upload-item-topbar d-flex align-items-center p-3">
+        <div className="topbar-seller-name">
+          <h5 className="seller-name mb-0">{localStorage.getItem("seller_name")}</h5>
+          <ProfileDropdown imageUrl="../../assets/blank-profile-pic.png" />
+        </div>
       </div>
       <div className="card upload-item-card">
         <h3 className="card-header upload-item-heading text-center">Upload Item</h3>
@@ -286,7 +280,7 @@ const UploadItem: React.FC = () => {
           </div>
           <div className="text-center">
             <button type="submit" className="btn submit-btn" disabled={loading}>
-            Post Your Item
+            {loading ? <Spinner size="sm" animation="border" /> : "Post you Item"}
             </button>
           </div>
         </form>
@@ -298,7 +292,6 @@ const UploadItem: React.FC = () => {
             <Alert
               variant={postAlertVariant}
               onClose={() => setPostAlertMsg(null)}
-
               className="mt-3"
             >
               {postAlertMsg}
@@ -307,14 +300,22 @@ const UploadItem: React.FC = () => {
         <div className="my-posts-container-btm">
           {posts.length > 0 ? (
             posts.map((post) => (
-              <div className="card-post" key={post.id}>
-                <img src={post.item_photo} alt={post.item_name} className="post-image" />
-                <div className="post-item">
-                  <p><b>{post.item_name}</b></p>
-                  <p>Price: {post.item_price}</p>
-                  <button onClick={() => handleDelete(post.id)} className="delete-btn">
-                    🗑️
+              <div className="item-card" key={post.id}>
+                <div
+                  className="item-image"
+                  style={{ backgroundImage: `url(${post.item_photo})` }}
+                />
+                <div className="item-details">
+                  <div>
+                    <h5>{post.item_name}</h5>
+                    <p>Tsh {post.item_description}</p>
+                    <p>Tsh {post.item_price.toLocaleString()}</p>
+                  </div>
+                  <div className="icon-btn">
+                  <button className="expand-button" onClick={() => openDeleteModal(post)}>
+                  <FontAwesomeIcon icon="trash" />
                   </button>
+                  </div>
                 </div>
               </div>
             ))
@@ -323,6 +324,18 @@ const UploadItem: React.FC = () => {
           )}
         </div>
       </div>
+      <DeleteConfirmationModal
+        show={showDeleteModal}
+        onHide={() => {
+          setShowDeleteModal(false);
+          setItemToDelete(null);
+        }}
+        onDelete={handleDelete}
+        itemName={itemToDelete?.item_name || "this item"}
+        deleting={deleting}
+      />
+
+
     </div>
   );
 };

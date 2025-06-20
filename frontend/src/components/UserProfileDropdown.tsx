@@ -3,12 +3,11 @@ import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import Image from "react-bootstrap/Image";
 
-const ProfileDropdown: React.FC<{ imageUrl: string }> = ({ imageUrl }) => {
+const UserProfileDropdown: React.FC<{ imageUrl: string }> = ({ imageUrl }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("seller_name");
-    localStorage.removeItem("seller_phone");
+    localStorage.removeItem("user");
     // Navigate to home and prevent back navigation
     navigate("/", { replace: true });
   };
@@ -18,8 +17,8 @@ const ProfileDropdown: React.FC<{ imageUrl: string }> = ({ imageUrl }) => {
   };
 
   return (
-    <Dropdown className="seller-dropdown" align="end">
-      <Dropdown.Toggle className="seller-img-dropdown" as="div" style={{ cursor: "pointer" }}>
+    <Dropdown align="end">
+      <Dropdown.Toggle as="div" style={{ cursor: "pointer" }}>
         <Image
           src={imageUrl}
           roundedCircle
@@ -38,4 +37,4 @@ const ProfileDropdown: React.FC<{ imageUrl: string }> = ({ imageUrl }) => {
   );
 };
 
-export default ProfileDropdown;
+export default UserProfileDropdown;

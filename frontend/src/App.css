@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 *{
   font-family: 'Quicksand', Arial, Helvetica, sans-serif;
@@ -32,12 +32,13 @@
   background-color: #ffffff;
   top: 0;
   width: 20%;
+  height: 150vh;
 }
 
 .list-group{
   align-items: center;
   justify-content: space-around;
-  margin-top: 50px;
+  margin-top: 20px;
   border: none;
   background-color: #ffffff;
 }
@@ -46,7 +47,6 @@
   border: none  !important;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
   color: #333;
   background-color: transparent;
@@ -55,8 +55,7 @@
 .list-group-item a {
   display: flex;
   width: fit-content;
-  font-weight: bold;
-  justify-content: space-between;
+  font-weight: 500;
   color: gray;
   text-decoration: none;
   background-color: transparent;
@@ -81,6 +80,10 @@
 }
 
 .list-group :hover .icons{
+  color: white;
+}
+
+.list-group :hover .list-group-link{
   color: white;
 }
 
@@ -201,27 +204,14 @@
 }
 .pages-container h1 {
   color: #007BFF;
-  font-weight: bolder;
+  font-weight: 400;
 }
 
-.notification-bell {
-  position: relative;
-  font-size: 30px;
-  color: gray;
-  cursor: pointer;
-}
-
-.notification-count {
-  position: absolute;
-  width: fit-content;
-  top: 3px;
-  right: 25px;
-  background-color: #FFC107;
-  color: white;
-  border-radius: 50%;
-  padding: 3px 7px;
-  font-size: 7px;
-  font-weight: bold;
+.username-display {
+  color: #007BFF;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
 }
 
 
@@ -410,24 +400,6 @@ a:hover {
   color: red;
 }
 
-/* My Posts Container */
-.my-posts-container {
-  width: 100%;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: white;
-  max-width: 600px;
-  margin: 20px auto;
-  transition: max-height 0.3s ease-in-out;
-  overflow: hidden;
-}
-
-/* Posts Dynamic Height */
-.my-posts-container.expanded {
-  max-height: none; /* Automatically adjusts to content */
-}
-
 /* Post Separator */
 .post-separater {
   border-top: 1px solid #ccc;
@@ -435,137 +407,67 @@ a:hover {
 }
 
 .topbar-seller-name {
-  width: 30%;
+  width: 40%;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-around;
   position: relative;
   padding: 10px;
-  right: 0;
+  margin-right: 90px;
   align-items: center;
-  background-color: #F8F9FA;
+  background-color: #FFF;
 }
 
 .seller-name {
   font-weight: bold;
   color: #007BFF;
+  background-color: #FFF;
 
 }
 .rounded-circle {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  margin-left: 10px;
   object-fit: cover;
   border: 1px solid grey;
   cursor: pointer;
+  background-color: #FFF;
 }
 
+.seller-img-dropdown {
+  background-color: #FFF;
+  width: fit-content;
+}
 
+.seller-dropdown {
+  background-color: #FFF;
+}
 
-/* Dialog Overlay */
-.dialog-overlay {
+.upload-item-topbar {
+  justify-content: right;
   position: fixed;
+  height: 80px;
+  width: 100%;
+  background-color: #FFF;
   top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
-
-/* Dialog Card */
-.dialog-card {
-  background: #fff;
-  padding: 20px 30px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Dialog Icon */
-.dialog-icon {
-  font-size: 48px;
-  margin-bottom: 20px;
-}
-
-/* Success Icon */
-.dialog-icon.success {
-  color: #28a745; /* Green */
-}
-
-/* Error Icon */
-.dialog-icon.error {
-  color: #dc3545; /* Red */
-}
-
-/* Dialog Text */
-.dialog-text {
-  font-size: 16px;
-  margin-bottom: 20px;
-}
-
-/* Dialog Buttons */
-.dialog-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  margin: 0 5px;
-}
-
-.dialog-button.ok {
-  background-color: #28a745;
-  color: white;
-}
-
-.dialog-button.cancel {
-  background-color: #dc3545;
-  color: white;
-}
-
-.dialog-button:hover {
-  opacity: 0.9;
+  left: 250px;
 }
 
 .my-posts-container{
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
   height: auto;
-  width: 900px;
+  width: 95%;
   margin: 30px;
-  background-color: #ffffff;
-  border: 0.5px solid #ccc;
-  border-radius: 10px;
-}
-
-.my-posts-container-top{
-  display: flex;
-  flex-direction: row;
-  padding: 10px;
+  background-color: #F8F9FA;
 }
 
 .my-posts-heading{
-  color: green;
+  color: #007BFF;
   margin-left: 20px;
+  background-color: #F8F9FA;
 
-}
-.delete-btn{
-  width: fit-content;
-  padding: 5px 15px;
-  color: #fff;
-  font-size: 0.9rem;
-  background-color: #28A745;
-  border-radius: 10px;
-  font-weight: bold;
 }
 
 .post-separater{
@@ -573,9 +475,11 @@ a:hover {
 }
 
 .my-posts-container-btm{
-  display: flex;
-  flex-direction: row;
-  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  padding: 1rem;
+  background-color: #F8F9FA;
 }
 
 /* Styling for card-post */
@@ -661,6 +565,7 @@ a:hover {
 .upload-item-card {
   width: 900px;
   padding: 20px;
+  justify-self: center;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #fff;
@@ -908,4 +813,72 @@ form .form-select {
 
 .page-number {
   font-weight: bold;
+}
+
+.modal-full {
+  background-color: transparent;
+}
+
+.modal-container {
+  background-color: transparent;
+  color: #FFF;
+}
+
+.modal-header {
+  background-color: #FFF;
+}
+
+.modal-title {
+  background-color: #FFF;
+  font-weight: 300;
+}
+
+.modal-body {
+  background-color: #FFF;
+}
+
+.modal-body img{
+  background-color: #FFF;
+}
+
+.modal-body p{
+  background-color: #FFF;
+}
+
+.modal-form {
+  background-color: #FFF;
+}
+
+.modal-group {
+  background-color: #FFF;
+}
+
+.modal-label {
+  background-color: #FFF;
+  font-weight: 300;
+}
+
+.modal-input {
+  background-color: #FFF;
+}
+
+.modal-checkbox {
+  background-color: #fff;
+}
+
+.modal-checkbox label{
+  background-color: #fff;
+}
+
+.modal-footer {
+  background-color: #FFF;
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+}
+
+.modal-footer button{
+  width: fit-content;
+  margin: 5px;
+  color: #fff;
 }

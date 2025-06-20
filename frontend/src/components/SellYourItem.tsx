@@ -15,10 +15,10 @@ const SellYourItem: React.FC = () => {
   return (
     <div className="sell-your-item-container">
       <div className="topbar d-flex align-items-center p-3">
-        <h2 className="headers-2">Login to Upload a post</h2>
+        <h2 className="headers-2 text-center">Login to Upload a post</h2>
       </div>
       <div className="card sell-your-item-card">
-        <h3 className="card-header text-center">Login</h3>
+        <h3 className="card-header text-center">Login with</h3>
         <button className="btn google-btn d-flex align-items-center justify-content-center">
           {googleLogo}
           <span className="gglbtn ms-2">Continue with Google</span>

@@ -15,7 +15,7 @@ const InfoMarketDashboard: React.FC = () => {
 
         <ul className="list-group list-group-flush">
           <li className="list-group-item">
-            <Link to="/" className="text-decoration-none d-flex align-items-center">
+            <Link to="/" className="list-group-link text-decoration-none d-flex align-items-center">
               <FontAwesomeIcon className="icons" icon="home" /> Home
             </Link>
           </li>
@@ -23,7 +23,7 @@ const InfoMarketDashboard: React.FC = () => {
           <li className="list-group-item">
             <Link
               to="/accessories"
-              className="text-decoration-none d-flex align-items-center"
+              className="list-group-link text-decoration-none d-flex align-items-center"
             >
               <FontAwesomeIcon className="icons" icon="gem" /> Accessories
             </Link>
@@ -31,7 +31,7 @@ const InfoMarketDashboard: React.FC = () => {
           <li className="list-group-item">
             <Link
               to="/bags"
-              className="text-decoration-none d-flex align-items-center"
+              className="list-group-link text-decoration-none d-flex align-items-center"
             >
               <FontAwesomeIcon className="icons" icon="shopping-bag" /> Bags
             </Link>
@@ -39,7 +39,7 @@ const InfoMarketDashboard: React.FC = () => {
           <li className="list-group-item">
             <Link
               to="/carteins"
-              className="text-decoration-none d-flex align-items-center"
+              className="list-group-link text-decoration-none d-flex align-items-center"
             >
               <FontAwesomeIcon className="icons" icon="box" /> Curteins
             </Link>
@@ -47,7 +47,7 @@ const InfoMarketDashboard: React.FC = () => {
           <li className="list-group-item">
             <Link
               to="/computers"
-              className="text-decoration-none d-flex align-items-center"
+              className="list-group-link text-decoration-none d-flex align-items-center"
             >
               <FontAwesomeIcon className="icons" icon="laptop" /> Computers
             </Link>
@@ -55,7 +55,7 @@ const InfoMarketDashboard: React.FC = () => {
           <li className="list-group-item">
             <Link
               to="/phones"
-              className="text-decoration-none d-flex align-items-center"
+              className="list-group-link text-decoration-none d-flex align-items-center"
             >
               <FontAwesomeIcon className="icons" icon="mobile" /> Phones
             </Link>
@@ -64,7 +64,7 @@ const InfoMarketDashboard: React.FC = () => {
           <li className="list-group-item">
             <Link
               to="/settings"
-              className="text-decoration-none d-flex align-items-center"
+              className="list-group-link text-decoration-none d-flex align-items-center"
             >
               <FontAwesomeIcon className="icons" icon="bell" /> Notifications
             </Link>
@@ -72,7 +72,7 @@ const InfoMarketDashboard: React.FC = () => {
           <li className="list-group-item">
             <Link
               to="/settings"
-              className="nav-link text-decoration-none d-flex align-items-center"
+              className="list-group-link text-decoration-none d-flex align-items-center"
             >
               <FontAwesomeIcon className="icons" icon="cog" /> Settings
             </Link>
@@ -80,7 +80,7 @@ const InfoMarketDashboard: React.FC = () => {
           <li className="list-group-item">
             <Link
               to="/help"
-              className="text-decoration-none d-flex align-items-center"
+              className="list-group-link text-decoration-none d-flex align-items-center"
             >
               <FontAwesomeIcon className="icons" icon="question" /> Help
             </Link>
@@ -88,9 +88,9 @@ const InfoMarketDashboard: React.FC = () => {
           <li className="list-group-item">
             <Link
               to="/sell-your-item"
-              className="text-decoration-none d-flex align-items-center"
+              className="list-group-link text-decoration-none d-flex align-items-center"
             >
-              <FontAwesomeIcon className="icons" icon="tags" /> Sell Your Item
+              <FontAwesomeIcon className="icons" icon="tags" /> Post
             </Link>
           </li>
           <hr className="sidebar-divider" />

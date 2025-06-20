@@ -56,7 +56,7 @@ const LoginPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrors({}); // Clear previous errors
+    setErrors({});
 
     if (!validateForm()) return;
     setLoading(true);
@@ -86,7 +86,6 @@ const LoginPage: React.FC = () => {
       } else {
         setAlertVariant('danger');
         setAlertMsg("An error occurred while trying to sign in.");
-        navigate("/upload-item");
       }
 
       console.error("Login error:", error);
