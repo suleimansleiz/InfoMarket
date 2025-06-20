@@ -35,22 +35,27 @@ Tech Stack
 
 ### Screenshots showing the inforMarket app
 #Dashboard
-![infomarket1](https://github.com/user-attachments/assets/4be4a928-9106-4e63-9098-66383e66028c)
+![home](https://github.com/user-attachments/assets/263ef873-455a-4420-bad4-b3fe02accf1f)
+
 
 #Seller Login 
-
-
-#Seller Sign up
+![login](https://github.com/user-attachments/assets/820ea45e-d538-4a9e-8d6c-d5facf126aa9)
 
 
 #Upload Item
+![uploaditem](https://github.com/user-attachments/assets/a24565e3-dd24-4234-9b3d-d8c4bfe22359)
+
+
+#Deleting Item
+![deletepost](https://github.com/user-attachments/assets/b296f418-f2ee-40ca-b53c-5731f4e8400d)
 
 
 #Expanded Card
+![expandedcard](https://github.com/user-attachments/assets/317a8b3c-4a42-41e0-b12b-d349eba42df8)
 
 
 #Purchasing Item
-
+![purchaseitem](https://github.com/user-attachments/assets/dfea973e-4808-4eae-8850-a7e03ff32b07)
 
 
 
