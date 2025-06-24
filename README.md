@@ -35,7 +35,8 @@ Tech Stack
 
 ### Screenshots showing the inforMarket app
 #Dashboard
-![infomarket1](https://github.com/user-attachments/assets/518ba5bd-35b5-4e7b-91ea-4cf19efb230a)
+![home](https://github.com/user-attachments/assets/e2109774-28f3-4ac5-8202-ab1bb1a87dac)
+
 
 
 
