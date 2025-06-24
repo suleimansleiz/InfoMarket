@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import api from "../api/axiosConfig";
+import { Spinner } from "react-bootstrap";
 
 interface LoginModalProps {
   show: boolean;
@@ -25,6 +26,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onHide, onLoginSuccess })
       password?: string;
       backend?: string;
     }>({});
+
+    const [loading, setLoading] = useState(false);
+
 
     const validateForm = (): boolean => {
       const newErrors: { email?: string; password?: string } = {};
@@ -56,6 +60,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onHide, onLoginSuccess })
         if (!validateForm()) return;
     
         try {
+          setLoading(true);
           const response = await api.post("/api/infomarket/v1/user/auth", {
             email: formData.email,
             password: formData.password,
@@ -78,6 +83,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onHide, onLoginSuccess })
             alert("An error occurred while trying to Log in.");
           }
           console.error("Login error:", error);
+        } finally {
+          setLoading(false);
         }
   };
 
@@ -109,7 +116,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onHide, onLoginSuccess })
       </Modal.Body>
       <Modal.Footer className="modal-footer">
         <Button variant="secondary" onClick={onHide}>Cancel</Button>
-        <Button variant="primary" onClick={handleLogin}>Login</Button>
+        <Button variant="primary" onClick={handleLogin}>
+        {loading ? <Spinner size="sm" animation="border" /> : "Login"}
+        </Button>
       </Modal.Footer>
     </Modal>
   );

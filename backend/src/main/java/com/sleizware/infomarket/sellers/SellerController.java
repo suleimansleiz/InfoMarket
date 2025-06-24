@@ -1,10 +1,10 @@
 package com.sleizware.infomarket.sellers;
 
-import com.sleizware.infomarket.items.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +23,6 @@ public class SellerController {
         return new ResponseEntity<List<Seller>>(sellerRepository.findAll(), HttpStatus.OK);
     }
 
-    // Sign-up Endpoint
     @PostMapping("/signup")
     public ResponseEntity<String> registerSeller(@RequestBody Seller seller) {
         if (sellerRepository.findBySellerEmail(seller.getSeller_email()).isPresent()) {
@@ -36,7 +35,6 @@ public class SellerController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Glad to have you aboard " + name + "!");
     }
 
-    // Sign-in Endpoint
     @PostMapping("/auth")
     public ResponseEntity<Map<String, String>> loginSeller(@RequestBody LoginRequest request) {
         String email = request.getSeller_email();
@@ -60,5 +58,22 @@ public class SellerController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateSellerDetails(@RequestBody Seller updatedData) {
+        Optional<Seller> sellerOpt = sellerRepository.findBySellerEmail(updatedData.getSeller_email());
+        if (sellerOpt.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Seller not found.");
+        }
+
+        Seller seller = sellerOpt.get();
+        seller.setSeller_name(updatedData.getSeller_name());
+        seller.setSeller_phone(updatedData.getSeller_phone());
+
+        sellerRepository.save(seller);
+
+        return ResponseEntity.ok("Seller details updated successfully.");
+    }
+
 }
 

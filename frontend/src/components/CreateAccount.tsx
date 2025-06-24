@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Alert } from "react-bootstrap";
+import { Alert, Spinner } from "react-bootstrap";
 import api from "../api/axiosConfig";
-import LoadingSpinner from "./LoadingSpinner";
 
 const CreateAccount: React.FC = () => {
   const navigate = useNavigate();
@@ -99,27 +98,6 @@ const CreateAccount: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div
-        style={{
-          position: "fixed",
-          left: 0,
-          top: 0,
-          height: "100%",
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "transparent",
-          zIndex: 9999
-        }}
-      >
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
   return (
     <div className="create-account-container">
       <div className="topbar d-flex align-items-center p-3">
@@ -206,7 +184,7 @@ const CreateAccount: React.FC = () => {
           )}
 
           <button type="submit" className="btn submit-btn" disabled={loading}>
-            Create Account
+          {loading ? <Spinner size="sm" animation="border" /> : "Create Account"}
           </button>
         </form>
       </div>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,39 +29,6 @@ public class ItemController {
     public ResponseEntity<List<Item>> getAllItems() {
         List<Item> items = itemRepository.findAll();
         Collections.shuffle(items);
-        return new ResponseEntity<>(items, HttpStatus.OK);
-    }
-
-    @GetMapping("/{sellerPhone}")
-    public ResponseEntity<List<Item>> getItemsBySellerPhone(@PathVariable String sellerPhone) {
-        List<Item> items = itemRepository.findBySellerPhone(sellerPhone);
-
-        if (items.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(items, HttpStatus.OK);
-    }
-
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<Item>> getItemsByCategory(@PathVariable String category) {
-        List<Item> items = itemRepository.findByItemCategoryIgnoreCase(category);
-
-        if (items.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return new ResponseEntity<>(items, HttpStatus.OK);
-    }
-
-    @GetMapping("/recent")
-    public ResponseEntity<List<Item>> getItemsSortedByDate() {
-        List<Item> items = itemRepository.findAllByOrderByPostedDateDesc();
-
-        if (items.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
@@ -94,6 +62,63 @@ public class ItemController {
                     .body("Oops!...Uploading " + itemName + " failed!");
         }
     }
+
+    @GetMapping("/recent")
+    public ResponseEntity<List<Item>> getItemsSortedByDate() {
+        List<Item> items = itemRepository.findAllByOrderByPostedDateDesc();
+
+        if (items.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<Item>> getItemsByCategory(@PathVariable("category") String itemCategory) {
+        List<Item> items = itemRepository.findByItemCategoryIgnoreCase(itemCategory);
+        Collections.shuffle(items);
+
+        if (items.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    @GetMapping("/category/{category}/recent")
+    public ResponseEntity<Map<String, Object>> getRecentItemsByCategory(@PathVariable("category") String itemCategory) {
+        List<Item> recentItems = itemRepository.findRecentItemsByItemCategory(itemCategory);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("statusCode", HttpStatus.OK.value());
+        response.put("message", "Recent items for category: " + itemCategory);
+        response.put("data", recentItems);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{sellerPhone}")
+    public ResponseEntity<List<Item>> getItemsBySellerPhone(@PathVariable String sellerPhone) {
+        List<Item> items = itemRepository.findBySellerPhone(sellerPhone);
+
+        if (items.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{itemId}")
+    public ResponseEntity<Map<String, Object>> deleteItemBySeller(@PathVariable Long itemId) {
+        itemRepository.deleteItemByItemId(itemId);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("statusCode", HttpStatus.OK.value());
+        response.put("message", "Item deleted successfully");
+        return ResponseEntity.ok(response);
+    }
+
 }
 
 

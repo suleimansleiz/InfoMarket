@@ -7,7 +7,7 @@ import InfoMarketDashboard from "./components/InfoMarketDashboard";
 import Home from "./components/Home";
 import Accessories from "./components/Accessories";
 import Bags from "./components/Bags";
-import Carteins from "./components/Carteins";
+import Curteins from "./components/Curtains";
 import Computers from "./components/Computers";
 import Phones from "./components/Phones";
 import Settings from "./components/Settings";
@@ -16,6 +16,7 @@ import SellYourItem from "./components/SellYourItem";
 import CreateAccount from "./components/CreateAccount";
 import LoginPage from "./components/LoginPage";
 import UploadItem from "./components/UploadItem";
+import Notifications from "./components/Notifications";
 
 const App: React.FC = () => {
   return (
@@ -25,7 +26,7 @@ const App: React.FC = () => {
           <Route index element={<Home />} />
           <Route path="accessories" element={<Accessories />} />
           <Route path="bags" element={<Bags />} />
-          <Route path="carteins" element={<Carteins />} />
+          <Route path="curteins" element={<Curteins />} />
           <Route path="computers" element={<Computers />} />
           <Route path="phones" element={<Phones />} />
           <Route path="settings" element={<Settings />} />
@@ -34,6 +35,7 @@ const App: React.FC = () => {
           <Route path="create-account" element={<CreateAccount />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="upload-item" element={<UploadItem />} />
+          <Route path="notifications" element={<Notifications />} />
         </Route>
       </Routes>
     </Router>

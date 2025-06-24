@@ -3,7 +3,7 @@ import { Alert, Spinner } from "react-bootstrap";
 import api from "../api/axiosConfig";
 import ProfileDropdown from "./ProfileDropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import DeleteConfirmationModal from "../modals/DeleteConfirmationModal";
 
 
 type Post = {
@@ -165,8 +165,8 @@ const UploadItem: React.FC = () => {
     setDeleting(true);
   
     try {
-      await api.delete(`/api/infomarket/v1/items/${itemToDelete.id}`);
-      await fetchPosts(formData.seller_phone); // Refetch items after deletion
+      await api.delete(`/api/infomarket/v1/items/{itemId}`);
+      await fetchPosts(formData.seller_phone);
       setShowDeleteModal(false);
       setItemToDelete(null);
     } catch (error) {
@@ -334,8 +334,6 @@ const UploadItem: React.FC = () => {
         itemName={itemToDelete?.item_name || "this item"}
         deleting={deleting}
       />
-
-
     </div>
   );
 };

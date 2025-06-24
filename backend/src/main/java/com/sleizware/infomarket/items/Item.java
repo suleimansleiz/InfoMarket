@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long item_id;
+    @Column(name = "item_id")
+    private Long itemId;
     private String item_photo;
     private String item_name;
     private Double item_price;
@@ -35,12 +36,12 @@ public class Item {
     }
 
 
-    public Long getItem_id() {
-        return item_id;
+    public Long getItemId() {
+        return itemId;
     }
 
-    public void setItem_id(Long item_id) {
-        this.item_id = item_id;
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
     public String getItem_photo() {
@@ -110,7 +111,7 @@ public class Item {
     @Override
     public String toString() {
         return "Item{" +
-                "item_id=" + item_id +
+                "item_id=" + itemId +
                 ", item_photo='" + item_photo + '\'' +
                 ", item_name='" + item_name + '\'' +
                 ", item_price=" + item_price +

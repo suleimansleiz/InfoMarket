@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Alert } from "react-bootstrap";
+import { Alert, Spinner } from "react-bootstrap";
 import api from "../api/axiosConfig";
-import LoadingSpinner from "./LoadingSpinner";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -97,27 +96,6 @@ const LoginPage: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  if (loading) {
-    return (
-      <div
-        style={{
-          position: "fixed",
-          left: 0,
-          top: 0,
-          height: "100%",
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "transparent",
-          zIndex: 9999
-        }}
-      >
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
   return (
     <div className="create-account-container"
     style={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -175,7 +153,7 @@ const LoginPage: React.FC = () => {
             className="email-btn btn-primary w-100"
             disabled={loading}
           >
-            Login
+            {loading ? <Spinner size="sm" animation="border" /> : "Login"}
           </button>
 
           <p className="card-words mt-3">

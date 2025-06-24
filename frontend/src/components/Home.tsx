@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import api from "../api/axiosConfig";
 import PaginationControls from "./PaginationControls";
-import ExpandedItemCard from "./ExpandedItemCard";
-import LoginModal from "./LoginModal";
-import SignupModal from "./SignupModal";
+import ExpandedItemCard from "../modals/ExpandedItemCard";
+import LoginModal from "../modals/LoginModal";
+import SignupModal from "../modals/SignupModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UserProfileDropdown from "./UserProfileDropdown";
+import LoadingSpinner from "./LoadingSpinner";
 
 interface Item {
   item_id: string;
@@ -65,7 +66,11 @@ const Home: React.FC = () => {
   }, []);
 
   const handleLoginSuccess = () => {
-    
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      setUser(loggedInUser);
+      window.location.reload();
+    }
   };
 
   const handleSignupSuccess = () => {
@@ -138,22 +143,22 @@ const Home: React.FC = () => {
       <h1 className="welcome-header text-center">Welcome to InfoMarket</h1>
 
       <div className="button-group">
-  {["All", "Recents", "Favorites"].map((type) => (
-    <button
-      key={type}
-      className={`filter-button ${selected === type ? "active" : ""}`}
-      onClick={() => handleFilterChange(type)}
-    >
-      {type}
-    </button>
-  ))}
-</div>
+        {["All", "Recents", "Favorites"].map((type) => (
+          <button
+            key={type}
+            className={`filter-button ${selected === type ? "active" : ""}`}
+            onClick={() => handleFilterChange(type)}
+          >
+            {type}
+          </button>
+        ))}
+      </div>
 
-
-      {/* Items */}
       <div className="items-container">
         {paginatedItems.length === 0 ? (
-          <p className="no-items-message">Check your internet then reload the page</p>
+          <div className="items-container-loading">
+            <LoadingSpinner />
+          </div>
         ) : (
           paginatedItems.map((item) => (
             <div className="item-card" key={item.item_id}>

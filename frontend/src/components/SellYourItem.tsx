@@ -1,4 +1,4 @@
-import React from "react";
+import React, {  } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const SellYourItem: React.FC = () => {
@@ -38,11 +38,11 @@ const SellYourItem: React.FC = () => {
           </p>
           <p className="text-muted">
             By continuing, you agree to our{" "}
-            <a href="#" className="card-links text-decoration-none">
+            <a href="/settings" className="card-links text-decoration-none">
               Terms and Conditions
             </a>{" "}
             and{" "}
-            <a href="#" className="card-links text-decoration-none">
+            <a href="/settings" className="card-links text-decoration-none">
               Privacy Policy
             </a>.
           </p>

@@ -4,6 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import api from "../api/axiosConfig";
+import { Spinner } from "react-bootstrap";
 
 interface SignupModalProps {
   show: boolean;
@@ -32,6 +33,8 @@ const SignupModal: React.FC<SignupModalProps> = ({ show, onHide, onSignupSuccess
         password?: string;
         backend?: string;
       }>({});
+
+      const [loading, setLoading] = useState(false);
   
       const validateForm = (): boolean => {
         const newErrors: { username?: string; email?: string; phone?: string; password?: string } = {};
@@ -74,6 +77,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ show, onHide, onSignupSuccess
           if (!validateForm()) return;
 
           try {
+            setLoading(true)
             const response = await api.post("/api/infomarket/v1/user/signup", {
               username: formData.username,
               email: formData.email,
@@ -93,6 +97,8 @@ const SignupModal: React.FC<SignupModalProps> = ({ show, onHide, onSignupSuccess
               alert("An error occurred while trying to Log in.");
             }
             console.error("Login error:", error);
+          } finally {
+            setLoading(false);
           }
     };
 
@@ -138,7 +144,9 @@ const SignupModal: React.FC<SignupModalProps> = ({ show, onHide, onSignupSuccess
       </Modal.Body>
       <Modal.Footer className="modal-footer">
         <Button variant="secondary" onClick={onHide}>Cancel</Button>
-        <Button variant="warning" onClick={handleSignup}>Sign Up</Button>
+        <Button variant="warning" onClick={handleSignup}>
+        {loading ? <Spinner size="sm" animation="border" /> : "Sign Up"}
+        </Button>
       </Modal.Footer>
     </Modal>
   );

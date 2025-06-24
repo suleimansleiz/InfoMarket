@@ -19,7 +19,7 @@ interface Item {
   seller_phone: string;
 }
 
-const Bags: React.FC = () => {
+const Curtains: React.FC = () => {
   const [selected, setSelected] = useState<string>("All");
   const [items, setItems] = useState<Item[]>([]);
 
@@ -37,7 +37,6 @@ const Bags: React.FC = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedItems = items.slice(startIndex, endIndex);
-
 
   const handleNext = () => {
     if (currentPage < Math.ceil(items.length / itemsPerPage)) {
@@ -82,7 +81,7 @@ const Bags: React.FC = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await api.get("/api/infomarket/v1/items/category/Bags", {});
+        const response = await api.get("/api/infomarket/v1/items/category/Curteins", {});
         const data = response.data.items || response.data;
         setItems(Array.isArray(data) ? data : []);
       } catch (error) {
@@ -99,9 +98,9 @@ const Bags: React.FC = () => {
       let response;
   
       if (type === "All") {
-        response = await api.get("/api/infomarket/v1/items/category/Bags");
+        response = await api.get("/api/infomarket/v1/items/category/Curteins");
       } else if (type === "Recents") {
-        response = await api.get("/api/infomarket/v1/items/category/Bags/recent");
+        response = await api.get("/api/infomarket/v1/items/category/Curteins/recent");
       } else {
         // Placeholder for future "Favorites"
         setItems([]);
@@ -141,7 +140,7 @@ const Bags: React.FC = () => {
         </div>
       </div>
 
-      <h1 className="welcome-header text-center">Bags</h1>
+      <h1 className="welcome-header text-center">Curtains</h1>
 
       <div className="button-group">
         {["All", "Recents", "Favorites"].map((type) => (
@@ -216,4 +215,4 @@ const Bags: React.FC = () => {
   );
 };
 
-export default Bags;
+export default Curtains;

@@ -208,12 +208,16 @@
 }
 
 .username-display {
+  background-color: #F8F9FA;
   color: #007BFF;
   align-items: center;
   display: flex;
   justify-content: space-between;
 }
 
+.username-display h5{
+  background-color: #F8F9FA;
+}
 
 a {
   color: #FFC107;
@@ -686,6 +690,11 @@ form .form-select {
   align-items: stretch;
 }
 
+.items-container-loading {
+  justify-content: center;
+  background-color: #F8F9FA;
+}
+
 .items-container::-webkit-scrollbar {
   display: none;
 }
@@ -841,7 +850,19 @@ form .form-select {
   background-color: #FFF;
 }
 
+.modal-body h5{
+  background-color: #FFF;
+}
+
+.modal-body b{
+  background-color: #FFF;
+}
+
 .modal-body p{
+  background-color: #FFF;
+}
+
+.modal-body a{
   background-color: #FFF;
 }
 
@@ -866,6 +887,10 @@ form .form-select {
   background-color: #fff;
 }
 
+.modal-check {
+  background-color: #FFF;
+}
+
 .modal-checkbox label{
   background-color: #fff;
 }
@@ -881,4 +906,145 @@ form .form-select {
   width: fit-content;
   margin: 5px;
   color: #fff;
+}
+
+.center-container {
+  background-color: #F8F9FA;
+  padding: 10px;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.center-container-card {
+  background-color: #FFF;
+  width: 80%;
+  margin: 5px;
+  align-items: center;
+  padding: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.center-container-card p {
+  background-color: #FFF;
+  align-items: center;
+  margin-left: 15px;
+  margin-right: 15px;
+  font-size: smaller;
+  font-weight: 100;
+  width: fit-content;
+}
+
+.center-container-card h5 {
+  background-color: #FFF;
+  align-items: center;
+  margin-left: 15px;
+  margin-right: 15px;
+  font-weight: 500;
+  width: fit-content;
+  color: #333;
+}
+
+.card-theme {
+  background-color: #FFF;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-theme-left {
+  background-color: #FFF;
+  align-items: center;
+  justify-content: center;
+  padding-top: 5px;
+}
+
+.form-switch {
+  background-color: #FFF;
+}
+
+.card-theme .custom-switch {
+  width: fit-content;
+  justify-self: right;
+  background-color: #FFF;
+  margin-right: 10px;
+}
+
+.container-card {
+  background-color: #FFF;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  padding: 20px;
+  width: 60%;
+}
+
+.container-card p {
+  background-color: #FFF;
+  color: #333;
+  width: fit-content;
+}
+
+.container-card b {
+  background-color: #FFF;
+  color: #333;
+}
+
+.container-card h6 {
+  background-color: #FFF;
+  color: #333;
+  font-weight: 400;
+}
+
+.card-top {
+  background-color: #FFF;
+  margin-bottom: 10px;
+}
+
+.card-input {
+  background-color: #FFF;
+}
+
+.card-input form{
+  background-color: #FFF;
+}
+
+.card-input .form-control{
+  background-color: #FFF;
+  margin-top: 12px;
+  border-radius: 12px;
+}
+
+.card-input .form-select{
+  background-color: #FFF;
+  margin-top: 12px;
+  border-radius: 12px;
+}
+
+.card-input button{
+  margin-top: 30px;
+  border-radius: 12px;
+}
+
+.fb-form {
+  background-color: #FFF;
+}
+
+.fb-form p{
+  background-color: #FFF;
+  font-weight: 400;
+  color: #333;
+}
+
+.fb-body {
+  background-color: #FFF;
+  border-radius: 7px;
+  align-items: center;
+}
+
+.fb-body button{
+  width: fit-content;
+  justify-self: flex-end;
 }

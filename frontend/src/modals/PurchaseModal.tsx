@@ -23,6 +23,8 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
     email: "",
     phone: "",
     network: "",
+    location: "",
+    block: "",
     agreed: false,
   });
 
@@ -30,12 +32,14 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
     email: "",
     phone: "",
     network: "",
+    location: "",
+    block: "",
   });
 
   const [loading, setLoading] = useState(false);
 
   const validate = () => {
-    const newErrors: typeof errors = { email: "", phone: "", network: "" };
+    const newErrors: typeof errors = { email: "", phone: "", network: "", location: "", block: "", };
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\+255\d{9}$/;
 
@@ -44,11 +48,19 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
     }
 
     if (!phoneRegex.test(formData.phone)) {
-      newErrors.phone = "Phone must start with +255 and have 13 digits";
+      newErrors.phone = "Phone must start with +255...";
     }
 
     if (!formData.network) {
       newErrors.network = "Please select a network";
+    }
+
+    if (!formData.location) {
+      newErrors.network = "Please select your location";
+    }
+
+    if (!formData.block) {
+      newErrors.network = "Please insert block number";
     }
 
     setErrors(newErrors);
@@ -60,7 +72,6 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
     setLoading(true);
 
     try {
-      // Simulate request
       await new Promise((res) => setTimeout(res, 2000));
       alert("Purchase completed!");
       onHide();
@@ -101,22 +112,6 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
       <Modal.Body className="modal-body">
         <Form className="modal-form">
           <Form.Group className="modal-group mb-2">
-            <Form.Select
-              className="modal-input"
-              name="network"
-              value={formData.network}
-              onChange={handleChange}
-            >
-              <option value="">Select Network</option>
-              <option value="mpesa">Mpesa</option>
-              <option value="tigopesa">Tigo Pesa</option>
-              <option value="airtelmoney">Airtel Money</option>
-              <option value="halopesa">HaloPesa</option>
-            </Form.Select>
-            {errors.network && <Form.Text className="text-danger">{errors.network}</Form.Text>}
-          </Form.Group>
-
-          <Form.Group className="modal-group mb-2">
             <Form.Control
               className="modal-input"
               name="email"
@@ -140,10 +135,54 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
           </Form.Group>
 
           <Form.Group className="modal-group mb-2">
+            <Form.Select
+              className="modal-input"
+              name="network"
+              value={formData.network}
+              onChange={handleChange}
+            >
+              <option value="">Select Mode of Payment</option>
+              <option value="mpesa">M-Pesa</option>
+              <option value="tigopesa">Tigo Pesa</option>
+              <option value="airtelmoney">Airtel Money</option>
+              <option value="halopesa">HaloPesa</option>
+            </Form.Select>
+            {errors.network && <Form.Text className="text-danger">{errors.network}</Form.Text>}
+          </Form.Group>
+
+          <Form.Group className="modal-group mb-2">
+            <Form.Select
+              className="modal-input"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+            >
+              <option value="">Select Location</option>
+              <option value="cive">CIVE</option>
+              <option value="social">Social</option>
+              <option value="humanity">Humanity</option>
+              <option value="coed">COED</option>
+              <option value="tiba">Tiba</option>
+            </Form.Select>
+            {errors.location && <Form.Text className="text-danger">{errors.location}</Form.Text>}
+          </Form.Group>
+
+          <Form.Group className="modal-group mb-2">
+            <Form.Control
+              className="modal-input"
+              name="block"
+              placeholder="Block No. ie Block 5A-G1"
+              value={formData.block}
+              onChange={handleChange}
+            />
+            {errors.block && <Form.Text className="text-danger">{errors.block}</Form.Text>}
+          </Form.Group>
+
+          <Form.Group className="modal-group mb-2">
             <Form.Check
               className="modal-checkbox"
               type="checkbox"
-              label={`You're about to buy ${item.item_name} for Tsh ${item.item_price.toLocaleString()} from ${item.seller_name}. Agree to buy.`}
+              label={`You're about to buy ${item.item_name} for Tsh ${item.item_price.toLocaleString()} from ${item.seller_name}. Delivery fees shall be paid by cash. Agree to buy.`}
               name="agreed"
               checked={formData.agreed}
               onChange={handleChange}

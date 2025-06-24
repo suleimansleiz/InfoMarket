@@ -8,12 +8,12 @@ const UserProfileDropdown: React.FC<{ imageUrl: string }> = ({ imageUrl }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    // Navigate to home and prevent back navigation
-    navigate("/", { replace: true });
+    window.location.reload();
+    // navigate("/", { replace: true });
   };
 
   const handleEditProfile = () => {
-    navigate("/edit-profile");
+    navigate("");
   };
 
   return (

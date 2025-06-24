@@ -38,7 +38,7 @@ const InfoMarketDashboard: React.FC = () => {
           </li>
           <li className="list-group-item">
             <Link
-              to="/carteins"
+              to="/curteins"
               className="list-group-link text-decoration-none d-flex align-items-center"
             >
               <FontAwesomeIcon className="icons" icon="box" /> Curteins
@@ -63,7 +63,7 @@ const InfoMarketDashboard: React.FC = () => {
           <hr className="sidebar-divider" />
           <li className="list-group-item">
             <Link
-              to="/settings"
+              to="/notifications"
               className="list-group-link text-decoration-none d-flex align-items-center"
             >
               <FontAwesomeIcon className="icons" icon="bell" /> Notifications
