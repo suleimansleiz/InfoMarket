@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Alert, Spinner } from "react-bootstrap";
-import api from "../api/axiosConfig";
+import api from "../../api/axiosConfig";
 import ProfileDropdown from "./ProfileDropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DeleteConfirmationModal from "../modals/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../../modals/DeleteConfirmationModal";
 
 
 type Post = {
-  id: string;
+  item_id: number;
   item_photo?: string;
   item_name: string;
   item_price: string;
@@ -118,8 +118,8 @@ const UploadItem: React.FC = () => {
         "/api/infomarket/v1/items/upload",
         formDataImage
       );
-  
-      
+
+
       setFormData({
       item_photo: null,
       item_name: "",
@@ -161,15 +161,19 @@ const UploadItem: React.FC = () => {
 
   const handleDelete = async () => {
     if (!itemToDelete) return;
-  
     setDeleting(true);
-  
+
     try {
-      await api.delete(`/api/infomarket/v1/items/{itemId}`);
+      await api.delete(`/api/infomarket/v1/items/${itemToDelete.item_id}`);
       await fetchPosts(formData.seller_phone);
       setShowDeleteModal(false);
       setItemToDelete(null);
+      setFormAlertVariant('success');
+      setFormAlertMsg("Item deleted successfully.");
     } catch (error) {
+      setShowDeleteModal(false);
+      setFormAlertVariant('danger');
+      setFormAlertMsg("Failed to delete item.");
       console.error("Failed to delete item:", error);
     } finally {
       setDeleting(false);
@@ -300,7 +304,7 @@ const UploadItem: React.FC = () => {
         <div className="my-posts-container-btm">
           {posts.length > 0 ? (
             posts.map((post) => (
-              <div className="item-card" key={post.id}>
+              <div className="item-card" key={post.item_id}>
                 <div
                   className="item-image"
                   style={{ backgroundImage: `url(${post.item_photo})` }}

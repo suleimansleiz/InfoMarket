@@ -12,30 +12,25 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/infomarket/v1/seller")
+@RequestMapping("/api/infomarket/v1")
 public class SellerController {
 
     @Autowired
     private SellerRepository sellerRepository;
 
-    @GetMapping
-    public ResponseEntity<List<Seller>> getAllSellers() {
-        return new ResponseEntity<List<Seller>>(sellerRepository.findAll(), HttpStatus.OK);
-    }
-
-    @PostMapping("/signup")
+    @PostMapping("/seller/signup")
     public ResponseEntity<String> registerSeller(@RequestBody Seller seller) {
-        if (sellerRepository.findBySellerEmail(seller.getSeller_email()).isPresent()) {
+        if (sellerRepository.findBySellerEmail(seller.getSellerEmail()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
         }
 
-        String name = seller.getSeller_name();
+        String name = seller.getSellerName();
 
         sellerRepository.save(seller);
         return ResponseEntity.status(HttpStatus.CREATED).body("Glad to have you aboard " + name + "!");
     }
 
-    @PostMapping("/auth")
+    @PostMapping("/seller/auth")
     public ResponseEntity<Map<String, String>> loginSeller(@RequestBody LoginRequest request) {
         String email = request.getSeller_email();
         String password = request.getPassword();
@@ -50,25 +45,28 @@ public class SellerController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error","Incorrect Password"));
         }
 
-        String name = seller.getSeller_name();
+        String name = seller.getSellerName();
         Map<String, String> response = new HashMap<>();
         response.put("message", "Welcome back " + name + "!");
-        response.put("name", seller.getSeller_name());
-        response.put("phone", seller.getSeller_phone());
+        response.put("name", seller.getSellerName());
+        response.put("phone", seller.getSellerName());
 
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/seller/update")
     public ResponseEntity<String> updateSellerDetails(@RequestBody Seller updatedData) {
-        Optional<Seller> sellerOpt = sellerRepository.findBySellerEmail(updatedData.getSeller_email());
+        Optional<Seller> sellerOpt = sellerRepository.findBySellerEmail(updatedData.getSellerEmail());
         if (sellerOpt.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Seller not found.");
         }
 
         Seller seller = sellerOpt.get();
-        seller.setSeller_name(updatedData.getSeller_name());
-        seller.setSeller_phone(updatedData.getSeller_phone());
+        seller.setSellerName(updatedData.getSellerName());
+        seller.setSellerPhone(updatedData.getSellerPhone());
+        seller.setDistribution(updatedData.getDistribution());
+        seller.setPassword(updatedData.getPassword());
+        seller.setProfilePicture(updatedData.getProfilePicture());
 
         sellerRepository.save(seller);
 

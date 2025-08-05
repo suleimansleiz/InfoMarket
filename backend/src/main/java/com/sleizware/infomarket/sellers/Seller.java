@@ -2,52 +2,72 @@ package com.sleizware.infomarket.sellers;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "sellers")
 public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long seller_id;
+    @Column(name = "seller_id")
+    private Long sellerId;
 
-    private String seller_name;
+    @Column(name = "seller_name")
+    private String sellerName;
+
     @Column(name = "seller_email")
     private String sellerEmail;
-    private String seller_phone;
+
+    @Column(name = "seller_phone")
+    private String sellerPhone;
     private String password;
+    private String distribution;
+
+    @Column(name = "profile_picture")
+    private String profilePicture;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDate createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDate.now();
+    }
+
 
     public Seller() {
     }
 
-    public Long getSeller_id() {
-        return seller_id;
+    public Long getSellerId() {
+        return sellerId;
     }
 
-    public void setSeller_id(Long seller_id) {
-        this.seller_id = seller_id;
+    public void setSellerId(Long sellerId) {
+        this.sellerId = sellerId;
     }
 
-    public String getSeller_name() {
-        return seller_name;
+    public String getSellerName() {
+        return sellerName;
     }
 
-    public void setSeller_name(String seller_name) {
-        this.seller_name = seller_name;
+    public void setSellerName(String selleName) {
+        this.sellerName = selleName;
     }
 
-    public String getSeller_email() {
+    public String getSellerEmail() {
         return sellerEmail;
     }
 
-    public void setSeller_email(String seller_email) {
-        this.sellerEmail = seller_email;
+    public void setSellerEmail(String sellerEmail) {
+        this.sellerEmail = sellerEmail;
     }
 
-    public String getSeller_phone() {
-        return seller_phone;
+    public String getSellerPhone() {
+        return sellerPhone;
     }
 
-    public void setSeller_phone(String seller_phone) {
-        this.seller_phone = seller_phone;
+    public void setSellerPhone(String sellerPhone) {
+        this.sellerPhone = sellerPhone;
     }
 
     public String getPassword() {
@@ -56,5 +76,29 @@ public class Seller {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getDistribution() {
+        return distribution;
+    }
+
+    public void setDistribution(String distribution) {
+        this.distribution = distribution;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
     }
 }

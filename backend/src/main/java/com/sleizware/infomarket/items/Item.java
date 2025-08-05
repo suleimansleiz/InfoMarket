@@ -3,7 +3,6 @@ package com.sleizware.infomarket.items;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "items")
@@ -13,7 +12,9 @@ public class Item {
     @Column(name = "item_id")
     private Long itemId;
     private String item_photo;
-    private String item_name;
+
+    @Column(name = "item_name")
+    private String itemName;
     private Double item_price;
 
     @Column(name = "item_category")
@@ -31,6 +32,8 @@ public class Item {
     protected void onCreate() {
         this.postedDate = LocalDate.now();
     }
+
+    private String status;
 
     public Item() {
     }
@@ -52,12 +55,12 @@ public class Item {
         this.item_photo = item_photo;
     }
 
-    public String getItem_name() {
-        return item_name;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setItem_name(String item_name) {
-        this.item_name = item_name;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     public Double getItem_price() {
@@ -108,18 +111,11 @@ public class Item {
         this.postedDate = postedDate;
     }
 
-    @Override
-    public String toString() {
-        return "Item{" +
-                "item_id=" + itemId +
-                ", item_photo='" + item_photo + '\'' +
-                ", item_name='" + item_name + '\'' +
-                ", item_price=" + item_price +
-                ", item_category='" + itemCategory + '\'' +
-                ", item_description='" + item_description + '\'' +
-                ", seller_name='" + seller_name + '\'' +
-                ", seller_phone='" + sellerPhone + '\'' +
-                ", posted_date=" + postedDate +
-                '}';
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

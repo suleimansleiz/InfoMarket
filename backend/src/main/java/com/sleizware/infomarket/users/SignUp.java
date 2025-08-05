@@ -5,6 +5,7 @@ public class SignUp {
     private String email;
     private String phone;
     private String password;
+    private String userClass;
 
     public SignUp() {
     }
@@ -39,5 +40,13 @@ public class SignUp {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUserClass() {
+        return userClass;
+    }
+
+    public void setUserClass(String userClass) {
+        this.userClass = userClass;
     }
 }

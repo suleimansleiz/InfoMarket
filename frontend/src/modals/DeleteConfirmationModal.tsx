@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { Spinner } from "react-bootstrap";
@@ -17,10 +17,10 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
   onHide,
   onDelete,
   itemName,
-  
+  deleting,
 }) => {
 
-    const [deleting] = useState(false);
+    
   return (
     <Modal
       show={show}
@@ -40,13 +40,12 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
         </p>
       </Modal.Body>
       <Modal.Footer className="modal-footer">
-        <Button variant="secondary" onClick={onHide}>
+        <Button variant="secondary" onClick={onHide} disabled={deleting}>
           Discard
         </Button>
         <Button variant="danger" onClick={onDelete} disabled={deleting}>
             {deleting ? <Spinner size="sm" animation="border" /> : "Delete"}
         </Button>
-
       </Modal.Footer>
     </Modal>
   );

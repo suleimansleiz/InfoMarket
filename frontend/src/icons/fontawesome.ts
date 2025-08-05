@@ -5,6 +5,7 @@ import {
   faBell,
   faArrowUp,
   faArrowDown,
+  faArrowLeft,
   faHeart,
   faStar,
   faUser,
@@ -20,13 +21,25 @@ import {
   faTags,
   faHome,
   faTrash,
+  faTableCells,
+  faGrip,
+  faSquare,
+  faBars,
+  faChartLine,
+  faArrowTrendUp,
+  faArrowTrendDown,
+  faArrowRightArrowLeft,
+  faUserAlt,
+  faMoneyBill,
 } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as farHeart, faBell as farBell } from "@fortawesome/free-regular-svg-icons";
 
 library.add(
   faBell,
+  farBell,
   faArrowUp,
   faArrowDown,
+  faArrowLeft,
   faHeart,
   farHeart,
   faStar,
@@ -42,6 +55,16 @@ library.add(
   faQuestion,
   faTags,
   faHome,
-  faTrash
+  faTrash,
+  faTableCells,
+  faGrip,
+  faSquare,
+  faBars,
+  faChartLine,
+  faArrowTrendUp,
+  faArrowTrendDown,
+  faArrowRightArrowLeft,
+  faUserAlt,
+  faMoneyBill,
 );
 

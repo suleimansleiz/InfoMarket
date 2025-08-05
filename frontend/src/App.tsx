@@ -15,8 +15,17 @@ import Help from "./components/Help";
 import SellYourItem from "./components/SellYourItem";
 import CreateAccount from "./components/CreateAccount";
 import LoginPage from "./components/LoginPage";
-import UploadItem from "./components/UploadItem";
+import UploadItem from "./components/mini-components/UploadItem";
 import Notifications from "./components/Notifications";
+import ItemDetail from "./components/admin/ItemDetail";
+import ItemList from "./components/admin/ItemList";
+import AdminDashboard from "./components/admin/AdminDashboard";
+import AdminLayout from "./components/admin/AdminLayout";
+import AdminList from "./components/admin/AdminList";
+import SalesList from "./components/admin/SalesList";
+import SellerList from "./components/admin/SellerList";
+import UserList from "./components/admin/UserList";
+import UserDetail from "./components/admin/UserDetail";
 
 const App: React.FC = () => {
   return (
@@ -36,6 +45,17 @@ const App: React.FC = () => {
           <Route path="login" element={<LoginPage />} />
           <Route path="upload-item" element={<UploadItem />} />
           <Route path="notifications" element={<Notifications />} />
+        </Route>
+        <Route path="/admin/*" element={<AdminLayout />}>
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="admins" element={<AdminList />} />
+          <Route path="items" element={<ItemList />} />
+          <Route path="items/:itemId" element={<ItemDetail />} />
+          <Route path="sales" element={<SalesList />} />
+          <Route path="sellers" element={<SellerList />} />
+          <Route path="users" element={<UserList />} />
+          <Route path="users/:userId" element={<UserDetail />} />
+          {/* More admin routes here */}
         </Route>
       </Routes>
     </Router>

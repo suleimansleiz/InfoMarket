@@ -3,14 +3,19 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Spinner from "react-bootstrap/Spinner";
+import api from "../api/axiosConfig";
+import AwaitPaymentModal from "./AwaitPaymentModal";
+import ToastMessage from "../components/mini-components/ToastMessage";
 
 interface PurchaseModalProps {
   show: boolean;
   onHide: () => void;
   item: {
-    item_name: string;
+    itemId: number;
+    itemName: string;
     item_price: string;
     seller_name: string;
+    sellerPhone: string;
   };
 }
 
@@ -37,18 +42,23 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
   });
 
   const [loading, setLoading] = useState(false);
+  const [showAwaitPaymentModal, setShowAwaitPaymentModal] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
+  const [toastVrt, setToastVrt] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const [orderReference, setOrderReference] = useState<string | null>(null);
 
   const validate = () => {
     const newErrors: typeof errors = { email: "", phone: "", network: "", location: "", block: "", };
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^\+255\d{9}$/;
+    const phoneRegex = /255\d{9}$/;
 
     if (!emailRegex.test(formData.email)) {
       newErrors.email = "Invalid email";
     }
 
     if (!phoneRegex.test(formData.phone)) {
-      newErrors.phone = "Phone must start with +255...";
+      newErrors.phone = "Phone must start with 255...";
     }
 
     if (!formData.network) {
@@ -72,12 +82,30 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
     setLoading(true);
 
     try {
-      await new Promise((res) => setTimeout(res, 2000));
-      alert("Purchase completed!");
+       const res = await api.post("/api/infomarket/v1/payments/initiate-ussd", {
+      itemId: item.itemId,
+      itemName: item.itemName,
+      itemPrice: item.item_price,
+      sellerName: item.seller_name,
+      sellerPhone: item.sellerPhone,
+      buyerEmail: formData.email,
+      buyerPhone: formData.phone,
+      paymentNetwork: formData.network,
+      location: formData.location,
+      block: formData.block,
+    });
+
+    const orderReference = res.data.orderReference;
+    setOrderReference(orderReference);
+    setShowAwaitPaymentModal(true);
+
+      setShowAwaitPaymentModal(true);
       onHide();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      alert("Something went wrong!");
+      setToastMsg("Something went wrong. Please try again.");
+      setToastVrt("danger");
+      setShowToast(true);
     } finally {
       setLoading(false);
     }
@@ -98,6 +126,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
 
 
   return (
+    <>
     <Modal
       show={show}
       onHide={onHide}
@@ -120,18 +149,18 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
               value={formData.email}
               onChange={handleChange}
             />
-            {errors.email && <Form.Text className="text-danger">{errors.email}</Form.Text>}
+            {errors.email && <Form.Text className="error-texts text-danger">{errors.email}</Form.Text>}
           </Form.Group>
 
           <Form.Group className="modal-group mb-2">
             <Form.Control
               className="modal-input"
               name="phone"
-              placeholder="Enter phone (+255...)"
+              placeholder="Enter phone (255...)"
               value={formData.phone}
               onChange={handleChange}
             />
-            {errors.phone && <Form.Text className="text-danger">{errors.phone}</Form.Text>}
+            {errors.phone && <Form.Text className="error-texts text-danger">{errors.phone}</Form.Text>}
           </Form.Group>
 
           <Form.Group className="modal-group mb-2">
@@ -147,7 +176,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
               <option value="airtelmoney">Airtel Money</option>
               <option value="halopesa">HaloPesa</option>
             </Form.Select>
-            {errors.network && <Form.Text className="text-danger">{errors.network}</Form.Text>}
+            {errors.network && <Form.Text className="error-texts text-danger">{errors.network}</Form.Text>}
           </Form.Group>
 
           <Form.Group className="modal-group mb-2">
@@ -164,7 +193,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
               <option value="coed">COED</option>
               <option value="tiba">Tiba</option>
             </Form.Select>
-            {errors.location && <Form.Text className="text-danger">{errors.location}</Form.Text>}
+            {errors.location && <Form.Text className="error-texts text-danger">{errors.location}</Form.Text>}
           </Form.Group>
 
           <Form.Group className="modal-group mb-2">
@@ -175,14 +204,14 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
               value={formData.block}
               onChange={handleChange}
             />
-            {errors.block && <Form.Text className="text-danger">{errors.block}</Form.Text>}
+            {errors.block && <Form.Text className="error-texts text-danger">{errors.block}</Form.Text>}
           </Form.Group>
 
           <Form.Group className="modal-group mb-2">
             <Form.Check
               className="modal-checkbox"
               type="checkbox"
-              label={`You're about to buy ${item.item_name} for Tsh ${item.item_price.toLocaleString()} from ${item.seller_name}. Delivery fees shall be paid by cash. Agree to buy.`}
+              label={`You're about to buy ${item.itemName} for Tsh ${item.item_price.toLocaleString()} from ${item.seller_name}. Delivery fees shall be paid by cash. Agree to buy.`}
               name="agreed"
               checked={formData.agreed}
               onChange={handleChange}
@@ -203,6 +232,21 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
         </Button>
       </Modal.Footer>
     </Modal>
+
+    <AwaitPaymentModal
+      show={showAwaitPaymentModal}
+      onHide={() => setShowAwaitPaymentModal(false)}
+      message="Thank you. Please complete payment via USSD-PUSH notification dialog sent to your phone. Once you have completed, click Confirm button."
+      orderReference={orderReference ?? ""}
+      />
+
+    <ToastMessage
+        show={showToast}
+        onClose={() => setShowToast(false)}
+        message={toastMsg}
+        variant={toastVrt}
+      />
+    </>
   );
 };
 

@@ -13,7 +13,7 @@ const InfoMarketDashboard: React.FC = () => {
           <i className="menubtn fas fa-bars me-2"></i>
         </div>
 
-        <ul className="list-group list-group-flush">
+        <ul className="list-group">
           <li className="list-group-item">
             <Link to="/" className="list-group-link text-decoration-none d-flex align-items-center">
               <FontAwesomeIcon className="icons" icon="home" /> Home

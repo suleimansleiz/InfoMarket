@@ -3,12 +3,14 @@ import Form from "react-bootstrap/esm/Form";
 import LanguageModal from "../modals/LanguageModal";
 import TandC from "../modals/TandC";
 import PrivacyPolicyModal from "../modals/PrivacyPolicyModal";
+import AdminLoginModal from "../modals/AdminLoginModal";
 
 const Settings: React.FC = () => {
     const [theme, setTheme] = useState<"light" | "dark">("light");
     const [showLanguageModal, setShowLanguageModal] = useState(false);
     const [showPrivacyPolicyModal, setShowPrivacyPolicyModal] = useState(false);
     const [showTandCModal, setShowTandCModal] = useState(false);
+    const [showAdminLoginModal, setShowAdminLoginModal] = useState(false);
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
@@ -26,6 +28,10 @@ const Settings: React.FC = () => {
 
   const openPrivacyPolicyModal = () => {
     setShowPrivacyPolicyModal(true);
+  };
+
+  const openAdminLoginModal = () => {
+    setShowAdminLoginModal(true);
   };
 
   return(
@@ -67,6 +73,12 @@ const Settings: React.FC = () => {
         <p>We strongly advice you to read and agree to our terms and conditions</p>
       </div>
       </div>
+      <div className="center-container-card card " onClick={() => openAdminLoginModal()}>
+      <div className="card-theme-left">
+        <h5>Login as an Admin</h5>
+        <p>For authorized access only</p>
+      </div>
+      </div>
     </div>
     <LanguageModal
         show={showLanguageModal}
@@ -87,6 +99,13 @@ const Settings: React.FC = () => {
         onHide={() => {
           setShowPrivacyPolicyModal(false);
         } }
+      />
+
+      <AdminLoginModal
+        show={showAdminLoginModal}
+        onHide={() => {
+          setShowAdminLoginModal(false);
+        }  }
       />
     </div>
   );

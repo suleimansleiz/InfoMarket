@@ -19,25 +19,26 @@ const SignupModal: React.FC<SignupModalProps> = ({ show, onHide, onSignupSuccess
         email: string;
         phone: string;
         password: string;
+        agreed: boolean
       }>({
         username: "",
         email: "",
         phone: "",
         password: "",
+        agreed: false,
       });
 
-      const [errors, setErrors] = useState<{
-        username?: string;
-        phone?: string;
-        email?: string;
-        password?: string;
-        backend?: string;
-      }>({});
+      const [errors, setErrors] = useState({
+        username: "",
+        phone: "",
+        email: "",
+        password: "",
+      });
 
       const [loading, setLoading] = useState(false);
   
       const validateForm = (): boolean => {
-        const newErrors: { username?: string; email?: string; phone?: string; password?: string } = {};
+        const newErrors: typeof errors = { email: "", phone: "", password: "", username: "", };
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const phoneRegex = /^\+255\d{9}$/;
     
@@ -66,18 +67,15 @@ const SignupModal: React.FC<SignupModalProps> = ({ show, onHide, onSignupSuccess
         }
 
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+        return !Object.values(newErrors).some(Boolean);
       };
 
 
-      const handleSignup = async (e: React.FormEvent) => {
-      e.preventDefault();
-          setErrors({});
-
+      const handleSignup = async () => {
           if (!validateForm()) return;
+          setLoading(true)
 
           try {
-            setLoading(true)
             const response = await api.post("/api/infomarket/v1/user/signup", {
               username: formData.username,
               email: formData.email,
@@ -103,14 +101,19 @@ const SignupModal: React.FC<SignupModalProps> = ({ show, onHide, onSignupSuccess
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const { name, value,type } = e.target;
+        setFormData((prev) => ({
+          ...prev,
+          [name]: type === "checkbox"
+            ? (e.target as HTMLInputElement).checked
+            : value,
+        }));
     };
 
 
 
   return (
-    <Modal size="sm" className="modal-full" dialogClassName="modal-container" show={show} onHide={onHide} animation>
+    <Modal  className="modal-full" dialogClassName="modal-container" show={show} onHide={onHide} animation>
       <Modal.Header className="modal-header" closeButton>
         <Modal.Title className="modal-title">Sign Up</Modal.Title>
       </Modal.Header>
@@ -118,33 +121,39 @@ const SignupModal: React.FC<SignupModalProps> = ({ show, onHide, onSignupSuccess
         <Form className="modal-form">
           <Form.Group className="modal-group mb-2">
             <Form.Label className="modal-label">Username</Form.Label>
-            <Form.Control className="modal-input" name="username" value={formData.username} onChange={handleChange} >
-              {errors.username && <Form.Text className="text-danger">{errors.username}</Form.Text>}
-            </Form.Control>
+            <Form.Control className="modal-input" name="username" value={formData.username} onChange={handleChange} />
+            {errors.username && <Form.Text className="error-texts text-danger">{errors.username}</Form.Text>}
           </Form.Group>
           <Form.Group className="modal-group mb-2">
             <Form.Label className="modal-label">Email</Form.Label>
-            <Form.Control className="modal-input" name="email" type="email" value={formData.email} onChange={handleChange} >
-            {errors.email && <Form.Text className="text-danger">{errors.email}</Form.Text>}
-            </Form.Control>
+            <Form.Control className="modal-input" name="email" type="email" value={formData.email} onChange={handleChange} />
+            {errors.email && <Form.Text className="error-texts text-danger">{errors.email}</Form.Text>}
           </Form.Group>
           <Form.Group className="modal-group mb-2">
             <Form.Label className="modal-label">Phone</Form.Label>
-            <Form.Control className="modal-input" name="phone" value={formData.phone} onChange={handleChange} >
-            {errors.phone && <Form.Text className="text-danger">{errors.phone}</Form.Text>}
-            </Form.Control>
+            <Form.Control className="modal-input" name="phone" placeholder="+255..." value={formData.phone} onChange={handleChange} />
+            {errors.phone && <Form.Text className="error-texts text-danger">{errors.phone}</Form.Text>}
           </Form.Group>
           <Form.Group className="modal-group mb-2">
             <Form.Label className="modal-label">Password</Form.Label>
-            <Form.Control className="modal-input" name="password" type="password" value={formData.password} onChange={handleChange} >
-            {errors.password && <Form.Text className="text-danger">{errors.password}</Form.Text>}
-            </Form.Control>
+            <Form.Control className="modal-input" name="password" type="password" value={formData.password} onChange={handleChange} />
+            {errors.password && <Form.Text className="error-texts text-danger">{errors.password}</Form.Text>}
+          </Form.Group>
+          <Form.Group className="modal-group mb-2">
+            <Form.Check
+              className="modal-checkbox"
+              type="checkbox"
+              label={`By continuing, you agree to our Terms and Conditions and Privacy Policy.`}
+              name="agreed"
+              checked={formData.agreed}
+              onChange={handleChange}
+            />
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer className="modal-footer">
         <Button variant="secondary" onClick={onHide}>Cancel</Button>
-        <Button variant="warning" onClick={handleSignup}>
+        <Button variant="warning" onClick={handleSignup} disabled={!formData.agreed || loading}>
         {loading ? <Spinner size="sm" animation="border" /> : "Sign Up"}
         </Button>
       </Modal.Footer>

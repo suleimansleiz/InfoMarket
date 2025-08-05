@@ -21,25 +21,22 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onHide, onLoginSuccess })
       password: "",
     });
   
-    const [errors, setErrors] = useState<{
-      email?: string;
-      password?: string;
-      backend?: string;
-    }>({});
+    const [errors, setErrors] = useState({
+        email: "",
+        password: "",
+      });
 
     const [loading, setLoading] = useState(false);
 
 
     const validateForm = (): boolean => {
-      const newErrors: { email?: string; password?: string } = {};
+      const newErrors: typeof errors = { email: "", password: "", };
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const phoneRegex = /^[0-9]{10,15}$/;
   
       if (!formData.email) {
         newErrors.email = "Email is required.";
       } else if (
-        !emailRegex.test(formData.email) &&
-        !phoneRegex.test(formData.email)
+        !emailRegex.test(formData.email)
       ) {
         newErrors.email = "Enter a valid email.";
       }
@@ -49,18 +46,16 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onHide, onLoginSuccess })
       }
   
       setErrors(newErrors);
-      return Object.keys(newErrors).length === 0;
+    return !Object.values(newErrors).some(Boolean);
+
     };
 
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-        setErrors({});
-    
+  const handleLogin = async () => {
         if (!validateForm()) return;
-    
+        setLoading(true);
+
         try {
-          setLoading(true);
           const response = await api.post("/api/infomarket/v1/user/auth", {
             email: formData.email,
             password: formData.password,
@@ -102,15 +97,13 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, onHide, onLoginSuccess })
         <Form className="modal-form">
           <Form.Group className="modal-group mb-3">
             <Form.Label className="modal-label">Email</Form.Label>
-            <Form.Control className="modal-input" type="email" name="email" value={formData.email} onChange={handleChange} >
-              {errors.email && <Form.Text className="text-danger">{errors.email}</Form.Text>}
-            </Form.Control>
+            <Form.Control className="modal-input" type="email" name="email" value={formData.email} onChange={handleChange} />
+            {errors.email && <Form.Text className="error-texts text-danger">{errors.email}</Form.Text>}
           </Form.Group>
           <Form.Group className="modal-group mb-3">
             <Form.Label className="modal-label">Password</Form.Label>
-            <Form.Control className="modal-input" type="password" name="password" value={formData.password} onChange={handleChange} >
-              {errors.password && <Form.Text className="text-danger">{errors.password}</Form.Text>}
-            </Form.Control>
+            <Form.Control className="modal-input" type="password" name="password" value={formData.password} onChange={handleChange} />
+            {errors.password && <Form.Text className="error-texts text-danger">{errors.password}</Form.Text>}
           </Form.Group>
         </Form>
       </Modal.Body>

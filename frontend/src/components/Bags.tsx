@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import api from "../api/axiosConfig";
-import PaginationControls from "./PaginationControls";
 import ExpandedItemCard from "../modals/ExpandedItemCard";
 import LoginModal from "../modals/LoginModal";
 import SignupModal from "../modals/SignupModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import UserProfileDropdown from "./UserProfileDropdown";
-import LoadingSpinner from "./LoadingSpinner";
+import UserProfileDropdown from "./mini-components/UserProfileDropdown";
+import LoadingSpinner from "./mini-components/LoadingSpinner";
+import { Pagination } from "react-bootstrap";
 
 interface Item {
   item_id: string;
@@ -22,6 +22,8 @@ interface Item {
 const Bags: React.FC = () => {
   const [selected, setSelected] = useState<string>("All");
   const [items, setItems] = useState<Item[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
 
   // Modal state
   const [showModal, setShowModal] = useState(false);
@@ -31,25 +33,57 @@ const Bags: React.FC = () => {
   const [user, setUser] = useState<string | null>(localStorage.getItem("user"));
 
 
+  // Filtered items (currently no search/filter logic, so just use items)
+  const filteredItems = items;
+
   // Pagination
-  const itemsPerPage = 20;
-  const [currentPage, setCurrentPage] = useState(1);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedItems = items.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
-
-  const handleNext = () => {
-    if (currentPage < Math.ceil(items.length / itemsPerPage)) {
-      setCurrentPage(prev => prev + 1);
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentPage > 1) {
-      setCurrentPage(prev => prev - 1);
-    }
-  };
+  const handlePageChange = (pageNumber: number) => {
+      if (pageNumber > 0 && pageNumber <= totalPages) {
+        setCurrentPage(pageNumber);
+      }
+    };
+  
+    const renderPaginationItems = () => {
+      const paginationItems = [];
+  
+  
+      if (currentPage > 3) {
+        paginationItems.push(<Pagination.Item key={1} onClick={() => handlePageChange(1)}>1</Pagination.Item>);
+        paginationItems.push(<Pagination.Ellipsis key="start-ellipsis" disabled />);
+      }
+  
+      for (
+        let number = Math.max(1, currentPage - 1);
+        number <= Math.min(currentPage + 1, totalPages);
+        number++
+      ) {
+        paginationItems.push(
+          <Pagination.Item
+            key={number}
+            active={number === currentPage}
+            onClick={() => handlePageChange(number)}
+          >
+            {number}
+          </Pagination.Item>
+        );
+      }
+  
+      if (currentPage < totalPages - 2) {
+        paginationItems.push(<Pagination.Ellipsis key="end-ellipsis" disabled />);
+        paginationItems.push(
+          <Pagination.Item key={totalPages} onClick={() => handlePageChange(totalPages)}>
+            {totalPages}
+          </Pagination.Item>
+        );
+      }
+  
+      return paginationItems;
+    };
 
   const openModal = (item: Item) => {
     setSelectedItem(item);
@@ -156,12 +190,12 @@ const Bags: React.FC = () => {
       </div>
 
       <div className="items-container">
-        {paginatedItems.length === 0 ? (
-          <div className="items-container-loading">
+        {currentItems.length === 0 ? (
+          <div className="items-container-loading" style={{ gridColumn: "1 / -1" }}>
             <LoadingSpinner />
           </div>
         ) : (
-          paginatedItems.map((item) => (
+          currentItems.map((item) => (
             <div className="item-card" key={item.item_id}>
               <div
                 className="item-image"
@@ -187,12 +221,13 @@ const Bags: React.FC = () => {
       </div>
 
       <div className="pagination-container">
-        <PaginationControls
-          currentPage={currentPage}
-          totalPages={Math.ceil(items.length / itemsPerPage)}
-          onNext={handleNext}
-          onPrev={handlePrev}
-        />
+        <Pagination>
+          <Pagination.First onClick={() => handlePageChange(1)} disabled={currentPage === 1} />
+          <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} />
+          {renderPaginationItems()}
+          <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
+          <Pagination.Last onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages} />
+        </Pagination>
       </div>
 
       <ExpandedItemCard

@@ -1,5 +1,7 @@
-package com.sleizware.infomarket;
+package com.sleizware.infomarket.config;
 
+import jakarta.annotation.PostConstruct;
+import kong.unirest.Unirest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -26,4 +28,8 @@ public class WebConfig {
         return new RestTemplate();
     }
 
+    @PostConstruct
+    public void init() {
+        Unirest.config().verifySsl(false); // Only if needed
+    }
 }

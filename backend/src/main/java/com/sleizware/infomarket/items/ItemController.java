@@ -10,13 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
-@RequestMapping(path = "/api/infomarket/v1/items")
+@RequestMapping(path = "/api/infomarket/v1")
 public class ItemController {
 
     @Autowired
@@ -25,14 +22,14 @@ public class ItemController {
     @Autowired
     private ItemRepository itemRepository;
 
-    @GetMapping
+    @GetMapping("/items")
     public ResponseEntity<List<Item>> getAllItems() {
         List<Item> items = itemRepository.findAll();
         Collections.shuffle(items);
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/items/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadItem(
             @RequestParam("item_photo") MultipartFile file,
             @RequestParam("item_name") String itemName,
@@ -48,12 +45,13 @@ public class ItemController {
 
             Item item = new Item();
             item.setItem_photo(imageUrl);
-            item.setItem_name(itemName);
+            item.setItemName(itemName);
             item.setItem_price(itemPrice);
             item.setItemCategory(itemCategory);
             item.setItem_description(itemDescription);
             item.setSeller_name(sellerName);
             item.setSellerPhone(sellerPhone);
+            item.setStatus("Available");
 
             itemRepository.save(item);
             return ResponseEntity.ok("Congrats, you uploaded " + itemName + " successfully!");
@@ -63,7 +61,7 @@ public class ItemController {
         }
     }
 
-    @GetMapping("/recent")
+    @GetMapping("/items/recent")
     public ResponseEntity<List<Item>> getItemsSortedByDate() {
         List<Item> items = itemRepository.findAllByOrderByPostedDateDesc();
 
@@ -74,7 +72,7 @@ public class ItemController {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
-    @GetMapping("/category/{category}")
+    @GetMapping("/items/category/{category}")
     public ResponseEntity<List<Item>> getItemsByCategory(@PathVariable("category") String itemCategory) {
         List<Item> items = itemRepository.findByItemCategoryIgnoreCase(itemCategory);
         Collections.shuffle(items);
@@ -86,7 +84,7 @@ public class ItemController {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
-    @GetMapping("/category/{category}/recent")
+    @GetMapping("/items/category/{category}/recent")
     public ResponseEntity<Map<String, Object>> getRecentItemsByCategory(@PathVariable("category") String itemCategory) {
         List<Item> recentItems = itemRepository.findRecentItemsByItemCategory(itemCategory);
 
@@ -98,7 +96,7 @@ public class ItemController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{sellerPhone}")
+    @GetMapping("/items/phone/{sellerPhone}")
     public ResponseEntity<List<Item>> getItemsBySellerPhone(@PathVariable String sellerPhone) {
         List<Item> items = itemRepository.findBySellerPhone(sellerPhone);
 
@@ -109,7 +107,7 @@ public class ItemController {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{itemId}")
+    @DeleteMapping("/items/delete/{itemId}")
     public ResponseEntity<Map<String, Object>> deleteItemBySeller(@PathVariable Long itemId) {
         itemRepository.deleteItemByItemId(itemId);
 
@@ -117,6 +115,12 @@ public class ItemController {
         response.put("statusCode", HttpStatus.OK.value());
         response.put("message", "Item deleted successfully");
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/items/{itemName}/mark-sold")
+    public ResponseEntity<?> markItemAsSold(@PathVariable String itemName) {
+        itemRepository.updateItemStatusToSold(itemName);
+        return ResponseEntity.ok("Item marked as Sold");
     }
 
 }

@@ -2,6 +2,8 @@ package com.sleizware.infomarket.users;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -14,6 +16,20 @@ public class User {
     private String email;
     private String phone;
     private String password;
+
+    @Column(name = "class")
+    private String userClass;
+
+    @Column(name = "profile_picture")
+    private String profilePicture;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDate createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDate.now();
+    }
 
     public Long getUserId() {
         return userId;
@@ -53,5 +69,29 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUserClass() {
+        return userClass;
+    }
+
+    public void setUserClass(String userClass) {
+        this.userClass = userClass;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
     }
 }

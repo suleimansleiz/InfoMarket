@@ -12,19 +12,14 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/infomarket/v1/user")
+@RequestMapping("/api/infomarket/v1")
 public class UserController {
 
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        return new ResponseEntity<List<User>>(userRepository.findAll(), HttpStatus.OK);
-    }
 
-    // Sign-up Endpoint
-    @PostMapping("/signup")
+    @PostMapping("/user/signup")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         if (userRepository.findUserByEmail(user.getEmail()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
@@ -32,12 +27,13 @@ public class UserController {
 
         String name = user.getUsername();
 
+        user.setUserClass("Regular");
         userRepository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body("Glad to have you aboard " + name + "!");
     }
 
-    // Sign-in Endpoint
-    @PostMapping("/auth")
+
+    @PostMapping("/user/auth")
     public ResponseEntity<Map<String, String>> loginSeller(@RequestBody SignUp request) {
         String email = request.getEmail();
         String password = request.getPassword();

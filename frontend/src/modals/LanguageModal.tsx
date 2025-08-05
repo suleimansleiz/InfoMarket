@@ -28,26 +28,31 @@ const LanguageModal: React.FC<DeleteConfirmationModalProps> = ({
         <Modal.Title className="modal-title">Language Preference</Modal.Title>
       </Modal.Header>
       <Modal.Body className="modal-body">
-        <Form className="modal-form">
-            <Form.Group className="modal-group d-flex">
-                <Form.Label className="modal-label">
-                    English (us)
-                </Form.Label>
-                <Form.Check
-                    type="radio"
-                    className="modal-check"
-                />
-            </Form.Group>
-            <Form.Group className="modal-group d-flex">
-                <Form.Label className="modal-label">
-                    Swahili
-                </Form.Label>
-                <Form.Check
-                    type="radio"
-                    className="modal-check"
-                />
-            </Form.Group>
-        </Form>
+      <Form className="modal-form">
+        <Form.Group className="modal-group d-flex">
+          <Form.Label className="modal-label">
+        English (us)
+          </Form.Label>
+          <Form.Check
+        type="radio"
+        className="modal-check"
+        name="language"
+        value="en"
+        defaultChecked
+          />
+        </Form.Group>
+        <Form.Group className="modal-group d-flex">
+          <Form.Label className="modal-label">
+        Swahili
+          </Form.Label>
+          <Form.Check
+        type="radio"
+        className="modal-check"
+        name="language"
+        value="sw"
+          />
+        </Form.Group>
+      </Form>
       </Modal.Body>
       <Modal.Footer className="modal-footer">
         <Button variant="secondary" onClick={onHide}>
