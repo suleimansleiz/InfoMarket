@@ -1,15 +1,17 @@
-import React, {  } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import SellerLoginModal from "../modals/SellerLoginModal";
 
 const SellYourItem: React.FC = () => {
-  const navigate = useNavigate();
+  
+  const [showSellerLoginModal, setShowSellerLoginModal] = useState(false);
 
   const googleLogo = (
     <img className="google-logo" src="../assets/google.png" alt="google-btn" />
   );
 
   const handleLoginNavigation = () => {
-    navigate("/login");
+    setShowSellerLoginModal(true);
   };
 
   return (
@@ -55,6 +57,12 @@ const SellYourItem: React.FC = () => {
             rights reserved.
         </p>
       </footer>
+      <SellerLoginModal
+        show={showSellerLoginModal}
+        onHide={() => {
+          setShowSellerLoginModal(false);
+        }  }
+      />
     </div>
   );
 };

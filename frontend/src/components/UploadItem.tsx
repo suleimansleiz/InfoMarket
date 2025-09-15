@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Alert, Spinner } from "react-bootstrap";
-import api from "../../api/axiosConfig";
-import ProfileDropdown from "./ProfileDropdown";
+import api from "../api/axiosConfig";
+import ProfileDropdown from "./mini-components/ProfileDropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DeleteConfirmationModal from "../../modals/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../modals/DeleteConfirmationModal";
+import ToastMessage from "./mini-components/ToastMessage";
 
 
 type Post = {
@@ -41,10 +42,13 @@ const UploadItem: React.FC = () => {
   const [formAlertMsg, setFormAlertMsg] = useState<string | null>(null);
   const [formAlertVariant, setFormAlertVariant] = useState<'success' | 'danger' | 'warning' | 'info'>();
   const [postAlertMsg, setPostAlertMsg] = useState<string | null>(null);
-  const [postAlertVariant, setPostAlertVariant] = useState<'success' | 'danger' | 'warning' | 'info'>();
+  const [postAlertVariant] = useState<'success' | 'danger' | 'warning' | 'info'>();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<Post | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
+  const [toastVrt, setToastVrt] = useState("");
+  const [showToast, setShowToast] = useState(false);
 
 
   useEffect(() => {
@@ -131,12 +135,14 @@ const UploadItem: React.FC = () => {
       });
 
       fetchPosts(formData.seller_phone);
-      setFormAlertVariant('success');
-      setFormAlertMsg(uploadResponse.data);
+      setToastMsg(uploadResponse.data);
+            setToastVrt("success");
+            setShowToast(true);
     } catch (error) {
       console.error("Error posting item:", error);
-      setFormAlertVariant('danger');
-      setFormAlertMsg("Failed to post the item. Please try again.");
+      setToastMsg("Error uploading item");
+            setToastVrt("danger");
+            setShowToast(true);
     } finally {
       setLoading(false);
     }
@@ -149,8 +155,9 @@ const UploadItem: React.FC = () => {
       setPosts(response.data);
     } catch (error) {
       console.error("Error fetching posts:", error);
-      setPostAlertVariant('warning');
-      setPostAlertMsg("Failed to fetch your posts.");
+      setToastMsg("Failed to fetch your posts");
+            setToastVrt("warning");
+            setShowToast(true);
     }
   };
 
@@ -168,12 +175,14 @@ const UploadItem: React.FC = () => {
       await fetchPosts(formData.seller_phone);
       setShowDeleteModal(false);
       setItemToDelete(null);
-      setFormAlertVariant('success');
-      setFormAlertMsg("Item deleted successfully.");
+      setToastMsg("Item deleted successfully");
+            setToastVrt("success");
+            setShowToast(true);
     } catch (error) {
       setShowDeleteModal(false);
-      setFormAlertVariant('danger');
-      setFormAlertMsg("Failed to delete item.");
+      setToastMsg("Failed to delete item");
+            setToastVrt("danger");
+            setShowToast(true);
       console.error("Failed to delete item:", error);
     } finally {
       setDeleting(false);
@@ -338,6 +347,13 @@ const UploadItem: React.FC = () => {
         itemName={itemToDelete?.item_name || "this item"}
         deleting={deleting}
       />
+
+      <ToastMessage
+                show={showToast}
+                onClose={() => setShowToast(false)}
+                message={toastMsg}
+                variant={toastVrt}
+          />
     </div>
   );
 };

@@ -1,165 +1,141 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
 
+interface NewAdmin {
+  adminName: string;
+  email: string;
+  password: string;
+  phone: string;
+  role: "Super Admin" | "Other";
+}
 interface AddAdminModalProps {
   show: boolean;
   onHide: () => void;
-  onCreateAdmin: (formData: unknown) => Promise<void>;
+  onCreateAdmin: (formData: NewAdmin) => Promise<void>;
   loading: boolean;
 }
 
 const AddAdminModal: React.FC<AddAdminModalProps> = ({ show, onHide, onCreateAdmin, loading }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<NewAdmin>({
     adminName: "",
     email: "",
-    password: "",
     phone: "",
-    role: ""
+    password: "",
+    role: "Super Admin",
   });
-
-  const [errors, setErrors] = useState({
-          adminName: "",
-          phone: "",
-          email: "",
-          password: "",
-          role: "",
-        });
+  const [errors, setErrors] = useState<Partial<Record<keyof NewAdmin, string>>>({});
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const validateForm = (): boolean => {
-        const newErrors: typeof errors = { email: "", phone: "", password: "", adminName: "", role: ""};
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const phoneRegex = /255\d{9}$/;
-    
-        if (!formData.email) {
-          newErrors.email = "Email is required.";
-        } else if (
-          !emailRegex.test(formData.email)
-        ) {
-          newErrors.email = "Enter a valid email.";
-        }
-    
-        if (!formData.adminName) {
-          newErrors.adminName = "Name is required.";
-        }
-
-        if (!formData.role) {
-          newErrors.role = "Role is required.";
-        }
-
-        if (!formData.phone) {
-          newErrors.phone = "Phone No. is required.";
-        }else if (
-          !phoneRegex.test(formData.phone)
-        ) {
-          newErrors.phone = "Enter a valid phone number.";
-        }
-
-        if (!formData.password) {
-          newErrors.password = "Password is required.";
-        }
-
-        setErrors(newErrors);
-        return !Object.values(newErrors).some(Boolean);
-      };
+    const newErrors: Partial<Record<keyof NewAdmin, string>> = {};
+    if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) newErrors.email = "Enter a valid email.";
+    if (!formData.adminName) newErrors.adminName = "Name is required.";
+    if (!formData.phone.match(/^255\d{9}$/)) newErrors.phone = "Enter a valid phone number.";
+    if (!formData.password) newErrors.password = "Password is required.";
+    if (!formData.role) newErrors.role = "Role is required.";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = () => {
     if (!validateForm()) return;
-
-    const form = new FormData();
-    form.append("item_name", formData.adminName);
-    form.append("item_category", formData.email);
-    form.append("item_description", formData.phone);
-    form.append("item_price", formData.password);
-    form.append("seller_name", formData.role);
-
-  onCreateAdmin(form); // Pass FormData to parent
-};
+    onCreateAdmin(formData);
+  };
 
 
   return (
-    <Modal className="modal-full" dialogClassName="modal-container" show={show} onHide={onHide} animation>
-      <Modal.Header className="modal-header" closeButton>
-        <Modal.Title className="modal-title">Create New Admin</Modal.Title>
+    <Modal centered show={show} onHide={onHide} dialogClassName="modal-container" animation>
+      <Modal.Header closeButton>
+        <Modal.Title>Create New Admin</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="modal-body">
+      <Modal.Body>
         <Form className="modal-form">
-          <Form.Group className="modal-group mb-3">
-            <Form.Label className="modal-label">Name</Form.Label>
+          <Form.Group className="mb-3">
+            <Form.Label>Name</Form.Label>
             <Form.Control
-              className="modal-input"
               type="text"
               name="adminName"
               value={formData.adminName}
               onChange={handleChange}
+              isInvalid={!!errors.adminName}
             />
-            {errors.adminName && <Form.Text className="error-texts text-danger">{errors.adminName}</Form.Text>}
+            <Form.Control.Feedback type="invalid">
+              {errors.adminName}
+            </Form.Control.Feedback>
           </Form.Group>
-
-          <Form.Group className="modal-group mb-3">
-            <Form.Label className="modal-label">Email</Form.Label>
+    
+          <Form.Group className="mb-3">
+            <Form.Label>Email</Form.Label>
             <Form.Control
-              className="modal-input"
-              type="text"
+              type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
+              isInvalid={!!errors.email}
             />
+            <Form.Control.Feedback type="invalid">
+              {errors.email}
+            </Form.Control.Feedback>
           </Form.Group>
-
-          <Form.Group className="modal-group mb-3">
-            <Form.Label className="modal-label">Phone No</Form.Label>
+    
+          <Form.Group className="mb-3">
+            <Form.Label>Phone No</Form.Label>
             <Form.Control
-              className="modal-input"
               type="text"
               name="phone"
               value={formData.phone}
               onChange={handleChange}
+              isInvalid={!!errors.phone}
             />
-            {errors.phone && <Form.Text className="error-texts text-danger">{errors.phone}</Form.Text>}
+            <Form.Control.Feedback type="invalid">
+              {errors.phone}
+            </Form.Control.Feedback>
           </Form.Group>
-
-          <Form.Group className="modal-group mb-3">
-            <Form.Label className="modal-label">Password</Form.Label>
+    
+          <Form.Group className="mb-3">
+            <Form.Label>Password</Form.Label>
             <Form.Control
-              className="modal-input"
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
+              isInvalid={!!errors.password}
             />
-            {errors.password && <Form.Text className="error-texts text-danger">{errors.password}</Form.Text>}
+            <Form.Control.Feedback type="invalid">
+              {errors.password}
+            </Form.Control.Feedback>
           </Form.Group>
-
-          <Form.Group className="modal-group mb-3">
-            <Form.Label className="modal-label">Role</Form.Label>
+    
+          <Form.Group className="mb-3">
+            <Form.Label>Class</Form.Label>
             <Form.Select
-              className="modal-input"
               name="role"
               value={formData.role}
               onChange={handleChange}
+              isInvalid={!!errors.role}
             >
               <option value="" disabled>Select Role</option>
               <option value="Super Admin">Super Admin</option>
-              <option value="Executive Admin">Executive Admin</option>
-              <option value="Sales Admin">Sales Admin</option>
+              <option value="Other">Other</option>
             </Form.Select>
-            {errors.role && <Form.Text className="error-texts text-danger">{errors.role}</Form.Text>}
+            <Form.Control.Feedback type="invalid">
+              {errors.role}
+            </Form.Control.Feedback>
           </Form.Group>
         </Form>
       </Modal.Body>
-      <Modal.Footer className="modal-footer">
-        <Button variant="secondary" onClick={onHide}>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={onHide} disabled={loading}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={handleSubmit}>
-          {loading ? <Spinner size="sm" animation="border" /> : "Create"}
+        <Button variant="primary" onClick={handleSubmit} disabled={loading}>
+          {loading ? <Spinner animation="border" size="sm" /> : "Register"}
         </Button>
       </Modal.Footer>
     </Modal>

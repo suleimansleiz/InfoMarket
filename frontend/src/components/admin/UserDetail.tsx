@@ -30,7 +30,7 @@ const UserDeatail: React.FC = () => {
   const [toastVrt, setToastVrt] = useState("");
   const [showToast, setShowToast] = useState(false);
   const title = "Confirm Delete";
-  const message = "This item will be permanently deleted. Proceed?";
+  const message = "This user will be permanently deleted. Proceed?";
 
 
   useEffect(() => {

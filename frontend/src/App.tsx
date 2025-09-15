@@ -15,7 +15,7 @@ import Help from "./components/Help";
 import SellYourItem from "./components/SellYourItem";
 import CreateAccount from "./components/CreateAccount";
 import LoginPage from "./components/LoginPage";
-import UploadItem from "./components/mini-components/UploadItem";
+import UploadItem from "./components/UploadItem";
 import Notifications from "./components/Notifications";
 import ItemDetail from "./components/admin/ItemDetail";
 import ItemList from "./components/admin/ItemList";

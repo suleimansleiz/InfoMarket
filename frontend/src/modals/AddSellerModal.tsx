@@ -1,167 +1,147 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
 
-interface AddSellerModalProps {
+
+interface NewSeller {
+  sellerName: string;
+  sellerEmail: string;
+  sellerPhone: string;
+  password: string;
+  distribution: "Retail" | "Wholesale";
+}
+
+interface AddUserModalProps {
   show: boolean;
   onHide: () => void;
-  onCreateUser: (formData: unknown) => Promise<void>;
+  onCreateSeller: (formData: NewSeller) => Promise<void>;
   loading: boolean;
 }
 
-const AddSellerModal: React.FC<AddSellerModalProps> = ({ show, onHide, onCreateUser, loading }) => {
-  const [formData, setFormData] = useState({
+const AddSellerModal: React.FC<AddUserModalProps> = ({ show, onHide, onCreateSeller, loading }) => {
+  const [formData, setFormData] = useState<NewSeller>({
     sellerName: "",
     sellerEmail: "",
-    password: "",
     sellerPhone: "",
-    distribution: ""
+    password: "",
+    distribution: "Retail",
   });
-
-  const [errors, setErrors] = useState({
-          sellerName: "",
-          sellerPhone: "",
-          sellerEmail: "",
-          password: "",
-          distribution: "",
-        });
+  const [errors, setErrors] = useState<Partial<Record<keyof NewSeller, string>>>({});
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const validateForm = (): boolean => {
-        const newErrors: typeof errors = { sellerEmail: "", sellerPhone: "", password: "", sellerName: "", distribution: ""};
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const phoneRegex = /255\d{9}$/;
-    
-        if (!formData.sellerEmail) {
-          newErrors.sellerEmail = "Email is required.";
-        } else if (
-          !emailRegex.test(formData.sellerEmail)
-        ) {
-          newErrors.sellerEmail = "Enter a valid email.";
-        }
-    
-        if (!formData.sellerName) {
-          newErrors.sellerName = "Name is required.";
-        }
-
-        if (!formData.distribution) {
-          newErrors.distribution = "Role is required.";
-        }
-
-        if (!formData.sellerPhone) {
-          newErrors.sellerPhone = "Phone No. is required.";
-        }else if (
-          !phoneRegex.test(formData.sellerPhone)
-        ) {
-          newErrors.sellerPhone = "Enter a valid phone number.";
-        }
-
-        if (!formData.password) {
-          newErrors.password = "Password is required.";
-        }
-
-        setErrors(newErrors);
-        return !Object.values(newErrors).some(Boolean);
-      };
+    const newErrors: Partial<Record<keyof NewSeller, string>> = {};
+    if (!formData.sellerEmail.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) newErrors.sellerEmail = "Enter a valid email.";
+    if (!formData.sellerName) newErrors.sellerName = "Name is required.";
+    if (!formData.sellerPhone.match(/^255\d{9}$/)) newErrors.sellerPhone = "Enter a valid phone number.";
+    if (!formData.password) newErrors.password = "Password is required.";
+    if (!formData.distribution) newErrors.distribution = "Role is required.";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = () => {
     if (!validateForm()) return;
-
-    const form = new FormData();
-    form.append("item_name", formData.sellerName);
-    form.append("item_category", formData.sellerEmail);
-    form.append("item_description", formData.sellerPhone);
-    form.append("item_price", formData.password);
-    form.append("seller_name", formData.distribution);
-
-  onCreateUser(form); // Pass FormData to parent
-};
+    onCreateSeller(formData);
+  };
 
 
   return (
-    <Modal className="modal-full" dialogClassName="modal-container" show={show} onHide={onHide} animation>
-      <Modal.Header className="modal-header" closeButton>
-        <Modal.Title className="modal-title">Register New Seller</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="modal-body">
-        <Form className="modal-form">
-          <Form.Group className="modal-group mb-3">
-            <Form.Label className="modal-label">Name</Form.Label>
-            <Form.Control
-              className="modal-input"
-              type="text"
-              name="sellerName"
-              value={formData.sellerName}
-              onChange={handleChange}
-            />
-            {errors.sellerName && <Form.Text className="error-texts text-danger">{errors.sellerName}</Form.Text>}
-          </Form.Group>
+    <Modal centered show={show} onHide={onHide} dialogClassName="modal-container">
+  <Modal.Header closeButton>
+    <Modal.Title>Register New Seller</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <Form className="modal-form">
+      <Form.Group className="mb-3">
+        <Form.Label>Name</Form.Label>
+        <Form.Control
+          type="text"
+          name="sellerName"
+          value={formData.sellerName}
+          onChange={handleChange}
+          isInvalid={!!errors.sellerName}
+        />
+        <Form.Control.Feedback type="invalid">
+          {errors.sellerName}
+        </Form.Control.Feedback>
+      </Form.Group>
 
-          <Form.Group className="modal-group mb-3">
-            <Form.Label className="modal-label">Email</Form.Label>
-            <Form.Control
-              className="modal-input"
-              type="text"
-              name="sellerEmail"
-              value={formData.sellerEmail}
-              onChange={handleChange}
-            />
-          </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Email</Form.Label>
+        <Form.Control
+          type="email"
+          name="sellerEmail"
+          value={formData.sellerEmail}
+          onChange={handleChange}
+          isInvalid={!!errors.sellerEmail}
+        />
+        <Form.Control.Feedback type="invalid">
+          {errors.sellerEmail}
+        </Form.Control.Feedback>
+      </Form.Group>
 
-          <Form.Group className="modal-group mb-3">
-            <Form.Label className="modal-label">Phone No</Form.Label>
-            <Form.Control
-              className="modal-input"
-              type="text"
-              name="sellerPhone"
-              value={formData.sellerPhone}
-              onChange={handleChange}
-            />
-            {errors.sellerPhone && <Form.Text className="error-texts text-danger">{errors.sellerPhone}</Form.Text>}
-          </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Phone No</Form.Label>
+        <Form.Control
+          type="text"
+          name="sellerPhone"
+          value={formData.sellerPhone}
+          onChange={handleChange}
+          isInvalid={!!errors.sellerPhone}
+        />
+        <Form.Control.Feedback type="invalid">
+          {errors.sellerPhone}
+        </Form.Control.Feedback>
+      </Form.Group>
 
-          <Form.Group className="modal-group mb-3">
-            <Form.Label className="modal-label">Password</Form.Label>
-            <Form.Control
-              className="modal-input"
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-            {errors.password && <Form.Text className="error-texts text-danger">{errors.password}</Form.Text>}
-          </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Password</Form.Label>
+        <Form.Control
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          isInvalid={!!errors.password}
+        />
+        <Form.Control.Feedback type="invalid">
+          {errors.password}
+        </Form.Control.Feedback>
+      </Form.Group>
 
-          <Form.Group className="modal-group mb-3">
-            <Form.Label className="modal-label">Distribution</Form.Label>
-            <Form.Select
-              className="modal-input"
-              name="distribution"
-              value={formData.distribution}
-              onChange={handleChange}
-            >
-              <option value="" disabled>Distribution Type</option>
-              <option value="Wholesale">Retail</option>
-              <option value="Wholesale">Wholesale</option>
-            </Form.Select>
-            {errors.distribution && <Form.Text className="error-texts text-danger">{errors.distribution}</Form.Text>}
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer className="modal-footer">
-        <Button variant="secondary" onClick={onHide}>
-          Cancel
-        </Button>
-        <Button variant="primary" onClick={handleSubmit}>
-          {loading ? <Spinner size="sm" animation="border" /> : "Register"}
-        </Button>
-      </Modal.Footer>
-    </Modal>
+      <Form.Group className="mb-3">
+        <Form.Label>Distribution</Form.Label>
+        <Form.Select
+          name="distribution"
+          value={formData.distribution}
+          onChange={handleChange}
+          isInvalid={!!errors.distribution}
+        >
+          <option value="" disabled>Distribution type</option>
+          <option value="Retail">Retail</option>
+          <option value="Wholesale">Wholesale</option>
+        </Form.Select>
+        <Form.Control.Feedback type="invalid">
+          {errors.distribution}
+        </Form.Control.Feedback>
+      </Form.Group>
+    </Form>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={onHide} disabled={loading}>
+      Cancel
+    </Button>
+    <Button variant="primary" onClick={handleSubmit} disabled={loading}>
+      {loading ? <Spinner animation="border" size="sm" /> : "Register"}
+    </Button>
+  </Modal.Footer>
+</Modal>
+
   );
 };
 

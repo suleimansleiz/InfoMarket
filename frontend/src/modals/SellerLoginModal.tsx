@@ -8,13 +8,13 @@ import { useNavigate } from "react-router-dom";
 import ToastMessage from "../components/mini-components/ToastMessage";
 
 
-interface AdminLoginModalProps {
+interface SellerLoginModalProps {
   show: boolean;
   onHide: () => void;
   
 }
 
-const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ show, onHide }) => {
+const SellerLoginModal: React.FC<SellerLoginModalProps> = ({ show, onHide }) => {
 
   const [formData, setFormData] = useState<{
       email: string;
@@ -64,15 +64,15 @@ const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ show, onHide }) => {
         setLoading(true);
 
         try {
-          const response = await api.post("/api/infomarket/v1/admin/auth", {
-            email: formData.email,
+          const response = await api.post("/api/infomarket/v1/seller/auth", {
+            seller_email: formData.email,
             password: formData.password,
           });
 
-          localStorage.setItem("adminName", response.data.name);
-          localStorage.setItem("role", response.data.role);
+        localStorage.setItem("seller_name", response.data.name);
+        localStorage.setItem("seller_phone", response.data.phone);
 
-          navigate("/admin/dashboard");
+          navigate("/upload-item");
           onHide();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
@@ -84,7 +84,7 @@ const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ show, onHide }) => {
             setToastMsg("An error occured, try again later");
             setToastVrt("danger");
             setShowToast(true);
-            navigate("/admin/dashboard");
+            navigate("/upload-item");
             onHide();
           }
           console.error("Login error:", error);
@@ -102,7 +102,7 @@ const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ show, onHide }) => {
     <>
     <Modal size="sm" className="modal-full" dialogClassName="modal-container" show={show} onHide={onHide} animation>
       <Modal.Header className="modal-header" closeButton>
-        <Modal.Title className="modal-title">Login as an Admin</Modal.Title>
+        <Modal.Title className="modal-title">Login as Seller</Modal.Title>
       </Modal.Header>
       <Modal.Body className="modal-body">
         <Form className="modal-form">
@@ -135,4 +135,4 @@ const AdminLoginModal: React.FC<AdminLoginModalProps> = ({ show, onHide }) => {
   );
 };
 
-export default AdminLoginModal;
+export default SellerLoginModal;

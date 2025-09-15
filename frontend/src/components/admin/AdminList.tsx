@@ -7,6 +7,14 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import ToastMessage from "../mini-components/ToastMessage";
 import AddAdminModal from "../../modals/AddAdminModal";
 
+interface NewAdmin {
+  adminName: string;
+  email: string;
+  password: string;
+  phone: string;
+  role: "Super Admin" | "Other";
+}
+
 type Item = {
   adminId: string;
   adminName: string;
@@ -21,6 +29,7 @@ const AdminList: React.FC = () => {
   const [selected, setSelected] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
+
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
@@ -94,29 +103,26 @@ const AdminList: React.FC = () => {
     return paginationItems;
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleAddItem = async (formData: any) => {
-  setLoadingAdd(true);
-  try {
-    await api.post("/api/infomarket/v1/admin/create/new", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    setShowCreateModal(false);
-    setToastMsg("Admin created successfully");
-    setToastVrt("success");
-    setShowToast(true);
-    const response = await api.get("/api/infomarket/v1/admin");
-    setItems(response.data);
-  } catch (error) {
-    setShowCreateModal(false);
-    setToastMsg("Failed to create admin");
-    setToastVrt("danger");
-    setShowToast(true);
-    console.error("Failed to create admin", error);
-  } finally {
-    setLoadingAdd(false);
-  }
-};
+  const handleCreateAdmin = async (newAdmin: NewAdmin) => {
+      setLoadingAdd(true);
+      try {
+        await api.post("/api/infomarket/v1/admin/create/new", newAdmin);
+        setShowCreateModal(false);
+        setToastMsg("Admin created successfully");
+        setToastVrt("success");
+        setShowToast(true);
+        const response = await api.get<Item[]>("/api/infomarket/v1/admin");
+        setItems(response.data);
+      } catch (error) {
+        setShowCreateModal(false);
+        setToastMsg("Failed to add admin");
+        setToastVrt("danger");
+        setShowToast(true);
+        console.error("Failed to add admin", error);
+      } finally {
+        setLoadingAdd(false);
+      }
+    };
 
 
   return (
@@ -166,8 +172,8 @@ const AdminList: React.FC = () => {
             <th>#</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Password</th>
             <th>Phone</th>
+            <th>Password</th>
             <th>Role</th>
             <th>Action</th>
           </tr>
@@ -208,7 +214,7 @@ const AdminList: React.FC = () => {
       <AddAdminModal
         show={showCreateModal}
         onHide={() => setShowCreateModal(false)}
-        onCreateAdmin={handleAddItem}
+        onCreateAdmin={handleCreateAdmin}
         loading={loadingAdd}
       />
       <ToastMessage

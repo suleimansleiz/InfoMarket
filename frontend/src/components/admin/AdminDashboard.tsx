@@ -41,7 +41,7 @@ const AdminDashboard: React.FC = () => {
       </div>
       <div className="admin-card-description">
       <FontAwesomeIcon className="admin-card-icons" icon="arrow-trend-up" style={{color: 'lightgreen'}} />
-      <p>+8.5% from yesterday</p>
+      <p>0 users joined today</p>
       </div>
     </div>
     <div className="dashboard-card">
@@ -54,7 +54,7 @@ const AdminDashboard: React.FC = () => {
       </div>
       <div className="admin-card-description">
       <FontAwesomeIcon className="admin-card-icons" icon="arrow-trend-up" style={{color: 'lightgreen'}} />
-      <p>+4 from yesterday</p>
+      <p>0 registered today</p>
       </div>
     </div>
     <div className="dashboard-card">
@@ -67,7 +67,7 @@ const AdminDashboard: React.FC = () => {
       </div>
       <div className="admin-card-description">
       <FontAwesomeIcon className="admin-card-icons" icon="arrow-trend-up" style={{color: 'lightgreen'}} />
-      <p>+1.3% from past week</p>
+      <p>0 items added today</p>
       </div>
     </div>
     <div className="dashboard-card">
@@ -79,8 +79,8 @@ const AdminDashboard: React.FC = () => {
         <FontAwesomeIcon className="dash-card-icons" icon={faChartBar} style={{color: 'green', backgroundColor: 'rgb(199, 247, 199)'}} />
       </div>
       <div className="admin-card-description">
-        <FontAwesomeIcon className="admin-card-icons" icon="arrow-trend-down" style={{color: 'red'}} />
-        <p>-4.3% from yesterday</p>
+        <FontAwesomeIcon className="admin-card-icons" icon="arrow-trend-up" style={{color: 'lightgreen'}} />
+        <p>0 earned today</p>
       </div>
     </div>
   </div>

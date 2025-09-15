@@ -7,10 +7,18 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import ToastMessage from "../mini-components/ToastMessage";
 import AddUserModal from "../../modals/AddUserModal";
 
-type Item = {
-  userId: string;
+interface NewUser {
   username: string;
-  email: number;
+  email: string;
+  phone: string;
+  password: string;
+  userClass: "Regular" | "VIP";
+}
+
+type Item = {
+  userId: number;
+  username: string;
+  email: string;
   phone: string;
   password: string;
   userClass: string;
@@ -18,101 +26,80 @@ type Item = {
 
 const UserList: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
-    const [selected, setSelected] = useState("all");
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 15;
-    const [showAddModal, setShowAddModal] = useState(false);
-    const [loadingAdd, setLoadingAdd] = useState(false);
-    const [toastMsg, setToastMsg] = useState("");
-    const [toastVrt, setToastVrt] = useState("");
-    const [showToast, setShowToast] = useState(false);
-  
-  
-    useEffect(() => {
-      const fetchItems = async () => {
-        try {
-          const response = await api.get("/api/infomarket/v1/user");
-          setItems(response.data);
-        } catch(error) {
-          console.log("failed fetch admins!", error);
-        }
-      };
-      fetchItems();
-    }, []);
-  
-    // Filter based on status
-    const filteredItems = items.filter(
-      (item) => selected === "all" || item.userClass.toLowerCase() === selected
-    );
-  
-    // Pagination logic
-    const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
-  
-    const handlePageChange = (pageNumber: number) => {
-      if (pageNumber > 0 && pageNumber <= totalPages) {
-        setCurrentPage(pageNumber);
+  const [selected, setSelected] = useState<string>("all");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 15;
+
+  const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [loadingAdd, setLoadingAdd] = useState<boolean>(false);
+  const [toastMsg, setToastMsg] = useState<string>("");
+  const [toastVrt, setToastVrt] = useState<string>("");
+  const [showToast, setShowToast] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await api.get<Item[]>("/api/infomarket/v1/user");
+        setItems(response.data);
+      } catch (error) {
+        console.error("Failed to fetch users", error);
       }
     };
-  
-    const renderPaginationItems = () => {
-      const paginationItems = [];
-  
-  
-      if (currentPage > 3) {
-        paginationItems.push(<Pagination.Item key={1} onClick={() => handlePageChange(1)}>1</Pagination.Item>);
-        paginationItems.push(<Pagination.Ellipsis key="start-ellipsis" disabled />);
-      }
-  
-      for (
-        let number = Math.max(1, currentPage - 1);
-        number <= Math.min(currentPage + 1, totalPages);
-        number++
-      ) {
-        paginationItems.push(
-          <Pagination.Item
-            key={number}
-            active={number === currentPage}
-            onClick={() => handlePageChange(number)}
-          >
-            {number}
-          </Pagination.Item>
-        );
-      }
-  
-      if (currentPage < totalPages - 2) {
-        paginationItems.push(<Pagination.Ellipsis key="end-ellipsis" disabled />);
-        paginationItems.push(
-          <Pagination.Item key={totalPages} onClick={() => handlePageChange(totalPages)}>
-            {totalPages}
-          </Pagination.Item>
-        );
-      }
-  
-      return paginationItems;
-    };
-  
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleAddItem = async (formData: any) => {
+    fetchItems();
+  }, []);
+
+  // Filter and pagination logic...
+  const filteredItems = items.filter(
+    (item) => selected === "all" || item.userClass.toLowerCase() === selected
+  );
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (pageNumber: number) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
+  const renderPaginationItems = () => {
+    const pages = [];
+    // same logic as before...
+    for (
+      let number = Math.max(1, currentPage - 1);
+      number <= Math.min(currentPage + 1, totalPages);
+      number++
+    ) {
+      pages.push(
+        <Pagination.Item
+          key={number}
+          active={number === currentPage}
+          onClick={() => handlePageChange(number)}
+        >
+          {number}
+        </Pagination.Item>
+      );
+    }
+    return pages;
+  };
+
+  const handleAddUser = async (newUser: NewUser) => {
     setLoadingAdd(true);
     try {
-      await api.post("/api/infomarket/v1/admin/user/create", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await api.post("/api/infomarket/v1/admin/user/create", newUser);
       setShowAddModal(false);
-      setToastMsg("Item added successfully");
+      setToastMsg("User added successfully");
       setToastVrt("success");
       setShowToast(true);
-      const response = await api.get("/api/infomarket/v1/user");
-      console.log(response.data);
+      const response = await api.get<Item[]>("/api/infomarket/v1/user");
+      setItems(response.data);
     } catch (error) {
       setShowAddModal(false);
-      setToastMsg("Failed to add item");
+      setToastMsg("Failed to add user");
       setToastVrt("danger");
       setShowToast(true);
-      console.error("Failed to add item", error);
+      console.error("Failed to add user", error);
     } finally {
       setLoadingAdd(false);
     }
@@ -193,7 +180,7 @@ const UserList: React.FC = () => {
             ))}
           </tbody>
         </table>
-  
+
         <div className="pagination-wrapper mt-3">
           <Pagination>
             <Pagination.First onClick={() => handlePageChange(1)} disabled={currentPage === 1} />
@@ -206,7 +193,7 @@ const UserList: React.FC = () => {
         <AddUserModal
           show={showAddModal}
           onHide={() => setShowAddModal(false)}
-          onCreateUser={handleAddItem}
+          onCreateUser={handleAddUser}
           loading={loadingAdd}
         />
         <ToastMessage
