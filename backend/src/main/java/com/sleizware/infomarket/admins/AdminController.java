@@ -51,7 +51,7 @@ public class AdminController {
                 .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
-    @PostMapping("/admin/create/new")
+    @PostMapping(path = "/admin/create/new")
     public ResponseEntity<String> registerAdmin(@RequestBody Admin admin) {
         if (adminRepository.findByEmail(admin.getEmail()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
@@ -178,7 +178,7 @@ public class AdminController {
                 .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
-    @PostMapping("/admin/user/create")
+    @PostMapping(path = "/admin/user/create")
     public ResponseEntity<String> addUser(@RequestBody User user) {
         if (userRepository.findUserByEmail(user.getEmail()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
@@ -230,7 +230,7 @@ public class AdminController {
     }
 
 
-    @PostMapping("/admin/seller/create")
+    @PostMapping(path = "/admin/seller/create")
     public ResponseEntity<String> addSeller(@RequestBody Seller seller) {
         if (sellerRepository.findBySellerEmail(seller.getSellerEmail()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
