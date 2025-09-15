@@ -7,16 +7,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UserProfileDropdown from "./mini-components/UserProfileDropdown";
 import LoadingSpinner from "./mini-components/LoadingSpinner";
 import { Pagination } from "react-bootstrap";
+import PurchaseModal from "../modals/PurchaseModal";
 
 interface Item {
-  item_id: string;
+  itemId: number;
   item_photo?: string;
-  item_name: string;
+  itemName: string;
   item_price: string;
-  item_category: string;
+  itemCategory: string;
   item_description: string;
   seller_name: string;
-  seller_phone: string;
+  sellerPhone: string;
 }
 
 const Bags: React.FC = () => {
@@ -31,6 +32,7 @@ const Bags: React.FC = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [user, setUser] = useState<string | null>(localStorage.getItem("user"));
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
 
 
   // Filtered items (currently no search/filter logic, so just use items)
@@ -196,14 +198,14 @@ const Bags: React.FC = () => {
           </div>
         ) : (
           currentItems.map((item) => (
-            <div className="item-card" key={item.item_id}>
+            <div className="item-card" key={item.itemId}>
               <div
                 className="item-image"
                 style={{ backgroundImage: `url(${item.item_photo})` }}
               />
               <div className="item-details">
                 <div>
-                  <h5>{item.item_name}</h5>
+                  <h5>{item.itemName}</h5>
                   <p>Tsh {item.item_price.toLocaleString()}</p>
                 </div>
                 <div className="icon-btn">
@@ -234,7 +236,20 @@ const Bags: React.FC = () => {
         show={showModal}
         onHide={closeModal}
         item={selectedItem}
+        onPurchase={() => {
+        setShowModal(false);
+        setShowPurchaseModal(true);
+      }}
       />
+
+      {/* PurchaseModal */}
+      {selectedItem && (
+        <PurchaseModal
+          show={showPurchaseModal}
+          onHide={() => setShowPurchaseModal(false)}
+          item={selectedItem}
+        />
+      )}
 
       <LoginModal
         show={showLoginModal}
