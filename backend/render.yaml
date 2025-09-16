@@ -2,12 +2,13 @@
       - type: web
         name: infomarket
         plan: free
+        runtime: docker
         rootDir: backend
         buildCommand: ./mvnw clean package -DskipTests
         startCommand: java -jar target/*.jar
         envVars:
           - key: JAVA_VERSION
-            value: 17
+            value: 23
           - key: SPRING_DATASOURCE_URL
             value: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=false&serverTimezone=UTC
           - key: SPRING_DATASOURCE_USERNAME
