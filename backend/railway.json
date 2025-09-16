@@ -1,0 +1,22 @@
+{
+  "services": [
+    {
+      "type": "web",
+      "name": "infomarket",
+      "plan": "free",
+      "runtime": "docker",
+      "rootDir": "backend",
+      "buildCommand": "./mvnw clean package -DskipTests",
+      "startCommand": "java -jar target/*.jar",
+      "envVars": [
+        { "key": "JAVA_VERSION", "value": "23" },
+        { "key": "SPRING_DATASOURCE_URL", "value": "jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=false&serverTimezone=UTC" },
+        { "key": "SPRING_DATASOURCE_USERNAME", "value": "${DB_USERNAME}" },
+        { "key": "SPRING_DATASOURCE_PASSWORD", "value": "${DB_PASSWORD}" },
+        { "key": "SPRING_JPA_HIBERNATE_DDL_AUTO", "value": "update" },
+        { "key": "SPRING_JPA_SHOW_SQL", "value": "true" }
+      ]
+    }
+  ]
+}
+
