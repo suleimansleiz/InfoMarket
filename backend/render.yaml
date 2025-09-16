@@ -7,7 +7,7 @@ services:
     startCommand: java -jar target/*.jar
     envVars:
       - key: JAVA_VERSION
-        value: 23
+        value: 17
       - key: SPRING_DATASOURCE_URL
         value: jdbc:mysql://${env.DB_HOST}:${env.DB_PORT}/${env.DB_URL}?useSSL=false&serverTimezone=UTC
       - key: SPRING_DATASOURCE_USERNAME
@@ -18,3 +18,4 @@ services:
         value: update
       - key: SPRING_JPA_SHOW_SQL
         value: "true"
+    rootDir: backend
