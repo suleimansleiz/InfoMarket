@@ -7,7 +7,8 @@
       "runtime": "docker",
       "rootDir": "backend",
       "buildCommand": "./mvnw clean package -DskipTests",
-      "startCommand": "java -jar target/*.jar",
+      "startCommand": "java -jar target/app.jar"
+    ,
       "envVars": [
         { "key": "JAVA_VERSION", "value": "23" },
         { "key": "SPRING_DATASOURCE_URL", "value": "jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?useSSL=false&serverTimezone=UTC" },
