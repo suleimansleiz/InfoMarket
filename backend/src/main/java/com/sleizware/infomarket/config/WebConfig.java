@@ -16,7 +16,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173")
+                        .allowedOrigins("https://infomarket.netlify.app")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");
             }
@@ -30,6 +30,6 @@ public class WebConfig {
 
     @PostConstruct
     public void init() {
-        Unirest.config().verifySsl(false); // Only if needed
+        Unirest.config().verifySsl(false);
     }
 }

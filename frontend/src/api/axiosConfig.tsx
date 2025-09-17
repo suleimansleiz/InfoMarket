@@ -3,6 +3,8 @@ import axios from "axios";
 
 
 export default axios.create({
-    baseURL: 'https://2ff4dffa72a2.ngrok-free.app',
-    headers: {"ngrok-skip-browser-warning": "true"}
+    baseURL: 'https://infomarket-production.up.railway.app',
+    headers: {
+    "Content-Type": "application/json",
+  },
 })
