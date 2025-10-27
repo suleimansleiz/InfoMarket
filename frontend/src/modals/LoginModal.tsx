@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// modals/LoginModal.tsx
 import React, { useState } from "react";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 import api from "../api/axiosConfig";
-import { Spinner } from "react-bootstrap";
+import ModalWrapper from "../components/ModalWrapper";
+import PasswordInput from "../components/PasswordInput";
+import DialogMessage from "../components/DialogMessage";
+import { useAuth } from "../auth/AuthContext";
 
 interface LoginModalProps {
   show: boolean;
@@ -12,108 +14,101 @@ interface LoginModalProps {
 }
 
 const LoginModal: React.FC<LoginModalProps> = ({ show, onHide, onLoginSuccess }) => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
+  const [dialogMsg, setDialogMsg] = useState("");
+  const [dialogTitle, setDialogTitle] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const { login } = useAuth();
 
-  const [formData, setFormData] = useState<{
-      email: string;
-      password: string;
-    }>({
-      email: "",
-      password: "",
-    });
-  
-    const [errors, setErrors] = useState({
-        email: "",
-        password: "",
-      });
+  const validateForm = (): boolean => {
+    const newErrors = { email: "", password: "" };
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    const [loading, setLoading] = useState(false);
+    if (!formData.email) newErrors.email = "Email is required.";
+    else if (!emailRegex.test(formData.email)) newErrors.email = "Enter a valid email.";
 
+    if (!formData.password) newErrors.password = "Password is required.";
 
-    const validateForm = (): boolean => {
-      const newErrors: typeof errors = { email: "", password: "", };
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  
-      if (!formData.email) {
-        newErrors.email = "Email is required.";
-      } else if (
-        !emailRegex.test(formData.email)
-      ) {
-        newErrors.email = "Enter a valid email.";
-      }
-  
-      if (!formData.password) {
-        newErrors.password = "Password is required.";
-      }
-  
-      setErrors(newErrors);
+    setErrors(newErrors);
     return !Object.values(newErrors).some(Boolean);
-
-    };
-
-
-  const handleLogin = async () => {
-        if (!validateForm()) return;
-        setLoading(true);
-
-        try {
-          const response = await api.post("/api/infomarket/v1/user/auth", {
-            email: formData.email,
-            password: formData.password,
-          });
-
-          localStorage.setItem("seller_name", response.data.name);
-          localStorage.setItem("seller_phone", response.data.phone);
-
-          const message = response.data;
-
-          localStorage.setItem("user", message.name);
-          onLoginSuccess();
-          onHide();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-          // Axios error with response
-          if (error.response && error.response.status === 401) {
-            alert("Invalid Credentials");
-          } else {
-            alert("An error occurred while trying to Log in.");
-          }
-          console.error("Login error:", error);
-        } finally {
-          setLoading(false);
-        }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target;
-      setFormData({ ...formData, [name]: value });
-    };
+  const handleLogin = async ( role: "user" ) => {
+    if (!validateForm()) return;
+    login(role);
+    setLoading(true);
+
+    try {
+      const response = await api.post("/api/infomarket/v1/user/auth", formData);
+      localStorage.setItem("user", response.data.name);
+      onLoginSuccess();
+      onHide();
+    } catch (error: any) {
+      if (error.response && error.response.status === 401) {
+        setDialogMsg("Invalid credentials. Please try again.");
+        setDialogTitle("Careful!");
+        setIsOpen(true);
+      } else {
+        setDialogMsg("Please check your internet connectivity and try again.");
+        setDialogTitle("Oops!");
+        setIsOpen(true);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <Modal size="sm" className="modal-full" dialogClassName="modal-container" show={show} onHide={onHide} animation>
-      <Modal.Header className="modal-header" closeButton>
-        <Modal.Title className="modal-title">Login</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="modal-body">
-        <Form className="modal-form">
-          <Form.Group className="modal-group mb-3">
-            <Form.Label className="modal-label">Email</Form.Label>
-            <Form.Control className="modal-input" type="email" name="email" value={formData.email} onChange={handleChange} />
-            {errors.email && <Form.Text className="error-texts text-danger">{errors.email}</Form.Text>}
-          </Form.Group>
-          <Form.Group className="modal-group mb-3">
-            <Form.Label className="modal-label">Password</Form.Label>
-            <Form.Control className="modal-input" type="password" name="password" value={formData.password} onChange={handleChange} />
-            {errors.password && <Form.Text className="error-texts text-danger">{errors.password}</Form.Text>}
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer className="modal-footer">
-        <Button variant="secondary" onClick={onHide}>Cancel</Button>
-        <Button variant="primary" onClick={handleLogin}>
-        {loading ? <Spinner size="sm" animation="border" /> : "Login"}
-        </Button>
-      </Modal.Footer>
-    </Modal>
+    <ModalWrapper
+      show={show}
+      onClose={onHide}
+      title="Sign in to your account"
+      footer={
+        <div className="flex justify-end gap-2">
+          <button onClick={onHide} className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 cursor-pointer">
+            Cancel
+          </button>
+          <button
+            onClick={()=> handleLogin("user")}
+            disabled={loading}
+            className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 cursor-pointer"
+          >
+            {loading ? "Signing in..." : "Sign in"}
+          </button>
+        </div>
+      }
+    >
+      <div>
+        <label className="block text-sm font-medium text-gray-600">Email</label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-300 outline-none ${
+            errors.email ? "border-red-500" : "border-gray-300"
+          }`}
+        />
+        {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
+      </div>
+
+      <PasswordInput
+        label="Password"
+        name="password"
+        value={formData.password}
+        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+        error={errors.password}
+      />
+
+      <DialogMessage
+        show={isOpen}
+        onClose={() => setIsOpen(false)}
+        dialogTitle={dialogTitle}
+        message={dialogMsg}
+        />
+    </ModalWrapper>
   );
 };
 

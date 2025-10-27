@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Spinner from "react-bootstrap/Spinner";
+import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import api from "../api/axiosConfig";
 import AwaitPaymentModal from "./AwaitPaymentModal";
-import ToastMessage from "../components/mini-components/ToastMessage";
+import ToastMessage from "../components/DialogMessage";
 
 interface PurchaseModalProps {
   show: boolean;
@@ -44,7 +41,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [showAwaitPaymentModal, setShowAwaitPaymentModal] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
-  const [toastVrt, setToastVrt] = useState("");
+  const [toastTitle, setToastTitle] = useState("");
   const [showToast, setShowToast] = useState(false);
   const [orderReference, setOrderReference] = useState<string | null>(null);
 
@@ -82,7 +79,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
     setLoading(true);
 
     try {
-       const res = await api.post("/api/infomarket/v1/payments/initiate-ussd", {
+      const res = await api.post("/api/infomarket/v1/payments/initiate-ussd", {
       itemId: item.itemId,
       itemName: item.itemName,
       itemPrice: item.item_price,
@@ -104,147 +101,150 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setToastMsg("Something went wrong. Please try again.");
-      setToastVrt("danger");
+      setToastTitle("Failure");
       setShowToast(true);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value, type } = e.target;
-  
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox"
-        ? (e.target as HTMLInputElement).checked
-        : value,
-    }));
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const { name, type } = e.target;
+  const value = type === "checkbox"
+    ? (e.target as HTMLInputElement).checked
+    : e.target.value;
+
+  setFormData((prev) => ({ ...prev, [name]: value }));
+};
 
 
   return (
     <>
-    <Modal
-      show={show}
-      onHide={onHide}
-      className="modal-full"
-      dialogClassName="modal-container"
-      animation
-      centered
-    >
-      <Modal.Header className="modal-header" closeButton>
-        <Modal.Title className="modal-title">Confirm Purchase</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="modal-body">
-        <Form className="modal-form">
-          <Form.Group className="modal-group mb-2">
-            <Form.Control
-              className="modal-input"
-              name="email"
-              type="email"
-              placeholder="Enter email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-            {errors.email && <Form.Text className="error-texts text-danger">{errors.email}</Form.Text>}
-          </Form.Group>
+      <Dialog open={show} onClose={onHide} className="relative z-50">
+        <div className="fixed inset-0 flex w-screen items-center justify-center p-4 bg-black/70">
+          <DialogPanel className="max-w-lg space-y-4 border bg-white p-4 border border-gray-300 rounded-lg">
+            <DialogTitle
+              className="font-bold text-center text-blue-900 text-lg">
+              Confirm Purchase
+            </DialogTitle>
+            <Description>
+              <div>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  placeholder="Enter email"
+                  onChange={handleChange}
+                  className={`w-full px-3 py-2 mb-2 border rounded-lg focus:ring-2 focus:ring-gray-300 outline-none ${
+                    errors.email ? "border-red-500" : "border-gray-300"
+                  }`}
+                />
+                {errors.email && <p className="error-texts text-danger">{errors.email}</p>}
 
-          <Form.Group className="modal-group mb-2">
-            <Form.Control
-              className="modal-input"
-              name="phone"
-              placeholder="Enter phone (255...)"
-              value={formData.phone}
-              onChange={handleChange}
-            />
-            {errors.phone && <Form.Text className="error-texts text-danger">{errors.phone}</Form.Text>}
-          </Form.Group>
+                <input
+                  type="text"
+                  name="phone"
+                  value={formData.phone}
+                  placeholder="Enter Phone (255...)"
+                  onChange={handleChange}
+                  className={`w-full px-3 py-2 mb-2 border rounded-lg focus:ring-2 focus:ring-gray-300 outline-none ${
+                    errors.phone ? "border-red-500" : "border-gray-300"
+                  }`}
+                />
+                {errors.phone && <p className="error-texts text-danger">{errors.phone}</p>}
 
-          <Form.Group className="modal-group mb-2">
-            <Form.Select
-              className="modal-input"
-              name="network"
-              value={formData.network}
-              onChange={handleChange}
-            >
-              <option value="">Select Mode of Payment</option>
-              <option value="mpesa">M-Pesa</option>
-              <option value="tigopesa">Tigo Pesa</option>
-              <option value="airtelmoney">Airtel Money</option>
-              <option value="halopesa">HaloPesa</option>
-            </Form.Select>
-            {errors.network && <Form.Text className="error-texts text-danger">{errors.network}</Form.Text>}
-          </Form.Group>
+                <select
+                  name="network"
+                  value={formData.network}
+                  onChange={handleChange}
+                  className={`w-full px-3 py-2 mb-2 border rounded-lg focus:ring-2 focus:ring-gray-300 outline-none ${
+                    errors.network ? "border-red-500" : "border-gray-300"
+                  }`}>
+                  <option value="">Select Mode of Payment</option>
+                  <option value="mpesa">M-Pesa</option>
+                  <option value="tigopesa">Tigo Pesa</option>
+                  <option value="airtelmoney">Airtel Money</option>
+                  <option value="halopesa">HaloPesa</option>
+                </select>
+                {errors.network && <p className="error-texts text-danger">{errors.network}</p>}
 
-          <Form.Group className="modal-group mb-2">
-            <Form.Select
-              className="modal-input"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-            >
-              <option value="">Select Location</option>
-              <option value="cive">CIVE</option>
-              <option value="social">Social</option>
-              <option value="humanity">Humanity</option>
-              <option value="coed">COED</option>
-              <option value="tiba">Tiba</option>
-            </Form.Select>
-            {errors.location && <Form.Text className="error-texts text-danger">{errors.location}</Form.Text>}
-          </Form.Group>
+                <select
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  className={`w-full px-3 py-2 mb-2 border rounded-lg focus:ring-2 focus:ring-gray-300 outline-none ${
+                    errors.location ? "border-red-500" : "border-gray-300"
+                  }`}>
+                    <option value="">Select Location</option>
+                    <option value="cive">CIVE</option>
+                    <option value="social">Social</option>
+                    <option value="humanity">Humanity</option>
+                    <option value="coed">COED</option>
+                    <option value="tiba">Tiba</option>
+                  </select>
+                  {errors.location && <p className="error-texts text-danger">{errors.location}</p>}
 
-          <Form.Group className="modal-group mb-2">
-            <Form.Control
-              className="modal-input"
-              name="block"
-              placeholder="Block No. ie Block 5A-G1"
-              value={formData.block}
-              onChange={handleChange}
-            />
-            {errors.block && <Form.Text className="error-texts text-danger">{errors.block}</Form.Text>}
-          </Form.Group>
+                <input
+                  type="text"
+                  name="block"
+                  value={formData.block}
+                  placeholder="Block No. ie Block 5A-G1"
+                  onChange={handleChange}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-300 outline-none ${
+                    errors.block ? "border-red-500" : "border-gray-300"
+                  }`}
+                />
+                {errors.block && <p className="error-texts text-danger">{errors.block}</p>}
+              </div>
 
-          <Form.Group className="modal-group mb-2">
-            <Form.Check
-              className="modal-checkbox"
-              type="checkbox"
-              label={`You're about to buy ${item.itemName} for Tsh ${item.item_price.toLocaleString()} from ${item.seller_name}. Delivery fees shall be paid by cash. Agree to buy.`}
-              name="agreed"
-              checked={formData.agreed}
-              onChange={handleChange}
-            />
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer className="modal-footer">
-        <Button variant="secondary" onClick={onHide} disabled={loading}>
-          Cancel
-        </Button>
-        <Button
-          variant="warning"
-          onClick={handleBuy}
-          disabled={!formData.agreed || loading}
-        >
-          {loading ? <Spinner size="sm" animation="border" /> : "Buy"}
-        </Button>
-      </Modal.Footer>
-    </Modal>
+              <div className="flex items-center mt-3">
+              <input
+                type="checkbox"
+                name="agreed"
+                checked={formData.agreed}
+                onChange={handleChange}
+                id="agreed"
+                className="text-green-600 cursor-pointer"
+              />
+              <label htmlFor="agreed" className="ml-2 text-sm text-gray-600">
+                You're about to buy {item.itemName} for Tsh {item.item_price.toLocaleString()} from {item.seller_name}. Delivery fees shall be paid by cash. Agree to buy.
+              </label>
+            </div>
+            </Description>
+              <div className="flex gap-2 justify-end mt-4">
+                <button
+                  onClick={onHide}
+                  className="px-3 py-1 bg-gray-400 text-white rounded hover:bg-gray-500 cursor-pointer"
+                >
+                  Abort
+                </button>
+                <button
+                  onClick={handleBuy}
+                  disabled={!formData.agreed || loading}
+                  className={`px-3 py-1 text-white rounded transition
+                    ${!formData.agreed || loading
+                      ? "bg-blue-400 cursor-not-allowed"
+                      : "bg-blue-600 hover:bg-blue-700 cursor-pointer"}`}>
+                  {loading ? "Buying..." : "Buy"}
+                </button>
+              </div>
+          </DialogPanel>
+        </div>
+      </Dialog>
 
-    <AwaitPaymentModal
-      show={showAwaitPaymentModal}
-      onHide={() => setShowAwaitPaymentModal(false)}
-      message="Thank you. Please complete payment via USSD-PUSH notification dialog sent to your phone. Once you have completed, click Confirm button."
-      orderReference={orderReference ?? ""}
+      <AwaitPaymentModal
+        show={showAwaitPaymentModal}
+        onHide={() => setShowAwaitPaymentModal(false)}
+        dialogTitle="Payment Confirmation"
+        message="Thank you. Please complete payment via USSD-PUSH notification dialog sent to your phone. Once you have completed, click Confirm button."
+        orderReference={orderReference ?? ""}
       />
 
-    <ToastMessage
+      <ToastMessage
         show={showToast}
         onClose={() => setShowToast(false)}
         message={toastMsg}
-        variant={toastVrt}
+        dialogTitle={toastTitle}
       />
     </>
   );

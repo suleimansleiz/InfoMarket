@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import { Form, Spinner } from "react-bootstrap";
-import ToastMessage from "../components/mini-components/ToastMessage";
+import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import ToastMessage from "../components/DialogMessage";
 import api from "../api/axiosConfig";
 
 interface AwaitPaymentProps {
@@ -10,6 +8,7 @@ interface AwaitPaymentProps {
   onHide: () => void;
   message: string;
   orderReference: string;
+  dialogTitle: string;
 }
 
 const AwaitPaymentModal: React.FC<AwaitPaymentProps> = ({
@@ -17,10 +16,11 @@ const AwaitPaymentModal: React.FC<AwaitPaymentProps> = ({
   onHide,
   message,
   orderReference,
+  dialogTitle,
 }) => {
   const [loading, setLoading] = useState(false);
+  const [toastTitle, setToastTitle] = useState("");
   const [toastMsg, setToastMsg] = useState("");
-  const [toastVrt, setToastVrt] = useState("");
   const [showToast, setShowToast] = useState(false);
 
   const handleConfirm = async () => {
@@ -32,27 +32,25 @@ const AwaitPaymentModal: React.FC<AwaitPaymentProps> = ({
       const status = res.data.status;
 
       if (status === "SUCCESS") {
+        setToastTitle("Success");
         setToastMsg("Payment completed successfully.");
-        setToastVrt("success");
         setShowToast(true);
         onHide();
       } else if (status === "PENDING") {
+        setToastTitle("Pending");
         setToastMsg("Payment is still pending. Please complete the USSD push.");
-        setToastVrt("warning");
         setShowToast(true);
       } else if (status === "FAILED") {
+        setToastTitle("Failure");
         setToastMsg("Payment failed. Please try again.");
-        setToastVrt("danger");
         setShowToast(true);
         onHide();
       } else {
         setToastMsg("Unexpected status received.");
-        setToastVrt("warning");
         setShowToast(true);
       }
     } catch {
       setToastMsg("Error checking payment status.");
-      setToastVrt("danger");
       setShowToast(true);
     } finally {
       setLoading(false);
@@ -61,32 +59,35 @@ const AwaitPaymentModal: React.FC<AwaitPaymentProps> = ({
 
   return (
     <>
-      <Modal
-        show={show}
-        onHide={() => {}}
-        centered
-        className="modal-full"
-        dialogClassName="modal-container"
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Body className="fb-body">
-          <Form className="fb-form d-flex justify-content-center align-items-center flex-column">
-            <p>{message}</p>
-          </Form>
-          <div className="d-flex justify-content-center mt-4">
-            <Button variant="success" onClick={handleConfirm} disabled={loading}>
-              {loading ? <Spinner animation="border" size="sm" /> : "Confirm"}
-            </Button>
-          </div>
-        </Modal.Body>
-      </Modal>
+      <Dialog open={show} onClose={onHide} className="relative z-50">
+        <div className="fixed inset-0 flex w-screen items-center justify-center p-4 bg-black/70">
+          <DialogPanel className="max-w-md space-y-4 border bg-white p-4 border border-gray-300 rounded-lg">
+            <DialogTitle
+              className="font-bold text-center text-blue-900 text-lg">
+              {dialogTitle}
+            </DialogTitle>
+            <Description>
+              <p className="text-center">
+                {message}
+              </p>
+            </Description>
+              <div className="flex gap-2 justify-center mt-4">
+                <button
+                onClick={handleConfirm}
+                disabled={loading}
+                className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-600 cursor-pointer">
+                  {loading ? "Confirming..." : "Confirm"}
+                </button>
+              </div>
+          </DialogPanel>
+        </div>
+      </Dialog>
 
       <ToastMessage
         show={showToast}
         onClose={() => setShowToast(false)}
         message={toastMsg}
-        variant={toastVrt}
+        dialogTitle={toastTitle}
       />
     </>
   );

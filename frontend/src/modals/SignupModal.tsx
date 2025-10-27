@@ -1,10 +1,12 @@
-// components/SignupModal.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// modals/LoginModal.tsx
 import React, { useState } from "react";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 import api from "../api/axiosConfig";
-import { Spinner } from "react-bootstrap";
+import ModalWrapper from "../components/ModalWrapper";
+import PasswordInput from "../components/PasswordInput";
+import DialogMessage from "../components/DialogMessage";
+import TandC from "./TandC";
+import PrivacyPolicyModal from "./PrivacyPolicyModal";
 
 interface SignupModalProps {
   show: boolean;
@@ -13,151 +15,177 @@ interface SignupModalProps {
 }
 
 const SignupModal: React.FC<SignupModalProps> = ({ show, onHide, onSignupSuccess }) => {
+  const [formData, setFormData] = useState({ email: "", password: "", username: "", phone: "", confirmPassword: "", agreed: false });
+  const [errors, setErrors] = useState({ email: "", password: "", username: "", phone: "", confirmPassword: "" });
+  const [loading, setLoading] = useState(false);
+  const [dialogMsg, setDialogMsg] = useState("");
+  const [dialogTitle, setDialogTitle] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [showTandCModal, setShowTandCModal] = useState(false);
+  const [showPolicyModal, setShowPolicyModal] = useState(false);
 
-  const [formData, setFormData] = useState<{
-        username: string;
-        email: string;
-        phone: string;
-        password: string;
-        agreed: boolean
-      }>({
-        username: "",
-        email: "",
-        phone: "",
-        password: "",
-        agreed: false,
-      });
+  const validateForm = (): boolean => {
+    const newErrors = { email: "", password: "", username: "", phone: "", confirmPassword: "" };
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /255\d{9}$/;
 
-      const [errors, setErrors] = useState({
-        username: "",
-        phone: "",
-        email: "",
-        password: "",
-      });
+    if (!formData.email) newErrors.email = "Email is required.";
+    else if (!emailRegex.test(formData.email)) newErrors.email = "Enter a valid email.";
 
-      const [loading, setLoading] = useState(false);
-  
-      const validateForm = (): boolean => {
-        const newErrors: typeof errors = { email: "", phone: "", password: "", username: "", };
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const phoneRegex = /^\+255\d{9}$/;
-    
-        if (!formData.email) {
-          newErrors.email = "Email is required.";
-        } else if (
-          !emailRegex.test(formData.email)
-        ) {
-          newErrors.email = "Enter a valid email.";
-        }
-    
-        if (!formData.username) {
-          newErrors.username = "Name is required.";
-        }
+    if (!formData.username) newErrors.username = "Username is required.";
 
-        if (!formData.phone) {
-          newErrors.phone = "Phone is required.";
-        }else if (
-          !phoneRegex.test(formData.email)
-        ) {
-          newErrors.email = "Enter a valid phone number.";
-        }
+    if (!formData.phone) { newErrors.phone = "Phone is required.";
+    }else if ( !phoneRegex.test(formData.phone) ) { newErrors.phone = "Enter a valid phone number."; }
 
-        if (!formData.password) {
-          newErrors.password = "Password is required.";
-        }
+    if (!formData.password) newErrors.password = "Password is required.";
 
-        setErrors(newErrors);
-        return !Object.values(newErrors).some(Boolean);
-      };
+    if (!formData.confirmPassword) newErrors.confirmPassword = "Confirm your Password.";
 
+    if (formData.password !== formData.confirmPassword) { newErrors.confirmPassword = "Passwords don't match."; }
 
-      const handleSignup = async () => {
-          if (!validateForm()) return;
-          setLoading(true)
+    setErrors(newErrors);
+    return !Object.values(newErrors).some(Boolean);
+  };
 
-          try {
-            const response = await api.post("/api/infomarket/v1/user/signup", {
-              username: formData.username,
-              email: formData.email,
-              Phone: formData.phone,
-              password: formData.password,
-            });
+  const handleSignUp = async () => {
+    if (!validateForm()) return;
+    setLoading(true);
 
-            alert(response.data);
-            onSignupSuccess();
-            onHide();
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          } catch (error: any) {
-            // Axios error with response
-            if (error.response && error.response.status === 401) {
-              alert("Invalid Credentials");
-            } else {
-              alert("An error occurred while trying to Log in.");
-            }
-            console.error("Login error:", error);
-          } finally {
-            setLoading(false);
-          }
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value,type } = e.target;
-        setFormData((prev) => ({
-          ...prev,
-          [name]: type === "checkbox"
-            ? (e.target as HTMLInputElement).checked
-            : value,
-        }));
-    };
-
-
+    try {
+      const response = await api.post("/api/infomarket/v1/user/signup", formData);
+        setDialogMsg(response.data);
+        setDialogTitle("Welcome to InfoMarket!");
+        onSignupSuccess();
+        onHide();
+    } catch (error: any) {
+      if (error.response && error.response.status === 401) {
+        setDialogMsg("Please fill in the required details.");
+        setDialogTitle("Careful!");
+        setIsOpen(true);
+      } else {
+        setDialogMsg("Please check your internet connectivity and try again.");
+        setDialogTitle("Oops!");
+        setIsOpen(true);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <Modal  className="modal-full" dialogClassName="modal-container" show={show} onHide={onHide} animation>
-      <Modal.Header className="modal-header" closeButton>
-        <Modal.Title className="modal-title">Sign Up</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="modal-body">
-        <Form className="modal-form">
-          <Form.Group className="modal-group mb-2">
-            <Form.Label className="modal-label">Username</Form.Label>
-            <Form.Control className="modal-input" name="username" value={formData.username} onChange={handleChange} />
-            {errors.username && <Form.Text className="error-texts text-danger">{errors.username}</Form.Text>}
-          </Form.Group>
-          <Form.Group className="modal-group mb-2">
-            <Form.Label className="modal-label">Email</Form.Label>
-            <Form.Control className="modal-input" name="email" type="email" value={formData.email} onChange={handleChange} />
-            {errors.email && <Form.Text className="error-texts text-danger">{errors.email}</Form.Text>}
-          </Form.Group>
-          <Form.Group className="modal-group mb-2">
-            <Form.Label className="modal-label">Phone</Form.Label>
-            <Form.Control className="modal-input" name="phone" placeholder="+255..." value={formData.phone} onChange={handleChange} />
-            {errors.phone && <Form.Text className="error-texts text-danger">{errors.phone}</Form.Text>}
-          </Form.Group>
-          <Form.Group className="modal-group mb-2">
-            <Form.Label className="modal-label">Password</Form.Label>
-            <Form.Control className="modal-input" name="password" type="password" value={formData.password} onChange={handleChange} />
-            {errors.password && <Form.Text className="error-texts text-danger">{errors.password}</Form.Text>}
-          </Form.Group>
-          <Form.Group className="modal-group mb-2">
-            <Form.Check
-              className="modal-checkbox"
-              type="checkbox"
-              label={`By continuing, you agree to our Terms and Conditions and Privacy Policy.`}
-              name="agreed"
-              checked={formData.agreed}
-              onChange={handleChange}
-            />
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer className="modal-footer">
-        <Button variant="secondary" onClick={onHide}>Cancel</Button>
-        <Button variant="warning" onClick={handleSignup} disabled={!formData.agreed || loading}>
-        {loading ? <Spinner size="sm" animation="border" /> : "Sign Up"}
-        </Button>
-      </Modal.Footer>
-    </Modal>
+    <ModalWrapper
+      show={show}
+      onClose={onHide}
+      title="Sign up for an account"
+      footer={
+        <div className="flex justify-end gap-2">
+          <button onClick={onHide} className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 cursor-pointer">
+            Cancel
+          </button>
+          <button
+            onClick={handleSignUp}
+            disabled={!formData.agreed || loading}
+            className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 cursor-pointer"
+          >
+            {loading ? "Signing up..." : "Sign up"}
+          </button>
+        </div>
+      }
+    >
+      <div>
+        <label className="block text-sm font-medium text-gray-600">Username</label>
+        <input
+          type="text"
+          name="username"
+          value={formData.username}
+          onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-300 outline-none ${
+            errors.username ? "border-red-500" : "border-gray-300"
+          }`}
+        />
+        {errors.username && <p className="text-xs text-red-500">{errors.username}</p>}
+
+        <label className="block text-sm font-medium text-gray-600">Email</label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-300 outline-none ${
+            errors.email ? "border-red-500" : "border-gray-300"
+          }`}
+        />
+        {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
+      </div>
+
+      <label className="block text-sm font-medium text-gray-600">Phone</label>
+        <input
+          type="text"
+          name="phone"
+          placeholder="255 745 678 910"
+          value={formData.phone}
+          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-gray-300 outline-none ${
+            errors.phone ? "border-red-500" : "border-gray-300"
+          }`}
+        />
+        {errors.phone && <p className="text-xs text-red-500">{errors.phone}</p>}
+
+      <PasswordInput
+        label="Password"
+        name="password"
+        value={formData.password}
+        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+        error={errors.password}
+      />
+
+      <PasswordInput
+        label="Confirm Password"
+        name="confirmPassword"
+        value={formData.confirmPassword}
+        onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+        error={errors.confirmPassword}
+      />
+
+      <div className="flex items-center mt-3">
+        <input
+          type="checkbox"
+          name="agreed"
+          checked={formData.agreed}
+          onChange={(e) => setFormData({ ...formData, agreed: e.target.checked })}
+          id="agreed"
+          className="text-green-600 cursor-pointer data-checked:bg-blue-500"
+        />
+        <label htmlFor="agreed" className="ml-2 text-sm text-gray-600">
+          By continuing, you agree to our <a href="#" onClick={(e)=> {
+            e.preventDefault();
+            setShowTandCModal(true);
+            }}>
+              Terms & Conditions</a> and <a href="#" onClick={(e)=> {
+                e.preventDefault();
+                setShowPolicyModal(true);
+                }}>
+                  Privacy Policy</a>.
+        </label>
+      </div>
+
+      <DialogMessage
+        show={isOpen}
+        onClose={() => setIsOpen(false)}
+        dialogTitle={dialogTitle}
+        message={dialogMsg}
+        />
+
+        <TandC
+                show={showTandCModal}
+                onHide={() => setShowTandCModal(false)}
+                />
+
+                <PrivacyPolicyModal
+                show={showPolicyModal}
+                onHide={() => setShowPolicyModal(false)}
+                />
+    </ModalWrapper>
   );
 };
 

@@ -1,7 +1,5 @@
-import React, {  } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-
+// components/ExpandedItemCard.tsx
+import { Dialog, Description, DialogPanel, DialogTitle } from "@headlessui/react";
 
 interface Item {
   itemId: number;
@@ -15,50 +13,45 @@ interface Item {
 }
 
 interface Props {
-  show: boolean;
-  onHide: () => void;
-  item: Item | null;
-  onPurchase: () => void;
+ show: boolean;
+ onHide: () => void;
+ item: Item | null;
+ onPurchase: () => void;
 }
 
-const ExpandedItemCard: React.FC<Props> = ({ show, onHide, item, onPurchase }) => {
+const ExpandedItemCard: React.FC<Props> = ({ show, item, onPurchase, onHide }) => {
   if (!item) return null;
 
   return (
     <>
-      <Modal
-        show={show}
-        onHide={onHide}
-        centered
-        size="sm"
-        className="modal-full"
-        dialogClassName="modal-container"
-      >
-        <Modal.Header className="modal-header" closeButton>
-          <Modal.Title className="modal-title">{item.itemName}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="modal-body">
-          <img
-            src={item.item_photo}
-            alt="item"
-            className="img-fluid rounded mb-3"
-          />
-          <p><strong>Price:</strong> Tsh {Number(item.item_price).toLocaleString()}</p>
-          <p><strong>Category:</strong> {item.itemCategory}</p>
-          <p><strong>Description:</strong> {item.item_description}</p>
-          <p><strong>Seller:</strong> {item.seller_name} - {item.sellerPhone}</p>
-        </Modal.Body>
-        <Modal.Footer className="modal-footer">
-          <Button variant="secondary" onClick={onHide}>Close</Button>
-          <Button variant="primary" onClick={onPurchase}>Purchase</Button>
-        </Modal.Footer>
-      </Modal>
-
-      
+      <Dialog open={show} onClose={onHide} className="relative z-50">
+        <div className="fixed inset-0 flex w-screen items-center justify-center p-4 bg-black/30">
+          <DialogPanel className="max-w-lg h-full space-y-4 border bg-white px-12 py-5 border border-gray-300 rounded-lg overflow-y-auto hide-scrollbar">
+            <DialogTitle className="text-2xl text-gray-600 font-bold">{item.itemName}</DialogTitle>
+            <Description>
+              <img
+                src={item.item_photo}
+                alt="item"
+                className="rounded-lg mb-3"
+              />
+              <p className="text-gray-600"><strong>Price:</strong> Tsh {Number(item.item_price).toLocaleString()}</p>
+              <p className="text-gray-600"><strong>Category:</strong> {item.itemCategory}</p>
+              <p className="text-gray-600"><strong>Description:</strong> {item.item_description}</p>
+              <p className="text-gray-600"><strong>Seller:</strong> {item.seller_name} - {item.sellerPhone}</p>
+            </Description>
+            <div className="flex gap-4 justify-end">
+              <button onClick={onHide} className="px-2 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 cursor-pointer">
+                Cancel
+              </button>
+              <button onClick={onPurchase} className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer">
+                Purchase
+              </button>
+            </div>
+          </DialogPanel>
+        </div>
+      </Dialog>
     </>
   );
 };
 
 export default ExpandedItemCard;
-
-

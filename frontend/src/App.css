@@ -1,47 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
 
-* {
+/* Removed @tailwind directives for compatibility with standard CSS */
+
+/* * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
+} */
 
 body, html {
-  font-family: 'Quicksand', Arial, Helvetica, sans-serif;
-  background-color: #F8F9FA;
+  font-family: 'Quicksand', sans-serif;
+  width: 100vw;
   height: 100vh;
+  margin: 0;
+  padding: 0;
   overflow: hidden; /* only here is safe */
 }
 
-/* General Body */
-.mainBody {
-  background-color: #F8F9FA;
-  height: 100vh;
-  display: flex;
-  overflow: hidden;
-  width: 100vw;
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
 }
-.topbar{
-  flex: 1;
-  height: 70px;
-  top: 0;
-  right: 0;
-  left: 250px;
-  justify-content: space-between;
-  position: fixed;
-  padding: 0 10px;
-  z-index: 1000;
-  display: flex;
-  background-color: #F8F9FA;
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 /* Sidebar */
 .sidebar {
   background-color: #FFF;
-  top: 0;
   width: 250px;
   height: 100vh;
-  background-color: #FFF;
 }
 
 .list-group{
@@ -50,7 +40,7 @@ body, html {
 }
 
 .list-group-item {
-  border: none  !important;
+  border: none ;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -97,98 +87,12 @@ body, html {
 }
 
 .sidebar-divider {
-  border-top: 1px solid #007BFF;
+  border-top: 1px solid #ccc;
   margin: 20px 0;
 }
 
-.topbar-left {
-  padding: 20px;
-  background-color: white;
-}
 
-.menubtn{
-  color: #ff5733;
-}
-
-.sidebar-title {
-  font-size: 1.8rem;
-  color: #007BFF;
-  font-weight: bolder;
-  margin-right: 30px;
-  background-color: white;
-}
-
-.topbar-middle{
-  width: 70%;
-  padding: 20px 0;
-  align-items: center;
-}
-
-.searchBox {
-  width: 40%;
-  height: fit-content;
-  display: flex;
-  align-items: center;
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  gap: 8px;
-  flex: 1;
-  max-width: 500px;
-  margin-right: 10px;
-  background-color: #F8F9FA;
-}
-
-.searchIcon{
-  width: 20px;
-  height: 20px;
-  margin: 10px;
-}
-.searchBar {
-  border: none;
-  outline: none;
-  flex: 1;
-  color: #212529;
-  background-color: transparent;
-}
-
-.searchBar::placeholder {
-  color: #999;
-}
-
-.searchButton {
-  width: 80px;
-  height: 100%;
-  margin-right: 5px;
-  background-color: #F8F9FA;
-  color: grey;
-  font-weight: bold;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.searchButton:hover{
-  color: #007BFF;
-}
-
-.headers-2 {
-  color: #007BFF;
-}
-
-.topbar-right {
-  width: 25%;
-  padding: 30px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.login-btn {
+/* .login-btn {
   width: 100px;
   background-color: #007BFF;
   color: white;
@@ -210,11 +114,8 @@ body, html {
 
 .login-btn:hover {
   background-color: blue;
-}
-.pages-container h1 {
-  color: #007BFF;
-  font-weight: 400;
-}
+} */
+
 
 .username-display {
   background-color: #F8F9FA;
@@ -487,13 +388,13 @@ a:hover {
   width: 90%;
 }
 
-.my-posts-container-btm{
+/* .my-posts-container-btm{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
   padding: 1rem;
-  background-color: #F8F9FA;
-}
+  background-color: #FFF;
+} */
 
 /* Styling for card-post */
 .card-post {
@@ -546,13 +447,6 @@ a:hover {
 
 .card-post .delete-btn:hover {
   background-color: #28A745;
-}
-
-.my-posts-container-btm {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  background-color: white;
 }
 
 .my-posts-container {
@@ -628,11 +522,11 @@ form .form-select {
 
 
 /* All Pages css*/
-.pages-container {
+/* .pages-container {
   text-align: left;
   background-color: #F8F9FA;
   width: 100%;
-}
+} */
 
 .button-group {
   width: fit-content;
@@ -646,8 +540,6 @@ form .form-select {
   padding: 4px 18px;
   border: none;
   border-radius: 15px;
-  background-color: #ccc;
-  color: #555;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -667,48 +559,11 @@ form .form-select {
   background-color: #F8F9FA;
 }
 
-.items-container {
-  display: flex;
-  margin-top: 20px;
-  padding: 20px;
-  text-align: center;
-  justify-content: center;
-  border-radius: 5px;
-  background-color: #F8F9FA;
-}
-
 .no-items-message {
   font-size: 18px;
   color: #555;
   align-items: center;
 }
-
-.items-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  padding: 1rem;
-  max-height: calc(150vh - 270px);
-  overflow-y: auto;
-  scrollbar-width: none;
-  align-items: stretch;
-}
-
-.items-container-loading {
-  background-color: #F8F9FA;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  min-height: 200px;
-  width: 100%;
-}
-
-
-.items-container::-webkit-scrollbar {
-  display: none;
-}
-
 
 .item-card {
   border: 1px solid #ddd;
@@ -804,9 +659,9 @@ form .form-select {
 
 /* pagination styles */
 .pagination-container {
-  width: 60%;
+  width: 100%;
   justify-content: center;
-  margin: 5rem;
+  margin: 3rem;
 }
 .pagination-controls {
   display: flex;
