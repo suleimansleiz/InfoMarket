@@ -6,7 +6,6 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EditStatusModal from "../../modals/EditStatusModal";
 import AdminItemDeleteModal from "../../modals/AdminItemDeleteModal";
-import ToastMessage from "../../components/DialogMessage";
 
 type Item = {
   itemId: number;
@@ -28,9 +27,6 @@ const ItemDetail: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [toastMsg, setToastMsg] = useState("");
-  const [toastVrt, setToastVrt] = useState("");
-  const [showToast, setShowToast] = useState(false);
   const title = "Confirm Delete";
   const message = "This item will be permanently deleted. Proceed?";
 
@@ -52,13 +48,8 @@ const ItemDetail: React.FC = () => {
     try {
       await api.put(`/api/infomarket/v1/admin/items/update/status/${itemId}?status=${newStatus}`);
       setItem((prev) => prev ? { ...prev, status: newStatus } : prev);
-      setToastMsg("Status updated successfully");
-      setToastVrt("success");
-      setShowToast(true);
+      console.error("updated status");
     } catch (error) {
-      setToastMsg("Failed to update status");
-      setToastVrt("danger");
-      setShowToast(true);
       console.error("Failed to update status", error);
     } finally {
       setLoading(false);
@@ -70,12 +61,9 @@ const ItemDetail: React.FC = () => {
     setLoading(true);
     try {
       await api.delete(`/api/infomarket/v1/admin/items/delete/${itemId}`);
-      setToastMsg("Item deleted successfully");
-      setToastVrt("success");
+      console.error("updated status");
       navigate("/admin/items");
     } catch (error) {
-      setToastMsg("Failed to delete item");
-      setToastVrt("danger");
       console.error("Failed to delete item", error);
     } finally {
       setLoading(false);
@@ -137,12 +125,6 @@ const ItemDetail: React.FC = () => {
           {/* <LoadingSpinner /> */}
         </div>
       )}
-      <ToastMessage
-        show={showToast}
-        onClose={() => setShowToast(false)}
-        message={toastMsg}
-        variant={toastVrt}
-      />
     </div>
   );
 };

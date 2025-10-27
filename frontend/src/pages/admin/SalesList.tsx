@@ -5,7 +5,6 @@ import { Button, Pagination } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import AddItemModal from "../../modals/AddItemModal";
-import ToastMessage from "../../components/DialogMessage";
 
 type Item = {
   paymentId: string;
@@ -23,9 +22,6 @@ const ItemList: React.FC = () => {
     const itemsPerPage = 15;
     const [showAddModal, setShowAddModal] = useState(false);
     const [loadingAdd, setLoadingAdd] = useState(false);
-    const [toastMsg, setToastMsg] = useState("");
-    const [toastVrt, setToastVrt] = useState("");
-    const [showToast, setShowToast] = useState(false);
   
   
     useEffect(() => {
@@ -102,16 +98,10 @@ const ItemList: React.FC = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setShowAddModal(false);
-      setToastMsg("Item added successfully");
-      setToastVrt("success");
-      setShowToast(true);
       const response = await api.get("/api/infomarket/v1/payments/sales");
       setItems(response.data);
     } catch (error) {
       setShowAddModal(false);
-      setToastMsg("Failed to add item");
-      setToastVrt("danger");
-      setShowToast(true);
       console.error("Failed to add item", error);
     } finally {
       setLoadingAdd(false);
@@ -210,12 +200,6 @@ const ItemList: React.FC = () => {
           onHide={() => setShowAddModal(false)}
           onAddItem={handleAddItem}
           loading={loadingAdd}
-        />
-        <ToastMessage
-          show={showToast}
-          onClose={() => setShowToast(false)}
-          message={toastMsg}
-          variant={toastVrt}
         />
       </div>
     );

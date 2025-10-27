@@ -4,7 +4,6 @@ import api from "../../api/axiosConfig";
 import { Button, Pagination } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import ToastMessage from "../../components/DialogMessage";
 import AddSellerModal from "../../modals/AddSellerModal";
 
 interface NewSeller {
@@ -32,9 +31,6 @@ const SellerList: React.FC = () => {
 
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [loadingAdd, setLoadingAdd] = useState<boolean>(false);
-  const [toastMsg, setToastMsg] = useState<string>("");
-  const [toastVrt, setToastVrt] = useState<string>("");
-  const [showToast, setShowToast] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -89,16 +85,10 @@ const SellerList: React.FC = () => {
     try {
       await api.post("/api/infomarket/v1/admin/seller/create", newUser);
       setShowAddModal(false);
-      setToastMsg("User added successfully");
-      setToastVrt("success");
-      setShowToast(true);
       const response = await api.get<Item[]>("/api/infomarket/v1/seller");
       setItems(response.data);
     } catch (error) {
       setShowAddModal(false);
-      setToastMsg("Failed to add user");
-      setToastVrt("danger");
-      setShowToast(true);
       console.error("Failed to add user", error);
     } finally {
       setLoadingAdd(false);
@@ -196,12 +186,6 @@ const SellerList: React.FC = () => {
           onHide={() => setShowAddModal(false)}
           onCreateSeller={handleAddSeller}
           loading={loadingAdd}
-        />
-        <ToastMessage
-          show={showToast}
-          onClose={() => setShowToast(false)}
-          message={toastMsg}
-          variant={toastVrt}
         />
       </div>
     );

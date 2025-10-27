@@ -4,7 +4,6 @@ import api from "../../api/axiosConfig";
 import { Button, Pagination } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import ToastMessage from "../../components/DialogMessage";
 import AddAdminModal from "../../modals/AddAdminModal";
 
 interface NewAdmin {
@@ -32,9 +31,6 @@ const AdminList: React.FC = () => {
 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [loadingAdd, setLoadingAdd] = useState(false);
-  const [toastMsg, setToastMsg] = useState("");
-  const [toastVrt, setToastVrt] = useState("");
-  const [showToast, setShowToast] = useState(false);
 
 
   useEffect(() => {
@@ -108,16 +104,10 @@ const AdminList: React.FC = () => {
       try {
         await api.post("/api/infomarket/v1/admin/create/new", newAdmin);
         setShowCreateModal(false);
-        setToastMsg("Admin created successfully");
-        setToastVrt("success");
-        setShowToast(true);
         const response = await api.get<Item[]>("/api/infomarket/v1/admin");
         setItems(response.data);
       } catch (error) {
         setShowCreateModal(false);
-        setToastMsg("Failed to add admin");
-        setToastVrt("danger");
-        setShowToast(true);
         console.error("Failed to add admin", error);
       } finally {
         setLoadingAdd(false);
@@ -216,12 +206,6 @@ const AdminList: React.FC = () => {
         onHide={() => setShowCreateModal(false)}
         onCreateAdmin={handleCreateAdmin}
         loading={loadingAdd}
-      />
-      <ToastMessage
-        show={showToast}
-        onClose={() => setShowToast(false)}
-        message={toastMsg}
-        variant={toastVrt}
       />
     </div>
   );

@@ -5,7 +5,6 @@ import { Button } from "react-bootstrap";
 import { faEdit, faHeart, faMoneyBill, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AdminItemDeleteModal from "../../modals/AdminItemDeleteModal";
-import ToastMessage from "../../components/DialogMessage";
 import EditPersonelModal from "../../modals/EditPersonelModal";
 
 type Item = {
@@ -26,9 +25,6 @@ const UserDeatail: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [toastMsg, setToastMsg] = useState("");
-  const [toastVrt, setToastVrt] = useState("");
-  const [showToast, setShowToast] = useState(false);
   const title = "Confirm Delete";
   const message = "This user will be permanently deleted. Proceed?";
 
@@ -51,13 +47,8 @@ const UserDeatail: React.FC = () => {
     try {
       await api.put(`/api/infomarket/v1/admin/user/update/${userId}?userClass=${newClass}`, formData);
       setItem((prev) => prev ? { ...prev, userClass: newClass, formData } : prev);
-      setToastMsg("User updated successfully");
-      setToastVrt("success");
-      setShowToast(true);
+      console.error("updated status");
     } catch (error) {
-      setToastMsg("Failed to update user");
-      setToastVrt("danger");
-      setShowToast(true);
       console.error("Failed to update status", error);
     } finally {
       setLoading(false);
@@ -69,12 +60,8 @@ const UserDeatail: React.FC = () => {
     setLoading(true);
     try {
       await api.delete(`/api/infomarket/v1/admin/user/delete/${userId}`);
-      setToastMsg("User deleted successfully");
-      setToastVrt("success");
       navigate("/admin/users");
     } catch (error) {
-      setToastMsg("Failed to delete user");
-      setToastVrt("danger");
       console.error("Failed to delete user", error);
     } finally {
       setLoading(false);
@@ -169,13 +156,6 @@ const UserDeatail: React.FC = () => {
             onConfirm={handleDeleteItem}
             loading={loading}
           />
-
-      <ToastMessage
-        show={showToast}
-        onClose={() => setShowToast(false)}
-        message={toastMsg}
-        variant={toastVrt}
-      />
     </div>
   );
 };
